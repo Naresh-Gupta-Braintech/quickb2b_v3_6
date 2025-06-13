@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/reusable/buttons.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/text_field.dart';
@@ -40,9 +41,17 @@ class LoginView extends StatelessWidget {
                   padding: EdgeInsets.all(5),
                   child: Column(
                     children: [
-                      Text('Forgot password', style: TextStyle(color: Colors.white, fontSize: 14), textAlign: TextAlign.center),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Get.toNamed(RoutesHelper.forgot),
+                        child: Text('Forgot password', style: TextStyle(color: Colors.white, fontSize: 14), textAlign: TextAlign.center),
+                      ),
                       SizedBox(height: 5),
-                      Text('Access your account', style: TextStyle(color: Colors.white, fontSize: 14), textAlign: TextAlign.center),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Get.toNamed(RoutesHelper.register),
+                        child: Text('Access your account', style: TextStyle(color: Colors.white, fontSize: 14), textAlign: TextAlign.center),
+                      ),
                     ],
                   ),
                 ),
