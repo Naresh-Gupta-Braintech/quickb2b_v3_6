@@ -1,8 +1,12 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:get/route_manager.dart';
 import 'package:quickb2b_v3_6/app/autthentication/forgot/forgot.dart';
 import 'package:quickb2b_v3_6/app/autthentication/login/login_view.dart';
 import 'package:quickb2b_v3_6/app/autthentication/register/registration_page.dart';
-import 'package:quickb2b_v3_6/app/splash/splash.dart';
+import 'package:quickb2b_v3_6/app/dashboard/account.dart';
+import 'package:quickb2b_v3_6/app/dashboard/dashboard_view.dart';
 
 class RoutesHelper {
   static const String _home = '/';
@@ -14,6 +18,7 @@ class RoutesHelper {
   static const String _contact = '/contact';
   static const String _splash = '/splash';
   static const String _forgot = '/forgot';
+  static const String _account = '/account';
 
   // Add more routes as needed
   static String get home => _home;
@@ -25,6 +30,7 @@ class RoutesHelper {
   static String get contact => _contact;
   static String get splash => _splash;
   static String get forgot => _forgot;
+  static String get account => _account;
 
   static List<GetPage> getRoutes() {
     return [
@@ -32,10 +38,17 @@ class RoutesHelper {
       GetPage(name: _login, page: () => const LoginView()),
       GetPage(name: _register, page: () => RegistrationPage()),
       GetPage(name: _forgot, page: () => ForgetPasswordPage()),
+      GetPage(name: _account, page: () => Account()),
       // GetPage(name: _profile, page: () => const ProfileScreen()),
       // GetPage(name: _settings, page: () => const SettingsScreen()),
       // GetPage(name: _about, page: () => const AboutScreen()),
       // GetPage(name: _contact, page: () => const ContactScreen()),
     ];
+  }
+}
+
+void debugConsole(String? message) {
+  if (kDebugMode) {
+    log(message ?? "Console null");
   }
 }

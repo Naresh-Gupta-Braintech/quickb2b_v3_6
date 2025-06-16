@@ -1,0 +1,38 @@
+extension LocalText on String {
+static const String changePassword="Change Password";
+static const String customerId="Customer ID";
+static const String forgotPassword="Forgot Password";
+static const String continueText="Continue";
+static const String password="Password";
+static const String newPassword="New Password";
+static const String confirmPassword="Confirm Password";
+static const String save="Save";
+static const String userId="User Id";
+static const String login="Login";
+static const String accessYourAccount="Access your account";
+static const String createAnAccount="Create an account";
+static const String forBusiness="For Business";
+static const String business="business";
+static const String selected="selected";
+static const String forHomeDelivery="For Home Delivery";
+static const String selectRegion="Select Region";
+static const String alphanumericOnlyNoSpacesOrSpecialCharacters="alphanumeric only, no spaces or special characters";
+static const String businessName="Business Name";
+static const String firstName="First Name";
+static const String lastName="Last Name";
+static const String phone="Phone";
+static const String mobile="Mobile";
+static const String email="Email";
+static const String deliveryAddress="Delivery Address";
+static const String numberslashStreet="Number/Street";
+static const String suburbslashCity="Suburb/City";
+static const String country="Country";
+static const String stateslashRegion="State/Region";
+static const String postcodeslashZip="Postcode/Zip";
+static const String isPostalAddressSameAsDeliveryAddress="Is postal address same as delivery address?";
+static const String postalAddress="Postal Address";
+static const String postcodeslaShzip="Postcode/Zip";
+static const String submit="Submit";
+static const String develop="develop";
+
+}

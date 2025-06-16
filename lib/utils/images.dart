@@ -3,4 +3,5 @@ class Images {
 
   static final login = "$_basePath/login_image.png";
   static final logo = "$_basePath/logo.png";
+  static final cart = "$_basePath/cart.png";
 }

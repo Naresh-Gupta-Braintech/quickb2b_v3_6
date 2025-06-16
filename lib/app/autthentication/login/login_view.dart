@@ -17,7 +17,7 @@ class LoginView extends StatelessWidget {
         children: [
           Image.asset(Images.login, fit: BoxFit.fitHeight, height: Get.height),
           SafeArea(
-            bottom: false,
+            // bottom: ,
             child: Column(
               children: [
                 Expanded(
