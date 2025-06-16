@@ -21,7 +21,7 @@ class QuickB2b extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
-        return GetMaterialApp(debugShowCheckedModeBanner: false, getPages: RoutesHelper.getRoutes(), initialRoute: RoutesHelper.login);
+        return GetMaterialApp(debugShowCheckedModeBanner: false, getPages: RoutesHelper.getRoutes(), initialRoute: RoutesHelper.account);
       },
     );
   }
