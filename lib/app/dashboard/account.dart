@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/utils/dimensions.dart';
+import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -10,59 +13,46 @@ class Account extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Customer Details Section
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.only(top: Dimensions.padding16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Customer Details Title
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Customer Details", style: TextStyle(fontFamily: 'OpenSansBold', color: Colors.black, fontSize: 14)),
-                      Text(
-                        "Edit",
-                        style: TextStyle(
-                          color: Colors.transparent, // Invisible
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
+                  _section(text: "Customer Details"),
+                  SizedBox(height: Dimensions.viewHeight16),
 
                   // Customer ID
-                  _buildInputRow("Customer ID", "Enter Customer ID", false),
-                  _buildInputRow("Business Name", "Enter Business Name", false),
-                  _buildInputRow("First Name", "Enter First Name", false),
-                  _buildInputRow("Last Name", "Enter Last Name", false),
-                  _buildInputRow("Phone", "Enter Phone", true),
-                  _buildInputRow("Mobile", "Enter Mobile", true),
-                  _buildInputRow("Email", "Enter Email", false),
-                  _buildInputRow("Delivery Note", "Enter Delivery Note", true),
+                  _buildInputRow(isEditable: false, "Customer ID", "Enter Customer ID", false),
+                  _buildInputRow(isEditable: false, "Business Name", "Enter Business Name", false),
+                  _buildInputRow(isEditable: false, "First Name", "Enter First Name", false),
+                  _buildInputRow(isEditable: false, "Last Name", "Enter Last Name", false),
+                  _buildInputRow(isEditable: false, "Phone", "Enter Phone", true),
+                  _buildInputRow(isEditable: false, "Mobile", "Enter Mobile", true),
+                  _buildInputRow(isEditable: false, "Email", "Enter Email", false),
+                  _buildInputRow(isEditable: false, "Delivery Note", "Enter Delivery Note", true),
                 ],
               ),
             ),
 
             // Save Button
-            Container(
-              margin: EdgeInsets.only(top: 5, right: 10),
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Save action
-                },
-                style: ElevatedButton.styleFrom(
-                  // primary: Colors.blue, // Background color
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                ),
-                child: Text("Save", style: TextStyle(color: Colors.white, fontSize: 17)),
-              ),
-            ),
+            SizedBox(height: Dimensions.viewHeight16),
 
             // Delivery Address Section
-            _buildAddressSection("Delivery Address"),
-            _buildAddressSection("Postal Address"),
+            _section(text: "Delivery Address", onTap: () => {}, buttonText: "Edit"),
+            _buildInputRow(isEditable: false, "Number/Street", "Enter Number/Street", false),
+            _buildInputRow(isEditable: false, "Suburb/City", "Enter Suburb/City", false),
+            _buildInputRow(isEditable: false, "Country", "Enter Country", false),
+            _buildInputRow(isEditable: false, "State/Region", "Enter State/Region", false),
+            _buildInputRow(isEditable: false, "Postcode/Zip", "Enter Postcode/Zip", true),
+
+            SizedBox(height: Dimensions.viewHeight16),
+            _section(text: "Postal Address"),
+            _buildInputRow(isEditable: false, "Number/Street", "Enter Number/Street", false),
+            _buildInputRow(isEditable: false, "Suburb/City", "Enter Suburb/City", false),
+            _buildInputRow(isEditable: false, "Country", "Enter Country", false),
+            _buildInputRow(isEditable: false, "State/Region", "Enter State/Region", false),
+            _buildInputRow(isEditable: false, "Postcode/Zip", "Enter Postcode/Zip", true),
 
             // Progress Indicator
             Visibility(
@@ -75,39 +65,80 @@ class Account extends StatelessWidget {
     );
   }
 
-  Widget _buildInputRow(String label, String hint, bool isNumber) {
+  Widget _buildInputRow(String label, String value, bool isNumber, {required bool isEditable}) {
+    double width = Get.width;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontFamily: 'OpenSansBold', color: Colors.black, fontSize: 15)),
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(hintText: hint, border: OutlineInputBorder()),
-              keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+          SizedBox(
+            width: width * 0.4,
+            child: Text(
+              label,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontFamily: TypographyResources.openSans,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                fontSize: Dimensions.font14,
+              ),
             ),
           ),
+
+          Padding(
+            padding: EdgeInsets.only(left: Dimensions.padding10),
+            child: Text(
+              value,
+              style: TextStyle(
+                fontFamily: TypographyResources.openSans,
+                color: Colors.grey,
+                fontSize: Dimensions.font12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          // Padding(
+          //   padding: EdgeInsets.only(left: Dimensions.padding10),
+          //   child: SizedBox(width: (width * 0.5), child: customTextField2(controller: TextEditingController(), textFieldLabel: "")),
+          // ),
         ],
       ),
     );
   }
 
-  Widget _buildAddressSection(String title) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: TextStyle(fontFamily: 'OpenSansBold', color: Colors.black, fontSize: 18)),
-          // Add address fields here
-          _buildInputRow("Number/Street", "Enter Number/Street", false),
-          _buildInputRow("Suburb/City", "Enter Suburb/City", false),
-          _buildInputRow("Country", "Enter Country", false),
-          _buildInputRow("State/Region", "Enter State/Region", false),
-          _buildInputRow("Postcode/Zip", "Enter Postcode/Zip", true),
-        ],
-      ),
+  Widget _section({required String text, VoidCallback? onTap, String? buttonText}) {
+    double width = Get.width * 0.4;
+    return Row(
+      children: [
+        SizedBox(
+          width: width,
+          child: Text(
+            text,
+            textAlign: TextAlign.right,
+            style: TextStyle(fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w700, color: Colors.black, fontSize: Dimensions.font14),
+          ),
+        ),
+
+        Visibility(
+          visible: onTap != null,
+          child: Padding(
+            padding: EdgeInsets.only(left: Dimensions.padding10),
+            child: InkWell(
+              onTap: onTap,
+              child: Text(
+                buttonText ?? "",
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontFamily: TypographyResources.openSans,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.green,
+                  fontSize: Dimensions.font14,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

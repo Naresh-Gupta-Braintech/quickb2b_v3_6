@@ -34,7 +34,7 @@ Widget customObsecureTextField({required TextEditingController controller, requi
 
 Widget customTextField2({required TextEditingController controller, required String textFieldLabel, TextInputType? keyboardType}) {
   return SizedBox(
-    height: 35.r,
+    height: 30.r,
     child: TextField(
       keyboardType: keyboardType ?? TextInputType.text,
       textAlignVertical: TextAlignVertical.center,
