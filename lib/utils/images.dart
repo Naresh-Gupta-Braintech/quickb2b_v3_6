@@ -8,4 +8,7 @@ class Images {
   static final pdf = "$_basePath/pdf.png";
   static final crossWhite = "$_basePath/cross_white.png";
   static final outlet = "$_basePath/outlet.png";
+  static final hyphenInsideCircle = "$_basePath/hyphen_inside_circle.png";
+  static final addBlack = "$_basePath/add_black.png";
+  static final featuredGradient = "$_basePath/featured_gradient.png";
 }
