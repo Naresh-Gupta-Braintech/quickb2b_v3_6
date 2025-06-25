@@ -67,7 +67,7 @@ showLogoutAlert({required VoidCallback onPressed, required bool showCancelBtn, r
       child: AlertDialog(
         backgroundColor: Colors.black,
         contentPadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(20.r),
+        insetPadding: EdgeInsets.all(10.r),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
         content: Container(
           padding: EdgeInsets.all(10.r),

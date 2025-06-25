@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/dashboard/dashboard_controller.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
+import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
@@ -23,33 +24,33 @@ class DashboardView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.r),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(LocalText.develop, style: TextStyle(fontSize: Dimensions.font14, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold)),
-                      Row(
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover),
-                              Padding(padding: EdgeInsets.only(left: 10.r, bottom: 4.r), child: Text("0", style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12))),
-                            ],
-                          ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(LocalText.develop, style: TextStyle(fontSize: Dimensions.font14, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold)),
+                  //     Row(
+                  //       children: [
+                  //         Stack(
+                  //           alignment: Alignment.center,
+                  //           children: [
+                  //             Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover),
+                  //             Padding(padding: EdgeInsets.only(left: 10.r, bottom: 4.r), child: Text("0", style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12))),
+                  //           ],
+                  //         ),
 
-                          Text("Total \$0.00"),
-                        ],
-                      ),
-                    ],
-                  ),
+                  //         Text("Total \$0.00"),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+                  headers(),
                   SizedBox(height: 6.r),
                   Container(
                     width: Get.width,
                     decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6.r)),
                     child: Padding(padding: EdgeInsets.symmetric(vertical: 4.r), child: Text(textAlign: TextAlign.center, controller.list[controller.selectedIndex], style: TextStyle(color: Colors.white, fontSize: Dimensions.font16, fontFamily: TypographyResources.openSans))),
                   ),
-                  _menueList(list: controller.list, controller: controller),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 10.r), child: _menueList(list: controller.list, controller: controller)),
                   Expanded(child: controller.changePage()),
                 ],
               ),

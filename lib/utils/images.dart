@@ -7,4 +7,5 @@ class Images {
   static final linkBackground = "$_basePath/link_background.png";
   static final pdf = "$_basePath/pdf.png";
   static final crossWhite = "$_basePath/cross_white.png";
+  static final outlet = "$_basePath/outlet.png";
 }

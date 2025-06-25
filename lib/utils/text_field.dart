@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -8,12 +9,7 @@ Widget customTextField({required TextEditingController controller, required Stri
     height: Dimensions.viewHeight30,
     margin: EdgeInsets.symmetric(horizontal: 50),
     decoration: BoxDecoration(color: Colors.white.withAlpha(220)),
-    child: TextField(
-      controller: controller,
-      decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none),
-      textAlign: TextAlign.center,
-      textAlignVertical: TextAlignVertical.center,
-    ),
+    child: TextField(controller: controller, decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none), textAlign: TextAlign.center, textAlignVertical: TextAlignVertical.center),
   );
 }
 
@@ -22,13 +18,7 @@ Widget customObsecureTextField({required TextEditingController controller, requi
     height: Dimensions.viewHeight30,
     margin: EdgeInsets.symmetric(horizontal: 50),
     decoration: BoxDecoration(color: Colors.white.withAlpha(220)),
-    child: TextField(
-      controller: controller,
-      decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none),
-      obscureText: obsecureText,
-      textAlignVertical: TextAlignVertical.center,
-      textAlign: TextAlign.center,
-    ),
+    child: TextField(controller: controller, decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none), obscureText: obsecureText, textAlignVertical: TextAlignVertical.center, textAlign: TextAlign.center),
   );
 }
 
@@ -59,28 +49,33 @@ Widget dropDown({required List<String> items}) {
       padding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
       underline: SizedBox.shrink(),
       isExpanded: true,
-      hint: Text(
-        'Select Region',
-        style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
-      ),
+      hint: Text('Select Region', style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey)),
       items:
           items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              alignment: Alignment.center,
-              value: value,
-              child: Text(
-                textAlign: TextAlign.center,
-                value,
-                style: TextStyle(
-                  fontSize: Dimensions.font12,
-                  fontFamily: TypographyResources.acumin,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-            );
+            return DropdownMenuItem<String>(alignment: Alignment.center, value: value, child: Text(textAlign: TextAlign.center, value, style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.black)));
           }).toList(),
       onChanged: (String? newValue) {},
+    ),
+  );
+}
+
+Widget customSearchBar({required TextEditingController textController}) {
+  return SizedBox(
+    height: 40,
+    width: Get.width / 1.19,
+    child: TextFormField(
+      controller: textController,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        isDense: true,
+        contentPadding: EdgeInsets.zero,
+        hintText: "Search all products",
+        prefixIcon: Icon(Icons.search, size: 20.r),
+        hintStyle: TextStyle(fontFamily: TypographyResources.openSans),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
+        focusColor: Colors.black,
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
+      ),
     ),
   );
 }
