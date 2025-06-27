@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
-Widget customButton({required String textLabel}) {
+Widget customButton({required String textLabel,required VoidCallback onPressed}) {
   return Container(
     height: Dimensions.viewHeight30,
     width: Get.width / 2.2,
@@ -11,7 +11,7 @@ Widget customButton({required String textLabel}) {
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.white.withAlpha(100)),
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.withAlpha(125)),
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(textLabel, style: TextStyle(color: Colors.black, fontSize: Dimensions.font16, fontFamily: 'AcuminRegular')),
     ),
   );

@@ -7,7 +7,7 @@ import 'package:quickb2b_v3_6/app/autthentication/login/login_view.dart';
 import 'package:quickb2b_v3_6/app/autthentication/register/registration_page.dart';
 import 'package:quickb2b_v3_6/app/dashboard/dashboard_view.dart';
 import 'package:quickb2b_v3_6/app/dashboard/past_order.dart';
-import 'package:quickb2b_v3_6/app/home/home_view.dart';
+import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
 
 class RoutesHelper {
   static const String _home = '/';

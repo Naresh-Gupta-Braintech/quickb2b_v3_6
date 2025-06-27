@@ -33,7 +33,7 @@ Widget productWidget({required String url, required String text}) {
   );
 }
 
-Widget productOfProductList({required String url}) {
+Widget productOfProductList({required String url,required String price, required String name}) {
   return Container(
     width: 160.r,
     padding: EdgeInsets.only(top: 3.r, bottom: 4.r, left: 4.r, right: 4.r),
@@ -60,11 +60,12 @@ Widget productOfProductList({required String url}) {
           ),
         ),
         SizedBox(height: Dimensions.padding10),
+        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text(name, maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
 
-        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text("Alfalfa Punnet 125g - order by Each", maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
+        // Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text("Alfalfa Punnet 125g - order by Each", maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
         SizedBox(height: Dimensions.padding6),
 
-        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text("\$2.41", style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12))),
+        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text(price, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12))),
         SizedBox(height: Dimensions.padding10),
 
         Visibility(

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
@@ -14,9 +13,8 @@ import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 class NetworkManager extends GetxService {
   final int _timeoutInSeconds = 30;
-  final Dio _dio = Dio();
   Map<String, String> _requestCurl = {};
-  final _baseURL = GlobalConstant.baseUrl;
+  final _baseURL = GlobalConstants.baseUrl;
 
   http.Client? _httpClient;
 
@@ -30,39 +28,25 @@ class NetworkManager extends GetxService {
     _httpClient = null;
   }
 
-  void networkRequestCurlWith({String? token, String? languageCode}) {
+  void networkRequestCurlWith({String? token}) {
     _requestCurl = {'charset': 'UTF-8', 'Charset': 'utf-8', 'Accept': 'application/json', 'Content-Type': 'application/json'};
     if (token != null) {
       _requestCurl.addAll({'Authorization': 'Bearer $token'});
     }
-    if (languageCode != null) {
-      _requestCurl.addAll({'accept-language': languageCode});
-    }
+
     final requestCurlTree = const JsonEncoder.withIndent('  ').convert(_requestCurl);
     debugConsole('Request curl :: $requestCurlTree');
   }
 
-  Future<dynamic> loadHTTP({
-    String? languageCode,
-    required Endpoints endpoint,
-    String? slashedQuery,
-    required HTTPMethod method,
-    Map<String, dynamic>? payload,
-    Map<String, dynamic>? queryParameters,
-    Map<String, String>? multipartPayload,
-    List<MultipartFiles>? multipartFiles,
-  }) async {
-    final url =
-        slashedQuery != null
-            ? Uri.parse(_baseURL + endpointRawValues[endpoint]! + slashedQuery).replace(queryParameters: queryParameters)
-            : Uri.parse(_baseURL + endpointRawValues[endpoint]!).replace(queryParameters: queryParameters);
+  Future<dynamic> loadHTTP({required Endpoints endpoint, String? slashedQuery, required HTTPMethod method, Map<String, dynamic>? payload, Map<String, dynamic>? queryParameters, Map<String, String>? multipartPayload, List<MultipartFiles>? multipartFiles}) async {
+    final url = slashedQuery != null ? Uri.parse(_baseURL + endpointRawValues[endpoint]! + slashedQuery).replace(queryParameters: queryParameters) : Uri.parse(_baseURL + endpointRawValues[endpoint]!).replace(queryParameters: queryParameters);
     debugConsole('Request url :: $url');
     // debugConsole('Endpoint :: ${endpointRawValues[endpoint]!}');
     final bearerToken = await LocalStorage.getStringData(key: Keys.bearerToken);
     // debugConsole('Bearer token :: ${bearerToken ?? 'Not Authorized'}');
     // debugConsole('language Code:: ${languageCode ?? 'Not Selected fall to English'}');
 
-    networkRequestCurlWith(token: bearerToken, languageCode: languageCode);
+    networkRequestCurlWith(token: bearerToken);
 
     final payloadTree = const JsonEncoder.withIndent('  ').convert(payload);
     if (payload != null) debugConsole('Payload :: $payloadTree');
@@ -76,9 +60,7 @@ class NetworkManager extends GetxService {
     try {
       switch (method) {
         case (HTTPMethod.get):
-          // httpResponse = await client.get(url, headers: _requestCurl).timeout(Duration(seconds: _timeoutInSeconds));
-          // httpResponse = await _dio.get();
-
+          httpResponse = await client.get(url, headers: _requestCurl).timeout(Duration(seconds: _timeoutInSeconds));
           break;
         case (HTTPMethod.post):
           httpResponse = await client.post(url, headers: _requestCurl, body: jsonEncode(payload)).timeout(Duration(seconds: _timeoutInSeconds));
@@ -125,8 +107,8 @@ class NetworkManager extends GetxService {
     switch (httpResponse.statusCode) {
       case (201):
       case (200):
-      case (401):
-      case (403):
+        // case (401):
+        // case (403):
         try {
           final responseJson = json.decode(httpResponse.body.toString());
           final responseTree = const JsonEncoder.withIndent('  ').convert(responseJson);
@@ -136,12 +118,12 @@ class NetworkManager extends GetxService {
           throw FetchNetworkException(exceptionRawValues[Exceptions.unPreocessableResponse]);
         }
       case (400):
-        // print("Naresh :: in 400   ${json.decode(httpResponse.body.toString())}");
+        print("Naresh :: in 400   ${json.decode(httpResponse.body.toString())}");
         throw FetchNetworkException(exceptionRawValues[Exceptions.badRequest400]);
-      // case (401):
-      //   throw FetchNetworkException(exceptionRawValues[Exceptions.unauthorized401]);
-      // case (403):
-      //   throw FetchNetworkException(exceptionRawValues[Exceptions.forbidden403]);
+      case (401):
+        throw FetchNetworkException(exceptionRawValues[Exceptions.unauthorized401]);
+      case (403):
+        throw FetchNetworkException(exceptionRawValues[Exceptions.forbidden403]);
       case (404):
         throw FetchNetworkException(exceptionRawValues[Exceptions.requestNotFound404]);
       case (405):

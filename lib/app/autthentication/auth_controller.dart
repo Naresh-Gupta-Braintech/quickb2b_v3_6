@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
+import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController implements GetxService {
   final SharedPreferences sharedPreferences;
-  AuthController({required this.sharedPreferences});
-  bool loading = true;
+  final AuthRepository repository;
+  AuthController({required this.sharedPreferences, required this.repository});
+  bool loading = false;
+  LoginData? loginData;
   TextEditingController customerIdController = TextEditingController();
   TextEditingController forgotPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -26,6 +31,7 @@ class AuthController extends GetxController implements GetxService {
   TextEditingController stateRegionController = TextEditingController();
   TextEditingController postcodeZipController = TextEditingController();
   TextEditingController postalAddressController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
 
   void initregister() {
     customerIdController = TextEditingController();
@@ -46,5 +52,14 @@ class AuthController extends GetxController implements GetxService {
     stateRegionController = TextEditingController();
     postcodeZipController = TextEditingController();
     postalAddressController = TextEditingController();
+  }
+
+  void initLogin() {
+    passwordController = TextEditingController();
+    userNameController = TextEditingController();
+  }
+
+  void signin() {
+    login();
   }
 }
