@@ -7,7 +7,6 @@ import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/network_end_point.dart';
 import 'package:quickb2b_v3_6/network/network_exception.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';
-import 'package:quickb2b_v3_6/network/network_response.dart';
 
 class HomeRepository extends GetxController implements GetxService {
   final NetworkManager network;

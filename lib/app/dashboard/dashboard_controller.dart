@@ -4,7 +4,6 @@ import 'package:quickb2b_v3_6/app/dashboard/account.dart';
 import 'package:quickb2b_v3_6/app/dashboard/app_user_guide.dart';
 import 'package:quickb2b_v3_6/app/dashboard/links_page.dart';
 import 'package:quickb2b_v3_6/app/dashboard/past_order.dart';
-import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardController extends GetxController {

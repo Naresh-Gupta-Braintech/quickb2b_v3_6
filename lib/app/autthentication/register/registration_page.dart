@@ -39,10 +39,7 @@ class RegistrationPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Radio Group
-                    customRadioButton(
-                      labels: <String>[LocalText.forBusiness, LocalText.forHomeDelivery],
-                      values: <String>["business", "home_delivery"],
-                    ),
+                    customRadioButton(labels: <String>[LocalText.forBusiness, LocalText.forHomeDelivery], values: <String>["business", "home_delivery"]),
 
                     // Dropdown (Spinner)
                     dropDown(items: ['Region 1', 'Region 2', 'Region 3']),
@@ -54,13 +51,7 @@ class RegistrationPage extends StatelessWidget {
                     Text('alphanumeric only, no spaces or special characters', style: TextStyle(color: Colors.black, fontSize: 12)),
 
                     // Password Fields
-                    Row(
-                      children: [
-                        Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)),
-                        SizedBox(width: 10),
-                        Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)),
-                      ],
-                    ),
+                    Row(children: [Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)), SizedBox(width: 10), Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId))]),
 
                     // Other Input FieldscustomTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId),
                     customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.businessName),

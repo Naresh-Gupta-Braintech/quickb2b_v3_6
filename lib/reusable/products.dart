@@ -33,7 +33,7 @@ Widget productWidget({required String url, required String text}) {
   );
 }
 
-Widget productOfProductList({required String url,required String price, required String name}) {
+Widget productOfProductList({required String url, required String price, required String name}) {
   return Container(
     width: 160.r,
     padding: EdgeInsets.only(top: 3.r, bottom: 4.r, left: 4.r, right: 4.r),
@@ -112,3 +112,61 @@ Widget _textField() {
 }
 
 const str = "\$";
+
+Widget specialProducts({required String url, required String price, required String name}) {
+  return Container(
+    width: 160.r,
+    padding: EdgeInsets.only(top: 3.r, bottom: 4.r, left: 4.r, right: 4.r),
+    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(4.r)), border: Border.all(width: .5, color: Colors.grey)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("2", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)), Image.asset(Images.addRounded)]),
+        SizedBox(height: Dimensions.padding10),
+        Visibility(
+          visible: url.isNotEmpty,
+          child: SizedBox(
+            width: 100.r,
+            child: AspectRatio(
+              aspectRatio: 4 / 3, // Force 4:3 box
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4.r),
+                child: cachedImageNetwork(
+                  url: url,
+                  fit: BoxFit.cover, // Crop and fill inside 4:3 box
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: Dimensions.padding10),
+        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text(name, maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
+
+        // Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text("Alfalfa Punnet 125g - order by Each", maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
+        SizedBox(height: Dimensions.padding6),
+
+        Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text(price, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12))),
+        SizedBox(height: Dimensions.padding10),
+
+        Visibility(
+          visible: true,
+          replacement: _textField(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
+              SizedBox(width: 2.r),
+              _textField(),
+              Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
+              _textField(),
+              SizedBox(width: 2.r),
+              Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r),
+            ],
+          ),
+        ),
+        SizedBox(height: 2.r),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: [Image.asset(Images.starFill)]),
+      ],
+    ),
+  );
+}

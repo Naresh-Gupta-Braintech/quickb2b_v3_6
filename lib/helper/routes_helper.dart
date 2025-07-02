@@ -8,6 +8,7 @@ import 'package:quickb2b_v3_6/app/autthentication/register/registration_page.dar
 import 'package:quickb2b_v3_6/app/dashboard/dashboard_view.dart';
 import 'package:quickb2b_v3_6/app/dashboard/past_order.dart';
 import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
+import 'package:quickb2b_v3_6/app/splash/view/splash.dart';
 
 class RoutesHelper {
   static const String _home = '/';
@@ -40,6 +41,8 @@ class RoutesHelper {
       GetPage(name: _register, page: () => RegistrationPage()),
       GetPage(name: _forgot, page: () => ForgetPasswordPage()),
       GetPage(name: _account, page: () => DashboardView()),
+      GetPage(name: _splash, page: () => Splash()),
+
       // GetPage(name: _profile, page: () => const ProfileScreen()),
       // GetPage(name: _settings, page: () => const SettingsScreen()),
       // GetPage(name: _about, page: () => const AboutScreen()),

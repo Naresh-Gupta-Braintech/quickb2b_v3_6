@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
 
 class Splash extends StatefulWidget {
@@ -10,7 +12,13 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   @override
+  void initState() {
+    super.initState();
+    Get.find<SplashController>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [Image.asset(Images.login)]));
+    return Scaffold(body: Image.asset(Images.login, fit: BoxFit.cover, width: Get.width, height: Get.height));
   }
 }

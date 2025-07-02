@@ -5,12 +5,11 @@ import 'package:quickb2b_v3_6/app/dashboard/dashboard_controller.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
-import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class DashboardView extends StatelessWidget {
-  DashboardView({super.key});
+  const DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +23,7 @@ class DashboardView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.r),
               child: Column(
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text(LocalText.develop, style: TextStyle(fontSize: Dimensions.font14, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold)),
-                  //     Row(
-                  //       children: [
-                  //         Stack(
-                  //           alignment: Alignment.center,
-                  //           children: [
-                  //             Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover),
-                  //             Padding(padding: EdgeInsets.only(left: 10.r, bottom: 4.r), child: Text("0", style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12))),
-                  //           ],
-                  //         ),
-
-                  //         Text("Total \$0.00"),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
-                  headers(),
+                  headers(appname: "", showPrice: 1),
                   SizedBox(height: 6.r),
                   Container(
                     width: Get.width,
