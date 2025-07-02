@@ -14,6 +14,8 @@ import 'package:quickb2b_v3_6/utils/text_field.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class HomeView extends StatefulWidget {
+  const HomeView({super.key});
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }

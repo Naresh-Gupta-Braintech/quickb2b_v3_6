@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/data/banner_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/reusable/carousel_banner_controller.dart';
 import 'package:quickb2b_v3_6/reusable/network_image.dart';
