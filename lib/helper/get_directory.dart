@@ -2,6 +2,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_repository.dart';
 import 'package:quickb2b_v3_6/app/profile/dashboard_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
@@ -19,6 +21,7 @@ Future<void> init() async {
   //Repository
   Get.lazyPut(() => HomeRepository(network: Get.find()));
   Get.lazyPut(() => AuthRepository(network: Get.find()));
+  Get.lazyPut(() => CartRepository(network: Get.find()));
 
   // Controllers
   Get.lazyPut(() => AuthController(sharedPreferences: sharedPreferences, repository: Get.find()));
@@ -27,4 +30,5 @@ Future<void> init() async {
   Get.lazyPut(() => CarouselBannerController());
   Get.lazyPut(() => SplashController(sharedPreferences: sharedPreferences));
   Get.lazyPut(() => NavigationController());
+  Get.lazyPut(() => CartController(sharedPreferences: sharedPreferences, repository: Get.find()));
 }

@@ -7,8 +7,9 @@ import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 class Navigation {
   String name;
   String iconUrl;
+  String route;
 
-  Navigation({required this.iconUrl, required this.name});
+  Navigation({required this.iconUrl, required this.name, required this.route});
 }
 
 Widget bottomNavigationMenu() {
@@ -34,14 +35,20 @@ Widget bottomNavigationMenu() {
                 for (int i = 0; i < controller.bottomNavigation.length; i++)
                   SizedBox(
                     // height: 60.r,
-                    child: Column(
-                      children: [
-                        Image.asset(controller.bottomNavigation[i].iconUrl, height: 20.r),
-                        Text(
-                          controller.bottomNavigation[i].name,
-                          style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 10.r, color: controller.selectedIndex == i ? Colors.green[300] : Colors.black, fontWeight: FontWeight.w600, decoration: controller.selectedIndex == i ? TextDecoration.underline : TextDecoration.none),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        // controller.setSelectedIndex(i);
+                        Get.offNamed(controller.bottomNavigation[i].route);
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset(controller.bottomNavigation[i].iconUrl, height: 20.r),
+                          Text(
+                            controller.bottomNavigation[i].name,
+                            style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 10.r, color: controller.selectedIndex == i ? Colors.green[300] : Colors.black, fontWeight: FontWeight.w600, decoration: controller.selectedIndex == i ? TextDecoration.underline : TextDecoration.none),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
               ],

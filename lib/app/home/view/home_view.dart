@@ -24,7 +24,10 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    Get.find<HomeController>().gethomeItems();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<HomeController>().gethomeItems();
+    });
   }
 
   @override
@@ -58,7 +61,6 @@ class _HomeViewState extends State<HomeView> {
                             ],
                           ),
                           SizedBox(height: Dimensions.padding10),
-
                           Expanded(
                             child: SingleChildScrollView(
                               child: Column(
@@ -158,7 +160,27 @@ class _HomeViewState extends State<HomeView> {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(text, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans)), GestureDetector(onTap: () {}, child: Text(buttonText, style: TextStyle(color: Colors.grey, fontSize: 10.r)))]);
   }
 
-  Widget _customText({required String text, required double fontSize}) {
-    return Text(text, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: fontSize));
+  Widget _outlets(HomeController controller) {
+    return Padding(
+      padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 2.r),
+      child: Container(
+        width: Get.width,
+        decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(padding: EdgeInsets.only(bottom: Dimensions.padding8), child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600))),
+              for (int i = 0; i < controller.outlets.length; i++)
+                Padding(
+                  padding: EdgeInsets.only(bottom: Dimensions.padding8),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)), Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale))]),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

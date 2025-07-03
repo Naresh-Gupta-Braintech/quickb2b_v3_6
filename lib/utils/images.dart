@@ -17,4 +17,6 @@ class Images {
   static final heart = "$_basePath/heart.png";
   static final search = "$_basePath/search.png";
   static final home = "$_basePath/home.png";
+  static final rightTale = "$_basePath/right_tale.png";
+
 }

@@ -3,6 +3,8 @@ class HomeItemsPayload {
   String? userCode;
   String? deviceId;
   String? acmCode;
+  String? appType;
+  String? type;
 }
 
 class LoginPayload {
@@ -15,4 +17,13 @@ class LoginPayload {
   String? type;
   String? deviceType;
   String? deviceToken;
+}
+
+class CartPayload {
+  String? deviceId;
+  String? clientCode;
+  String? appType;
+  String? type;
+  String? userCode;
+  String? acmCode;
 }

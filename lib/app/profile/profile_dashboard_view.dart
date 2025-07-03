@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/profile/dashboard_controller.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
+import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -16,6 +19,7 @@ class ProfileDashboardView extends StatelessWidget {
     return GetBuilder<DashboardController>(
       builder: (controller) {
         return Scaffold(
+          bottomNavigationBar: bottomNavigationMenu(),
           backgroundColor: Colors.white,
           body: SafeArea(
             bottom: false,
@@ -57,7 +61,15 @@ class ProfileDashboardView extends StatelessWidget {
                     return;
                   }
                   if (index == 5) {
-                    showLogoutAlert(onPressed: () {}, showCancelBtn: true, description: LocalText.logoutDiscription, buttonText: LocalText.logout);
+                    showLogoutAlert(
+                      onPressed: () {
+                        controller.sharedPreferences.remove(Keys.loginData);
+                        Get.offAllNamed(RoutesHelper.splash);
+                      },
+                      showCancelBtn: true,
+                      description: LocalText.logoutDiscription,
+                      buttonText: LocalText.logout,
+                    );
                     return;
                   }
                   controller.updateIndex(index);
