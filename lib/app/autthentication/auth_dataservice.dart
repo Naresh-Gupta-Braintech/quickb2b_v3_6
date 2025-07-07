@@ -4,7 +4,7 @@ import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
-import 'package:quickb2b_v3_6/utils/local_keys.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension AuthDataservice on AuthController {
   Future<void> login() async {
@@ -20,13 +20,17 @@ extension AuthDataservice on AuthController {
     payload.deviceType = GlobalConstants.getDeviceType();
     payload.type = "Dual";
     payload.password = passwordController.text.trim();
-    await repository.login(payload, (result, response, message) {
+    await repository.login(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-          loginData = response?.data;
-          sharedPreferences.setString(Keys.loginData, loginData?.toJson().toString() ?? "");
-          Get.offAllNamed(RoutesHelper.home);
+          loginData = response;
+          print("in auth :: ${loginData?.outlets}");
+          print("in auth :: ${loginData?.toJson()}");
+          LocalStorage.saveLoginData(loginData);
+          await goToRoutes();
+          // Get.offAllNamed(RoutesHelper.home);
+          goToRoutes();
           break;
         case Result.onFailed:
           loading = false;

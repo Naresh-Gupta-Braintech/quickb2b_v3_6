@@ -59,10 +59,10 @@ Widget dropDown({required List<String> items}) {
   );
 }
 
-Widget customSearchBar({required TextEditingController textController}) {
+Widget customSearchBar({required TextEditingController textController, bool isFull = false}) {
   return SizedBox(
-    height: 40,
-    width: Get.width / 1.19,
+    height: 39,
+    width: isFull ? Get.width * 0.98 : Get.width / 1.19,
     child: TextFormField(
       controller: textController,
       textAlignVertical: TextAlignVertical.center,

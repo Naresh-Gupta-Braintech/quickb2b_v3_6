@@ -16,4 +16,12 @@ class NetworkPayload {
   static Map<String, dynamic>? cartPayload({required CartPayload payload}) {
     return {"device_id": payload.deviceId, "client_code": payload.clientCode, "app_type": payload.appType, "type": payload.type, "user_code": payload.userCode};
   }
+
+  static Map<String, dynamic>? customerListPayload({required CustomerListPayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "app_type": payload.appType, "acm_code": payload.acmCode, "search": payload.search};
+  }
+
+  static Map<String, dynamic>? outletPayload({required OutletPayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "app_type": payload.appType, "acm_code": payload.acmCode, "type": payload.type, "user_code": payload.userCode};
+  }
 }

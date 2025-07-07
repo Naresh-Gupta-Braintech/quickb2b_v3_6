@@ -27,3 +27,20 @@ class CartPayload {
   String? userCode;
   String? acmCode;
 }
+
+class CustomerListPayload {
+  String? deviceId;
+  String? acmCode;
+  String? appType;
+  String? clientCode;
+  String? search;
+}
+
+class OutletPayload {
+  String? userCode;
+  String? clientCode;
+  String? deviceId;
+  String? acmCode;
+  String? appType;
+  String? type;
+}

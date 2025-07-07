@@ -42,6 +42,8 @@ class Data {
   String? showPrice;
   String? customerType;
   int? showDelivery;
+  String? acmCode;
+  String? name;
 
   Data({
     this.appName,
@@ -67,6 +69,8 @@ class Data {
     this.showPrice,
     this.customerType,
     this.showDelivery,
+    this.acmCode,
+    this.name,
   });
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -97,6 +101,8 @@ class Data {
     showPrice: json["show_price"],
     customerType: json["customer_type"],
     showDelivery: json["show_delivery"],
+    acmCode: json["acm_code"],
+    name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -123,5 +129,7 @@ class Data {
     "show_price": showPrice,
     "customer_type": customerType,
     "show_delivery": showDelivery,
+    "acm_code": acmCode,
+    "name": name,
   };
 }

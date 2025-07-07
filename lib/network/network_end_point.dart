@@ -1,4 +1,4 @@
-enum Endpoints { login, register, getHomeItems, getCompanyDetails, getCartList }
+enum Endpoints { login, register, getHomeItems, getCompanyDetails, getCartList, getCustomerList, getOutLet }
 
 const Map<Endpoints, String> endpointRawValues = {
   // AUTHENTICATION
@@ -7,4 +7,6 @@ const Map<Endpoints, String> endpointRawValues = {
   Endpoints.getHomeItems: "/apis/get_home_items_v6",
   Endpoints.getCompanyDetails: "/apis/getCompanydetails",
   Endpoints.getCartList: "/apis/cart_list_v6",
+  Endpoints.getCustomerList: "/apis/ac/customerList",
+  Endpoints.getOutLet: "/apis/get_outlets",
 };

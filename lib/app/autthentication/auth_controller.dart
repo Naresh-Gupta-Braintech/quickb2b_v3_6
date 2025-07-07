@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 class AuthController extends GetxController implements GetxService {
   final SharedPreferences sharedPreferences;
@@ -61,5 +64,14 @@ class AuthController extends GetxController implements GetxService {
 
   void signin() {
     login();
+  }
+
+  Future<void> goToRoutes() async {
+    LoginData? data = await LocalStorage.getLoginData();
+    if (data?.data?.acmCode != null && data?.data?.acmCode?.length != 0) {
+      Get.offAllNamed(RoutesHelper.customerList);
+    } else {
+      Get.offAllNamed(RoutesHelper.home);
+    }
   }
 }

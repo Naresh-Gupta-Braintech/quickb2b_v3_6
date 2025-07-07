@@ -47,104 +47,118 @@ class _HomeViewState extends State<HomeView> {
                 controller.loading
                     ? customLoader()
                     : Padding(
-                      padding: EdgeInsets.only(bottom: 5.r),
+                      padding: EdgeInsets.only(bottom: 0.r),
                       child: Column(
                         children: [
                           Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: headers(appname: controller.homeItems?.appName ?? "00", showPrice: int.tryParse(controller.homeItems?.showPrice ?? "0") ?? 0)),
                           SizedBox(height: Dimensions.padding10),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              customSearchBar(textController: TextEditingController()),
-                              Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)),
-                            ],
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 2.r),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                customSearchBar(textController: TextEditingController()),
+                                InkWell(
+                                  onTap: () => {controller.setToogleOutlet()},
+                                  child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)),
+                                ),
+                              ],
+                            ),
                           ),
-                          SizedBox(height: Dimensions.padding10),
                           Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Visibility(visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false, child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? [])),
-                                  SizedBox(height: Dimensions.padding16),
-                                  Visibility(
-                                    visible: (controller.homeItems?.data?.categoryExists == 1 && categoriesList.isNotEmpty),
-                                    child: Column(
-                                      children: [
-                                        Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Search by Categories", buttonText: "See All")),
-                                        SizedBox(height: 8.r),
-                                        SizedBox(
-                                          height: 106.r,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: controller.homeItems?.data?.allCategories?.length,
-                                            itemBuilder: (context, index) {
-                                              return Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height: 16.r),
-                                  Visibility(
-                                    visible: specialInventories.isNotEmpty,
-                                    child: Column(
-                                      children: [
-                                        Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: controller.homeItems?.specialHeaderTitle ?? "", buttonText: "See All")),
-                                        SizedBox(height: 8.r),
-                                        Visibility(
-                                          child: SizedBox(
-                                            height: 235.r,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: controller.homeItems?.data?.allInventories?.length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                                  child: specialProducts(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
-                                                );
-                                              },
+                            child: Stack(
+                              children: [
+                                SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Visibility(
+                                        visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                        child: Padding(padding: EdgeInsets.only(top: 5.r), child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? [])),
+                                      ),
+                                      SizedBox(height: Dimensions.padding16),
+                                      Visibility(
+                                        visible: (controller.homeItems?.data?.categoryExists == 1 && categoriesList.isNotEmpty),
+                                        child: Column(
+                                          children: [
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Search by Categories", buttonText: "See All")),
+                                            SizedBox(height: 8.r),
+                                            SizedBox(
+                                              height: 106.r,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: controller.homeItems?.data?.allCategories?.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
+                                                },
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        SizedBox(height: 16.r),
-                                      ],
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: (controller.homeItems?.showMyProduct == 1 && allInventories.isNotEmpty),
-                                    child: Column(
-                                      children: [
-                                        Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "My Products List", buttonText: "See All")),
-                                        SizedBox(height: 8.r),
-                                        Visibility(
-                                          child: SizedBox(
-                                            height: 223.r,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: controller.homeItems?.data?.allInventories?.length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                                  child: productOfProductList(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
-                                                );
-                                              },
+                                      ),
+
+                                      SizedBox(height: 16.r),
+                                      Visibility(
+                                        visible: specialInventories.isNotEmpty,
+                                        child: Column(
+                                          children: [
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: controller.homeItems?.specialHeaderTitle ?? "", buttonText: "See All")),
+                                            SizedBox(height: 8.r),
+                                            Visibility(
+                                              child: SizedBox(
+                                                height: 235.r,
+                                                child: ListView.builder(
+                                                  scrollDirection: Axis.horizontal,
+                                                  itemCount: controller.homeItems?.data?.allInventories?.length,
+                                                  itemBuilder: (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 8.r),
+                                                      child: specialProducts(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            SizedBox(height: 16.r),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Visibility(
+                                        visible: (controller.homeItems?.showMyProduct == 1 && allInventories.isNotEmpty),
+                                        child: Column(
+                                          children: [
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "My Products List", buttonText: "See All")),
+                                            SizedBox(height: 8.r),
+                                            Visibility(
+                                              child: SizedBox(
+                                                height: 223.r,
+                                                child: ListView.builder(
+                                                  scrollDirection: Axis.horizontal,
+                                                  itemCount: controller.homeItems?.data?.allInventories?.length,
+                                                  itemBuilder: (context, index) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 8.r),
+                                                      child: productOfProductList(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productOfProductList(url: "https://develop.quickb2b.com/files/inventory/QuickB2B_Develop/1658124745no-image-available.png")),
+                                      SizedBox(height: Dimensions.padding16),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Featured", buttonText: "")),
+                                      SizedBox(height: Dimensions.padding10),
+                                      Image.asset(Images.featuredGradient),
+                                      SizedBox(height: Dimensions.padding10),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? "")),
+                                    ],
                                   ),
-                                  // Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productOfProductList(url: "https://develop.quickb2b.com/files/inventory/QuickB2B_Develop/1658124745no-image-available.png")),
-                                  SizedBox(height: Dimensions.padding16),
-                                  Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Featured", buttonText: "")),
-                                  SizedBox(height: Dimensions.padding10),
-                                  Image.asset(Images.featuredGradient),
-                                  SizedBox(height: Dimensions.padding10),
-                                  Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? "")),
-                                ],
-                              ),
+                                ),
+                                Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
+                              ],
                             ),
                           ),
                         ],
@@ -162,13 +176,14 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _outlets(HomeController controller) {
     return Padding(
-      padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 2.r),
+      padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 0.r),
       child: Container(
         width: Get.width,
-        decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(padding: EdgeInsets.only(bottom: Dimensions.padding8), child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600))),
