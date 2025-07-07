@@ -18,6 +18,7 @@ class LocalStorage {
 
   static Future<void> saveLoginData(LoginData? loginData) async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.setString(Keys.acmCode, loginData?.data?.acmCode ?? "");
     final jsonData = loginData!.toJson();
     String data = jsonEncode(jsonData);
     await prefs.setString(Keys.loginData, data);

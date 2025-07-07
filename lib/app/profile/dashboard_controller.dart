@@ -10,6 +10,7 @@ class DashboardController extends GetxController {
   SharedPreferences sharedPreferences;
   DashboardController({required this.sharedPreferences});
   int selectedIndex = 0;
+  bool isEdit = false;
 
   void updateIndex(int index) {
     selectedIndex = index;
@@ -29,6 +30,11 @@ class DashboardController extends GetxController {
       default:
         return Account();
     }
+  }
+
+  void showIsEdit() {
+    isEdit = true;
+    update();
   }
 
   final List<String> list = ["Account", "Past Orders", "Links", "App user guide", "Reset My List A-Z", "Logout"];

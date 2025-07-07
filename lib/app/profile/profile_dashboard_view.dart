@@ -64,6 +64,7 @@ class ProfileDashboardView extends StatelessWidget {
                     showLogoutAlert(
                       onPressed: () {
                         controller.sharedPreferences.remove(Keys.loginData);
+                        controller.sharedPreferences.remove(Keys.acmCode);
                         Get.offAllNamed(RoutesHelper.splash);
                       },
                       showCancelBtn: true,
