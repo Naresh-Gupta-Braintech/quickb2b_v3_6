@@ -6,8 +6,8 @@ import 'package:quickb2b_v3_6/app/autthentication/forgot/forgot.dart';
 import 'package:quickb2b_v3_6/app/autthentication/login/login_view.dart';
 import 'package:quickb2b_v3_6/app/autthentication/register/registration_page.dart';
 import 'package:quickb2b_v3_6/app/home/customers_list.dart';
-import 'package:quickb2b_v3_6/app/profile/profile_dashboard_view.dart';
-import 'package:quickb2b_v3_6/app/profile/past_order.dart';
+import 'package:quickb2b_v3_6/app/profile/view/profile_dashboard_view.dart';
+import 'package:quickb2b_v3_6/app/profile/view/past_order.dart';
 import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
 import 'package:quickb2b_v3_6/app/splash/view/splash.dart';
 

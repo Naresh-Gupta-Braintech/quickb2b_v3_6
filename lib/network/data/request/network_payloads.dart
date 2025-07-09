@@ -24,4 +24,23 @@ class NetworkPayload {
   static Map<String, dynamic>? outletPayload({required OutletPayload payload}) {
     return {"device_id": payload.deviceId, "client_code": payload.clientCode, "app_type": payload.appType, "acm_code": payload.acmCode, "type": payload.type, "user_code": payload.userCode};
   }
+
+  static Map<String, dynamic>? userProfilePayload({required ProfilePayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode};
+  }
+
+  static Map<String, dynamic>? pastOrderPayload({required ProfilePayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
+  }
+  static Map<String, dynamic>? appLinkPayload({required ProfilePayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
+  }
+
+  static Map<String, dynamic>? appUserGuidePayload({required ProfilePayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
+  }
+
+   static Map<String, dynamic>? customerDetailsPayload({required CustomerPayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode,  "app_type": payload.appType};
+  }
 }

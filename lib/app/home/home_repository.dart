@@ -4,6 +4,7 @@ import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_payloads.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
@@ -71,6 +72,24 @@ class HomeRepository extends GetxController implements GetxService {
       final networkResponse = await network.loadHTTP(endpoint: Endpoints.getCustomerList, method: HTTPMethod.post, payload: NetworkPayload.outletPayload(payload: payload));
       try {
         final response = OutletData.fromJson(networkResponse);
+        print("Home Repository :: ${response.status}");
+        completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, "");
+      } catch (e) {
+        debugConsole("Exception :: ${e.toString()}");
+        throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);
+      }
+    } catch (exception) {
+      completion(Result.onException, null, exception.toString());
+      rethrow;
+    }
+  }
+
+
+    Future<void> getCustomerDetails(CustomerPayload payload, Function(Result result, CustomerDetailsModel? response, String? message) completion) async {
+    try {
+      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getCustomerDetails, method: HTTPMethod.post, payload: NetworkPayload.customerDetailsPayload(payload: payload));
+      try {
+        final response = CustomerDetailsModel.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
         completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, "");
       } catch (e) {

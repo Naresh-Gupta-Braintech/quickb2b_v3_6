@@ -4,9 +4,10 @@ import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_repository.dart';
-import 'package:quickb2b_v3_6/app/profile/dashboard_controller.dart';
+import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
+import 'package:quickb2b_v3_6/app/profile/profile_dashboard_repository.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';
 import 'package:quickb2b_v3_6/reusable/carousel_banner_controller.dart';
@@ -22,13 +23,14 @@ Future<void> init() async {
   Get.lazyPut(() => HomeRepository(network: Get.find()));
   Get.lazyPut(() => AuthRepository(network: Get.find()));
   Get.lazyPut(() => CartRepository(network: Get.find()));
+  Get.lazyPut(() => ProfileDashboardRepository(network: Get.find()));
 
   // Controllers
   Get.lazyPut(() => AuthController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => HomeController(sharedPreferences: sharedPreferences, repository: Get.find()));
-  Get.lazyPut(() => DashboardController(sharedPreferences: sharedPreferences));
+  Get.lazyPut(() => ProfileDashboardController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => CarouselBannerController());
   Get.lazyPut(() => SplashController(sharedPreferences: sharedPreferences));
-  Get.lazyPut(() => NavigationController());
+  Get.lazyPut(() => NavigationController(sharedPreferences: sharedPreferences));
   Get.lazyPut(() => CartController(sharedPreferences: sharedPreferences, repository: Get.find()));
 }

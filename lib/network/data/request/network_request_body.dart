@@ -44,3 +44,20 @@ class OutletPayload {
   String? appType;
   String? type;
 }
+
+class ProfilePayload {
+  String? userCode;
+  String? clientCode;
+  String? acmCode;
+  String? deviceId;
+  String? appType;
+  String? type;
+}
+
+class CustomerPayload {
+  String? deviceId;
+  String? acmCode;
+  String? clientCode;
+  String? appType;
+  String? userCode;
+}

@@ -113,7 +113,15 @@ class _HomeViewState extends State<HomeView> {
                                                   itemBuilder: (context, index) {
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                                      child: specialProducts(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
+                                                      child: specialProducts(
+                                                        controller2: controller.myListControllers[index][1] ?? TextEditingController(),
+                                                        controller1: controller.myListControllers[index][0]!,
+                                                        url: controller.homeItems?.data?.specialInventories?[index].image ?? "",
+                                                        price: controller.homeItems?.data?.specialInventories?[index].itemPrice ?? "",
+                                                        name: controller.homeItems?.data?.specialInventories?[index].itemName ?? "",
+                                                        isMeasBox: 1,
+                                                        hint: "",
+                                                      ),
                                                     );
                                                   },
                                                 ),
@@ -138,7 +146,24 @@ class _HomeViewState extends State<HomeView> {
                                                   itemBuilder: (context, index) {
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                                      child: productOfProductList(url: controller.homeItems?.data?.allInventories?[index].image ?? "", price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "", name: controller.homeItems?.data?.allInventories?[index].itemName ?? ""),
+                                                      child: productOfProductList(
+                                                        onChanged: (value) {
+                                                          if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1,index);
+                                                          }else{
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1,index);
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller2,index);
+                                                          }
+                                                        },
+                                                        controller1: controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),
+                                                        controller2: controller.homeItems?.data?.allInventories?[index].controller2 ?? TextEditingController(),
+                                                        isShowImage: int.tryParse(controller.homeItems?.showImage ?? "0") ?? 0,
+                                                        hint: controller.homeItems?.data?.allInventories?[index].uom ?? "",
+                                                        url: controller.homeItems?.data?.allInventories?[index].image ?? "",
+                                                        price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "",
+                                                        name: controller.homeItems?.data?.allInventories?[index].itemName ?? "",
+                                                        isMeasBox: controller.homeItems?.data?.allInventories?[index].isMeasBox ?? 0,
+                                                      ),
                                                     );
                                                   },
                                                 ),

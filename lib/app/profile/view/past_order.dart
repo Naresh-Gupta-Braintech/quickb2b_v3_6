@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/profile/order_model.dart';
+import 'package:quickb2b_v3_6/app/profile/view/order_model.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 

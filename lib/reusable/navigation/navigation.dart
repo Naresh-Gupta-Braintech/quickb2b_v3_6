@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
+import 'package:quickb2b_v3_6/utils/colors_resources.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
+import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class Navigation {
@@ -45,7 +50,13 @@ Widget bottomNavigationMenu() {
                           Image.asset(controller.bottomNavigation[i].iconUrl, height: 20.r),
                           Text(
                             controller.bottomNavigation[i].name,
-                            style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 10.r, color: controller.selectedIndex == i ? Colors.green[300] : Colors.black, fontWeight: FontWeight.w600, decoration: controller.selectedIndex == i ? TextDecoration.underline : TextDecoration.none),
+                            style: TextStyle(
+                              fontFamily: TypographyResources.openSans,
+                              fontSize: 10.r,
+                              color: controller.selectedIndex == i ? ColorsResources.activeColor : Colors.black,
+                              fontWeight: FontWeight.w600,
+                              decoration: controller.selectedIndex == i ? TextDecoration.underline : TextDecoration.none,
+                            ),
                           ),
                         ],
                       ),
@@ -58,5 +69,58 @@ Widget bottomNavigationMenu() {
         ),
       );
     },
+  );
+}
+
+Widget menueList({required List<String> list}) {
+  return GetBuilder<NavigationController>(
+    builder: (controller) {
+      return SizedBox(
+        height: 20.r,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            print("index :: $index");
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (index == 4) {
+                      showAlert(onPressed: () {}, showCancelBtn: true, description: LocalText.resetListDescription, buttonText: LocalText.confirm);
+                      return;
+                    }
+                    if (index == 5) {
+                      showLogoutAlert(
+                        onPressed: () {
+                          controller.sharedPreferences.remove(Keys.loginData);
+                          controller.sharedPreferences.remove(Keys.acmCode);
+                          Get.offNamed(RoutesHelper.splash);
+                        },
+                        showCancelBtn: true,
+                        description: LocalText.logoutDiscription,
+                        buttonText: LocalText.logout,
+                      );
+                      return;
+                    }
+                    controller.setSelectedTopNavigation(index);
+                  },
+                  child: _customText(text: list[index], isSelected: index == controller.topNavigationSelectedIndex),
+                ),
+
+                Visibility(visible: list.length - 1 != index, child: Text("|")),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
+Widget _customText({required String text, required bool isSelected}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 4.r),
+    child: Center(child: Text(text, style: TextStyle(decorationColor: Colors.teal, decoration: isSelected ? TextDecoration.underline : TextDecoration.none, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600, color: isSelected ? Colors.teal : Colors.black))),
   );
 }

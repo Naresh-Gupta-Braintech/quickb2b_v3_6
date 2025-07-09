@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/reusable/network_image.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
@@ -33,7 +36,7 @@ Widget productWidget({required String url, required String text}) {
   );
 }
 
-Widget productOfProductList({required String url, required String price, required String name}) {
+Widget productOfProductList({Function(String value)? onChanged,required String url, required String price, required String name, required int isMeasBox, required String hint, required int isShowImage, required TextEditingController controller1, required TextEditingController controller2}) {
   return Container(
     width: 160.r,
     padding: EdgeInsets.only(top: 3.r, bottom: 4.r, left: 4.r, right: 4.r),
@@ -41,10 +44,10 @@ Widget productOfProductList({required String url, required String price, require
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("2", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)), Image.asset(Images.hyphenInsideCircle)]),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Visibility(visible: isMeasBox == 1, child: Text("2", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))), Image.asset(Images.hyphenInsideCircle)]),
         SizedBox(height: Dimensions.padding10),
         Visibility(
-          visible: url.isNotEmpty,
+          visible: url.isNotEmpty || isShowImage == 1,
           child: SizedBox(
             width: 100.r,
             child: AspectRatio(
@@ -70,17 +73,23 @@ Widget productOfProductList({required String url, required String price, require
 
         Visibility(
           visible: true,
-          replacement: _textField(),
+          replacement: _textField(hint: "", controller: controller2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
-              SizedBox(width: 2.r),
-              _textField(),
-              Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
-              _textField(),
-              SizedBox(width: 2.r),
-              Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r),
+              Visibility(
+                visible: isMeasBox == 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
+                    SizedBox(width: 2.r),
+                    _textField(hint: "Qty", controller: controller1, onChanged: onChanged),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
+                  ],
+                ),
+              ),
+              _textField(hint: hint, controller: controller2),
+              Visibility(visible: isMeasBox == 1, child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r)])),
             ],
           ),
         ),
@@ -90,15 +99,18 @@ Widget productOfProductList({required String url, required String price, require
   );
 }
 
-Widget _textField() {
+Widget _textField({required String hint, required TextEditingController controller, Function(String value)? onChanged}) {
   return SizedBox(
     width: 43.r,
     child: TextFormField(
+      onChanged: onChanged,
+      controller: controller,
       cursorHeight: 10.r, // Optional: match it to text size
       style: TextStyle(fontSize: 10.r), // Ensure text and cursor match
       textAlignVertical: TextAlignVertical.center, // Vertically center text
+      textAlign: TextAlign.center,
       decoration: InputDecoration(
-        hintText: "each",
+        hintText: hint,
         hintStyle: TextStyle(fontSize: 10.r),
         contentPadding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 8.r), // Balanced padding
         isDense: true, // Reduces height further
@@ -113,7 +125,7 @@ Widget _textField() {
 
 const str = "\$";
 
-Widget specialProducts({required String url, required String price, required String name}) {
+Widget specialProducts({required TextEditingController controller1, required TextEditingController controller2, required String url, required String price, required String name, required int isMeasBox, required String hint}) {
   return Container(
     width: 160.r,
     padding: EdgeInsets.only(top: 3.r, bottom: 4.r, left: 4.r, right: 4.r),
@@ -150,17 +162,23 @@ Widget specialProducts({required String url, required String price, required Str
 
         Visibility(
           visible: true,
-          replacement: _textField(),
+          replacement: _textField(hint: "", controller: controller2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
-              SizedBox(width: 2.r),
-              _textField(),
-              Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
-              _textField(),
-              SizedBox(width: 2.r),
-              Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r),
+              Visibility(
+                visible: isMeasBox == 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
+                    SizedBox(width: 2.r),
+                    _textField(hint: "Qty", controller: controller1),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
+                  ],
+                ),
+              ),
+              _textField(hint: hint, controller: controller2),
+              Visibility(visible: isMeasBox == 1, child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r)])),
             ],
           ),
         ),

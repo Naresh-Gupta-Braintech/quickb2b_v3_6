@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+
 class HomeItemsData {
   String? message;
   int? status;
@@ -173,6 +175,8 @@ class AllInventory {
   int? isMeasBox;
   int? id;
   int? priority;
+  TextEditingController? controller1 = TextEditingController();
+  TextEditingController? controller2 = TextEditingController();
 
   AllInventory({
     this.itemCode,
