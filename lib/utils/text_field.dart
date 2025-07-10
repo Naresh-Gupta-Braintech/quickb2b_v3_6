@@ -59,17 +59,18 @@ Widget dropDown({required List<String> items}) {
   );
 }
 
-Widget customSearchBar({required TextEditingController textController, bool isFull = false}) {
+Widget customSearchBar({required TextEditingController textController, bool isFull = false, String? hint,required TextAlign textAlignment }) {
   return SizedBox(
     height: 39,
     width: isFull ? Get.width * 0.98 : Get.width / 1.19,
     child: TextFormField(
       controller: textController,
+      textAlign: textAlignment,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: EdgeInsets.zero,
-        hintText: "Search all products",
+        hintText: hint ?? "Search all products",
         prefixIcon: Icon(Icons.search, size: 20.r),
         hintStyle: TextStyle(fontFamily: TypographyResources.openSans),
         focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),

@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                customSearchBar(textController: TextEditingController()),
+                                customSearchBar(textController: TextEditingController(), textAlignment: TextAlign.center),
                                 InkWell(
                                   onTap: () => {controller.setToogleOutlet()},
                                   child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)),

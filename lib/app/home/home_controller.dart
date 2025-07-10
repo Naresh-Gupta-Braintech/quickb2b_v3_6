@@ -19,14 +19,14 @@ class HomeController extends GetxController implements GetxService {
   HomeItemsData? homeItems;
   int selectedOutlet = 0;
   bool toggleOutlet = false;
-  CustomersData? customer;
+  CustomersData? customers;
   OutletData? outlet;
   List<List<TextEditingController?>> myListControllers = [];
   int productCount = 0;
   HashMap<String, dynamic> productItemsMap = HashMap();
   CustomerDetailsModel? customerDetails;
 
-  List<String> customers = ["Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen"];
+  List<String> customer = ["Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen"];
 
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
@@ -51,7 +51,13 @@ class HomeController extends GetxController implements GetxService {
     update();
   }
 
-  void getCustomersList() {}
+  void getCustomersList() {
+    getCustomers();
+  }
+
+  void customerDetail(SingleCustmer customer) {
+     getCustomersDetails(customer);
+  }
 
   void onChaged(TextEditingController? controller, int index) {
     String value = controller?.text.trim() ?? "";

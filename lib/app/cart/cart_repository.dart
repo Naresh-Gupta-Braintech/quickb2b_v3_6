@@ -3,7 +3,7 @@ import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_payloads.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
-import 'package:quickb2b_v3_6/network/data/response/cart_items_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/network_end_point.dart';
 import 'package:quickb2b_v3_6/network/network_exception.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';

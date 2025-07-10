@@ -9,18 +9,18 @@ CustomerDetailsModel customerDetailsModelFromJson(String str) => CustomerDetails
 String customerDetailsModelToJson(CustomerDetailsModel data) => json.encode(data.toJson());
 
 class CustomerDetailsModel {
-  Data? data;
+  Customer? data;
   int? status;
   int? outlets;
 
   CustomerDetailsModel({this.data, this.status, this.outlets});
 
-  factory CustomerDetailsModel.fromJson(Map<String, dynamic> json) => CustomerDetailsModel(data: json["data"] == null ? null : Data.fromJson(json["data"]), status: json["status"], outlets: json["outlets"]);
+  factory CustomerDetailsModel.fromJson(Map<String, dynamic> json) => CustomerDetailsModel(data: json["data"] == null ? null : Customer.fromJson(json["data"]), status: json["status"], outlets: json["outlets"]);
 
   Map<String, dynamic> toJson() => {"data": data?.toJson(), "status": status, "outlets": outlets};
 }
 
-class Data {
+class Customer {
   String? appName;
   String? appCompanyName;
   String? userCode;
@@ -45,7 +45,7 @@ class Data {
   String? customerType;
   int? showDelivery;
 
-  Data({
+  Customer({
     this.appName,
     this.appCompanyName,
     this.userCode,
@@ -71,7 +71,7 @@ class Data {
     this.showDelivery,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
     appName: json["APP_NAME"],
     appCompanyName: json["APP_COMPANY_NAME"],
     userCode: json["user_code"],

@@ -6,6 +6,7 @@ import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
@@ -18,6 +19,16 @@ class SplashController extends GetxController implements GetxService {
   bool isCartFetchedSuccess = false;
 
   void init() async {
+    String acmCode = await sharedPreferences.getString(Keys.acmCode) ?? "";
+    if (acmCode != null && acmCode.isNotEmpty) {
+      routeifManagerLogin();
+      return;
+    }
+
+    routes();
+  }
+
+  void routes() async {
     await Get.find<HomeController>().getCompanyDetails();
     await Get.find<CartController>().getCart();
     final loginData = sharedPreferences.getString(Keys.loginData);
@@ -27,11 +38,18 @@ class SplashController extends GetxController implements GetxService {
       if (loginData != null && loginData.isNotEmpty) {
         Get.offAllNamed(RoutesHelper.home);
         // ignore: prefer_is_empty
-      } else if (data?.data?.acmCode != null && data?.data?.acmCode?.length != 0) {
-        Get.offAllNamed(RoutesHelper.customerList);
       } else {
         Get.offAllNamed(RoutesHelper.login);
       }
     }
+  }
+
+  void routeifManagerLogin() async {
+    CustomerDetailsModel? customerDetails = await LocalStorage.getCustomerDetails();
+    if (customerDetails == null) {
+      Get.offAllNamed(RoutesHelper.customerList);
+      return;
+    }
+    routes();
   }
 }

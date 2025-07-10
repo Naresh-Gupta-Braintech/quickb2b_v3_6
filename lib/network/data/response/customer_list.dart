@@ -5,7 +5,7 @@ CustomersData customersListFromJson(String str) => CustomersData.fromJson(json.d
 String customersListToJson(CustomersData data) => json.encode(data.toJson());
 
 class CustomersData {
-    List<Datum>? data;
+    List<SingleCustmer>? data;
     int? status;
 
     CustomersData({
@@ -14,7 +14,7 @@ class CustomersData {
     });
 
     factory CustomersData.fromJson(Map<String, dynamic> json) => CustomersData(
-        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        data: json["data"] == null ? [] : List<SingleCustmer>.from(json["data"]!.map((x) => SingleCustmer.fromJson(x))),
         status: json["status"],
     );
 
@@ -24,7 +24,7 @@ class CustomersData {
     };
 }
 
-class Datum {
+class SingleCustmer {
     String? customerCode;
     String? email;
     String? businessName;
@@ -35,7 +35,7 @@ class Datum {
     String? repName;
     int? isManager;
 
-    Datum({
+    SingleCustmer({
         this.customerCode,
         this.email,
         this.businessName,
@@ -47,7 +47,7 @@ class Datum {
         this.isManager,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory SingleCustmer.fromJson(Map<String, dynamic> json) => SingleCustmer(
         customerCode: json["customer_code"],
         email: json["email"],
         businessName: json["business_name"],

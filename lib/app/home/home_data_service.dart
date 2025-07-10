@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
+import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension HomeDataService on HomeController {
@@ -10,6 +12,7 @@ extension HomeDataService on HomeController {
     loading = true;
     update();
     HomeItemsPayload payload = HomeItemsPayload();
+
     payload.acmCode = "";
     payload.clientCode = "TK3757";
     payload.deviceId = "a1ad67eaf5b9140f";
@@ -67,7 +70,6 @@ extension HomeDataService on HomeController {
 
   Future<void> getCustomers() async {
     loading = true;
-    update();
     CustomerListPayload payload = CustomerListPayload();
     final loginData = await LocalStorage.getLoginData();
     payload.clientCode = "TK3757";
@@ -79,7 +81,7 @@ extension HomeDataService on HomeController {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-          customer = response;
+          customers = response;
           update();
           break;
         case Result.onFailed:
@@ -124,7 +126,7 @@ extension HomeDataService on HomeController {
     });
   }
 
-  Future<void> getCustomersDetails() async {
+  Future<void> getCustomersDetails(SingleCustmer customer) async {
     loading = true;
     update();
     CustomerPayload payload = CustomerPayload();
@@ -133,12 +135,18 @@ extension HomeDataService on HomeController {
     payload.appType = "Dual";
     payload.deviceId = "a1ad67eaf5b9140f";
     payload.acmCode = loginData?.data?.acmCode;
-    payload.userCode = "";
+    payload.userCode = customer.customerCode;
     await repository.getCustomerDetails(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
           loading = false;
           customerDetails = response;
+          LocalStorage.saveCustomerDeatils(customerDetails);
+          LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
+          final customerData = LocalStorage.getCustomerDetails();
+          if (customerData != null) {
+            Get.offAllNamed(RoutesHelper.home);
+          }
           update();
           break;
         case Result.onFailed:
