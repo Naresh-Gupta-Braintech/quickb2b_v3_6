@@ -42,8 +42,8 @@ Widget bottomNavigationMenu() {
                     // height: 60.r,
                     child: GestureDetector(
                       onTap: () {
-                        // controller.setSelectedIndex(i);
-                        Get.offNamed(controller.bottomNavigation[i].route);
+                        controller.setSelectedIndex(i);
+                        
                       },
                       child: Column(
                         children: [
@@ -53,9 +53,9 @@ Widget bottomNavigationMenu() {
                             style: TextStyle(
                               fontFamily: TypographyResources.openSans,
                               fontSize: 10.r,
-                              color: controller.selectedIndex == i ? ColorsResources.activeColor : Colors.black,
+                              color: controller.bottomNavigationSelectedIndex == i ? ColorsResources.activeColor : Colors.black,
                               fontWeight: FontWeight.w600,
-                              decoration: controller.selectedIndex == i ? TextDecoration.underline : TextDecoration.none,
+                              decoration: controller.bottomNavigationSelectedIndex == i ? TextDecoration.underline : TextDecoration.none,
                             ),
                           ),
                         ],

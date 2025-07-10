@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/profile/profile_dashboard_dataservice.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_repository.dart';
 import 'package:quickb2b_v3_6/app/profile/view/account.dart';
 import 'package:quickb2b_v3_6/app/profile/view/app_user_guide.dart';
@@ -25,6 +26,30 @@ class ProfileDashboardController extends GetxController {
   ProfileAppLinkModel? links;
   ProfileAppUserGuide? appUserGuide;
 
+  // customer details
+  TextEditingController customerIdController = TextEditingController();
+  TextEditingController businessNameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController deliveryNoteController = TextEditingController();
+
+  //delivery address
+  TextEditingController deliveryStreetNumberController = TextEditingController();
+  TextEditingController deliverySuberbController = TextEditingController();
+  TextEditingController deliveryCountryController = TextEditingController();
+  TextEditingController deliveryStaterController = TextEditingController();
+  TextEditingController deliveryPostalController = TextEditingController();
+
+  //postal address
+  TextEditingController postalStreetNumberController = TextEditingController();
+  TextEditingController postalSuberbController = TextEditingController();
+  TextEditingController postalCountryController = TextEditingController();
+  TextEditingController postalStaterController = TextEditingController();
+  TextEditingController postalPostalController = TextEditingController();
+
   void updateIndex(int index) {
     selectedIndex = index;
     update();
@@ -46,34 +71,71 @@ class ProfileDashboardController extends GetxController {
   }
 
   void makeDeliveryEditable() {
+    deliveryStreetNumberController.text = userProfile?.data?.deliveryAddress ?? "";
+    deliverySuberbController.text = userProfile?.data?.deliverySuburb ?? "";
+    deliveryCountryController.text = userProfile?.data?.deliveryCountry ?? "";
+    deliveryStaterController.text = userProfile?.data?.deliveryState ?? "";
+    deliveryPostalController.text = userProfile?.data?.deliveryPostCode ?? "";
     isEditDeliverSection = true;
     update();
   }
 
   void makeCustomerEditable() {
+    customerIdController.text = userProfile?.data?.userCode ?? "";
+    businessNameController.text = userProfile?.data?.businessName ?? "";
+    firstNameController.text = userProfile?.data?.firstName ?? "";
+    lastNameController.text = userProfile?.data?.lastName ?? "";
+    phoneController.text = userProfile?.data?.phone ?? "";
+    mobileController.text = userProfile?.data?.mobile ?? "";
+    emailController.text = userProfile?.data?.email ?? "";
+    deliveryNoteController.text = userProfile?.data?.deliveryAddress ?? "";
     isEditCustomerDetailsSection = true;
     update();
   }
 
   void makePostalEditable() {
+    postalStreetNumberController.text = userProfile?.data?.postalAddress ?? "";
+    postalSuberbController.text = userProfile?.data?.postalSuburb ?? "";
+    postalCountryController.text = userProfile?.data?.postalCountry ?? "";
+    postalStaterController.text = userProfile?.data?.postalState ?? "";
+    postalPostalController.text = userProfile?.data?.postalPostCode ?? "";
     isEditPostalAddressSection = true;
     update();
   }
 
   void makePCustomerReadOnly() {
+    updateProfile();
     isEditCustomerDetailsSection = false;
     update();
   }
 
   void makeDeliveryReadOnly() {
+    updateDeliveryAddressForBusiness();
     isEditDeliverSection = false;
     update();
   }
 
   void makePostalReadOnly() {
+    updatePostalAdress();
     isEditPostalAddressSection = false;
     update();
   }
 
   final List<String> list = ["Account", "Past Orders", "Links", "App user guide", "Reset My List A-Z", "Logout"];
+
+  void getProfile() {
+    getUserProfile();
+  }
+
+  void getPastOrders() {
+    getPastUserOrder();
+  }
+
+  void getLinkDeatils() {
+    getLinks();
+  }
+
+  void getUserGuide() {
+    getAppUserGuide();
+  }
 }

@@ -149,10 +149,10 @@ class _HomeViewState extends State<HomeView> {
                                                       child: productOfProductList(
                                                         onChanged: (value) {
                                                           if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
-                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1,index);
-                                                          }else{
-                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1,index);
-                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller2,index);
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1, index);
+                                                          } else {
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1, index);
+                                                            controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller2, index);
                                                           }
                                                         },
                                                         controller1: controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),

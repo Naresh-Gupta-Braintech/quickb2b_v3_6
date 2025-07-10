@@ -32,6 +32,7 @@ class NetworkPayload {
   static Map<String, dynamic>? pastOrderPayload({required ProfilePayload payload}) {
     return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
   }
+
   static Map<String, dynamic>? appLinkPayload({required ProfilePayload payload}) {
     return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
   }
@@ -40,7 +41,55 @@ class NetworkPayload {
     return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "type": payload.type, "app_type": payload.appType};
   }
 
-   static Map<String, dynamic>? customerDetailsPayload({required CustomerPayload payload}) {
-    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode,  "app_type": payload.appType};
+  static Map<String, dynamic>? customerDetailsPayload({required CustomerPayload payload}) {
+    return {"device_id": payload.deviceId, "client_code": payload.clientCode, "acm_code": payload.acmCode, "user_code": payload.userCode, "app_type": payload.appType};
+  }
+
+  static Map<String, dynamic>? updateProfilePayload({required ProfilePayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "acm_code": payload.acmCode,
+      // "user_code": payload.userCode,
+      "app_type": payload.appType,
+      "user_code": payload.userCode,
+      "business_name": payload.businessName,
+      "first_name": payload.firstName,
+      "last_name": payload.lastName,
+      "phone": payload.phone,
+      "mobile": payload.mobile,
+      "email": payload.email,
+      "delivery_note": payload.deliveryNote,
+    };
+  }
+
+  static Map<String, dynamic>? updateBusinessDeliveryPayload({required ProfilePayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "acm_code": payload.acmCode,
+      "user_code": payload.userCode,
+      "app_type": payload.appType,
+      "delivery_address": payload.deliveryStreetNumber,
+      "delivery_suburb": payload.deliverySuberb,
+      "delivery_post_code": payload.deliveryPostal,
+      "delivery_state": payload.deliveryStater,
+      "delivery_country": payload.deliveryCountry,
+    };
+  }
+
+  static Map<String, dynamic>? updatepostalAddressPayload({required ProfilePayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "acm_code": payload.acmCode,
+      "user_code": payload.userCode,
+      "app_type": payload.appType,
+      "postal_address": payload.postalStreetNumber,
+      "postal_suburb": payload.postalSuberb,
+      "postal_post_code": payload.postalPostal,
+      "postal_state": payload.postalStater,
+      "postal_country": payload.postalCountry,
+    };
   }
 }

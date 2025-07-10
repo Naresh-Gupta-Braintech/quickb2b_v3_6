@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NavigationController extends GetxController implements GetxService {
   SharedPreferences sharedPreferences;
   NavigationController({required this.sharedPreferences});
-  int selectedIndex = 0;
+  int bottomNavigationSelectedIndex = 0;
   int topNavigationSelectedIndex = 0;
   List<Navigation> bottomNavigation = [
     Navigation(iconUrl: Images.home, name: "Home", route: RoutesHelper.home),
@@ -18,9 +18,8 @@ class NavigationController extends GetxController implements GetxService {
   ];
 
   void setSelectedIndex(int index) {
-    selectedIndex = index;
-    Get.offNamed(bottomNavigation[index].route);
-    // update();
+    bottomNavigationSelectedIndex = index;
+    Get.toNamed(bottomNavigation[index].route);
   }
 
   final List<String> list = ["Account", "Past Orders", "Links", "App user guide", "Reset My List A-Z", "Logout"];
