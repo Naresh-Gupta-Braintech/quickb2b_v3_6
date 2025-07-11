@@ -11,7 +11,6 @@ import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/products.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
-import 'package:quickb2b_v3_6/utils/text_field.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class ProductView extends StatefulWidget {
@@ -31,7 +30,7 @@ class _ProductViewState extends State<ProductView> {
         if (_productScrollController.position.pixels == 0) {
         } else {
           Get.find<ProductController>().page += 1;
-          Get.find<ProductController>().searchProductByCategoryId(Get.find<ProductController>().previousCategory);
+          // Get.find<ProductController>().searchProductByCategoryId(Get.find<ProductController>().previousCategory);
         }
       }
     });
@@ -61,22 +60,7 @@ class _ProductViewState extends State<ProductView> {
                         ? customLoader()
                         : Column(
                           children: [
-                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: headers(appname: controller.homeItems?.appName ?? "00", showPrice: int.tryParse(controller.homeItems?.showPrice ?? "0") ?? 0)),
-                            SizedBox(height: Dimensions.padding10),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 2.r),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  customSearchBar(textController: TextEditingController(), textAlignment: TextAlign.start),
-                                  InkWell(
-                                    onTap: () => {controller.setToogleOutlet()},
-                                    child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
                             Expanded(
                               child: Stack(
                                 children: [
@@ -92,16 +76,16 @@ class _ProductViewState extends State<ProductView> {
                                         categoryListMenu(list: productController.categories?.categories ?? []),
                                         SizedBox(height: 6.r),
                                         //list view
-                                        productController.productdata?.showItemInGridView == 1
+                                        productController.productdata?.showItemInGridView == 0
                                             ? SizedBox(
-                                              height: Get.height,
+                                              height: Get.height - (65.r + 90.r),
                                               width: Get.width,
                                               child: ListView.builder(
                                                 physics: const ClampingScrollPhysics(),
                                                 controller: _productScrollController,
                                                 itemCount: productController.productsInventry.length,
                                                 itemBuilder: (context, index) {
-                                                  String showImage = productController?.productdata?.showImage ?? "";
+                                                  String showImage = productController.productdata?.showImage ?? "";
                                                   return Padding(
                                                     padding: EdgeInsets.symmetric(vertical: 4.r),
                                                     child: horizontalProduct(
@@ -121,14 +105,16 @@ class _ProductViewState extends State<ProductView> {
                                             )
                                             :
                                             //Grid view
-                                            Padding(
+                                            Container(
                                               padding: EdgeInsets.symmetric(horizontal: 4.r),
                                               child: SizedBox(
-                                                height: Get.height,
+                                                height: Get.height - (65.r + 60.r),
                                                 child: DynamicHeightGridView(
+                                                  physics: const ClampingScrollPhysics(),
+
                                                   controller: _productScrollController,
                                                   builder: (context, index) {
-                                                    String showImage = productController?.productdata?.showImage ?? "";
+                                                    String showImage = productController.productdata?.showImage ?? "";
 
                                                     return verticalProduct(
                                                       url: productController.productsInventry[index]?.image ?? "",

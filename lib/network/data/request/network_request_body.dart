@@ -99,3 +99,10 @@ class ProductPayload {
   String? deviceId;
   int? page;
 }
+
+class MyListPayload {
+  String? userCode;
+  int? reset;
+  String? clientCode;
+  String? deviceId;
+}

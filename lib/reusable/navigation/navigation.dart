@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
@@ -150,9 +151,41 @@ Widget categoryListMenu({required List<Category> list}) {
   );
 }
 
+Widget myListMenue({required List<DataWithCategory> list}) {
+  return GetBuilder<NavigationController>(
+    builder: (controller) {
+      return SizedBox(
+        height: 20.r,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    controller.setSelectedTopNavigation(index);
+                    Get.find<ProductController>().page = 0;
+                  },
+                  child: _customText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationSelectedIndex),
+                ),
+
+                Visibility(visible: list.length - 1 != index, child: Text("|")),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
 Widget _customText({required String text, required bool isSelected}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 4.r),
     child: Center(child: Text(text, style: TextStyle(decorationColor: Colors.teal, decoration: isSelected ? TextDecoration.underline : TextDecoration.none, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600, color: isSelected ? Colors.teal : Colors.black))),
   );
 }
+
+
+// 

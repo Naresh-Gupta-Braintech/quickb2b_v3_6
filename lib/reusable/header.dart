@@ -34,22 +34,25 @@ Widget headers({required String appname, required int showPrice, String? rightTe
   );
 }
 
-Widget headerWithSearch({bool showOutlet = true, VoidCallback? onTap, bool isSearchBarFull = false, int showPrice = 1, String? rightText, String? hint, TextAlign textAlignment = TextAlign.left}) {
-  return Column(
-    children: [
-      Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: headers(appname: "", showPrice: showPrice ?? 0, rightText: rightText)),
-      SizedBox(height: Dimensions.padding10),
-      Padding(
-        padding: EdgeInsets.only(bottom: 2.r),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            customSearchBar(textController: TextEditingController(), isFull: isSearchBarFull, textAlignment: textAlignment, hint: hint),
-            Visibility(visible: showOutlet, child: InkWell(onTap: onTap, child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)))),
-          ],
+Widget headerWithSearch({bool showOutlet = true, VoidCallback? onTap, bool isSearchBarFull = false, int showPrice = 1, String? rightText, String? hint, TextAlign textAlignment = TextAlign.left, required String appName}) {
+  return SizedBox(
+    height: 68.r,
+    child: Column(
+      children: [
+        Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: headers(appname: appName, showPrice: showPrice ?? 0, rightText: rightText)),
+        SizedBox(height: Dimensions.padding10),
+        Padding(
+          padding: EdgeInsets.only(bottom: 2.r),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              customSearchBar(textController: TextEditingController(), isFull: isSearchBarFull, textAlignment: textAlignment, hint: hint),
+              Visibility(visible: showOutlet, child: InkWell(onTap: onTap, child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)))),
+            ],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

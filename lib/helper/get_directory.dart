@@ -4,6 +4,8 @@ import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_repository.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_repository.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_repository.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
@@ -27,7 +29,8 @@ Future<void> init() async {
   Get.lazyPut(() => CartRepository(network: Get.find()));
   Get.lazyPut(() => ProfileDashboardRepository(network: Get.find()));
   Get.lazyPut(() => ProfileDashboardRepository(network: Get.find()));
-  Get.lazyPut(() =>ProductRepository (network: Get.find()));
+  Get.lazyPut(() => ProductRepository(network: Get.find()));
+  Get.lazyPut(() => MyListRepository(network: Get.find()));
 
   // Controllers
   Get.lazyPut(() => AuthController(sharedPreferences: sharedPreferences, repository: Get.find()));
@@ -38,5 +41,5 @@ Future<void> init() async {
   Get.lazyPut(() => NavigationController(sharedPreferences: sharedPreferences));
   Get.lazyPut(() => CartController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => ProductController(sharedPreferences: sharedPreferences, repository: Get.find()));
-
+  Get.lazyPut(() => MyListController(sharedPreferences: sharedPreferences, repository: Get.find()));
 }

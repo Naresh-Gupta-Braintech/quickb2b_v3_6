@@ -70,6 +70,7 @@ class _HomeViewState extends State<HomeView> {
                             child: Stack(
                               children: [
                                 SingleChildScrollView(
+                                  physics: const ClampingScrollPhysics(),
                                   child: Column(
                                     children: [
                                       Visibility(
@@ -81,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: (controller.homeItems?.data?.categoryExists == 1 && categoriesList.isNotEmpty),
                                         child: Column(
                                           children: [
-                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Search by Categories", buttonText: "See All")),
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "Search by Categories", buttonText: "See All")),
                                             SizedBox(height: 8.r),
                                             SizedBox(
                                               height: 106.r,
@@ -89,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
                                                 scrollDirection: Axis.horizontal,
                                                 itemCount: controller.homeItems?.data?.allCategories?.length,
                                                 itemBuilder: (context, index) {
-                                                  return Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: categoryWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
+                                                  return Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: categoryWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
                                                 },
                                               ),
                                             ),
@@ -102,7 +103,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: specialInventories.isNotEmpty,
                                         child: Column(
                                           children: [
-                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: controller.homeItems?.specialHeaderTitle ?? "", buttonText: "See All")),
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: controller.homeItems?.specialHeaderTitle ?? "", buttonText: "See All")),
                                             SizedBox(height: 8.r),
                                             Visibility(
                                               child: SizedBox(
@@ -112,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                                                   itemCount: controller.homeItems?.data?.allInventories?.length,
                                                   itemBuilder: (context, index) {
                                                     return Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 8.r),
+                                                      padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: specialProducts(
                                                         controller2: controller.myListControllers[index][1] ?? TextEditingController(),
                                                         controller1: controller.myListControllers[index][0]!,
@@ -135,7 +136,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: (controller.homeItems?.showMyProduct == 1 && allInventories.isNotEmpty),
                                         child: Column(
                                           children: [
-                                            Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "My Products List", buttonText: "See All")),
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "My Products List", buttonText: "See All")),
                                             SizedBox(height: 8.r),
                                             Visibility(
                                               child: SizedBox(
@@ -145,7 +146,7 @@ class _HomeViewState extends State<HomeView> {
                                                   itemCount: controller.homeItems?.data?.allInventories?.length,
                                                   itemBuilder: (context, index) {
                                                     return Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 8.r),
+                                                      padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: verticalProduct(
                                                         onChanged: (value) {
                                                           if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
@@ -174,11 +175,11 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       // Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productOfProductList(url: "https://develop.quickb2b.com/files/inventory/QuickB2B_Develop/1658124745no-image-available.png")),
                                       SizedBox(height: Dimensions.padding16),
-                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: _customSubHeading(text: "Featured", buttonText: "")),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "Featured", buttonText: "")),
                                       SizedBox(height: Dimensions.padding10),
                                       Image.asset(Images.featuredGradient),
                                       SizedBox(height: Dimensions.padding10),
-                                      Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? "")),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? "")),
                                     ],
                                   ),
                                 ),

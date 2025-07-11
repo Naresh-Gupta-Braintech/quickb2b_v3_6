@@ -112,4 +112,13 @@ class NetworkPayload {
       "page":payload.page
     };
   }
+
+  static Map<String, dynamic>? myListPayload({required MyListPayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "user_code": payload.userCode,
+      "reset":payload.reset
+    };
+  }
 }

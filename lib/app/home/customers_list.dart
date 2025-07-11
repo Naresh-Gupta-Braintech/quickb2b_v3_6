@@ -34,7 +34,7 @@ class _CustomersListState extends State<CustomersList> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        headerWithSearch(showOutlet: false, isSearchBarFull: true, showPrice: 0, rightText: "Add Customers", hint: "Search all Customers", textAlignment: TextAlign.center),
+        headerWithSearch(showOutlet: false, isSearchBarFull: true, showPrice: 0, rightText: "Add Customers", hint: "Search all Customers", textAlignment: TextAlign.center,appName: ""),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.r),
