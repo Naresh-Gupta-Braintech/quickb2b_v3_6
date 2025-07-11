@@ -6,8 +6,8 @@ import 'package:quickb2b_v3_6/app/autthentication/forgot/forgot.dart';
 import 'package:quickb2b_v3_6/app/autthentication/login/login_view.dart';
 import 'package:quickb2b_v3_6/app/autthentication/register/registration_page.dart';
 import 'package:quickb2b_v3_6/app/home/customers_list.dart';
+import 'package:quickb2b_v3_6/app/product/view/product_view.dart';
 import 'package:quickb2b_v3_6/app/profile/view/profile_dashboard_view.dart';
-import 'package:quickb2b_v3_6/app/profile/view/past_order.dart';
 import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
 import 'package:quickb2b_v3_6/app/splash/view/splash.dart';
 
@@ -22,6 +22,7 @@ class RoutesHelper {
   static const String _splash = '/splash';
   static const String _forgot = '/forgot';
   static const String _account = '/account';
+  static const String _products = '/products';
 
   // Add more routes as needed
   static String get home => _home;
@@ -34,6 +35,7 @@ class RoutesHelper {
   static String get splash => _splash;
   static String get forgot => _forgot;
   static String get account => _account;
+  static String get products => _products;
 
   static List<GetPage> getRoutes() {
     return [
@@ -44,10 +46,7 @@ class RoutesHelper {
       GetPage(name: _account, page: () => ProfileDashboardView()),
       GetPage(name: _splash, page: () => Splash()),
       GetPage(name: _customerList, page: () => CustomersList()),
-
-      // GetPage(name: _settings, page: () => const SettingsScreen()),
-      // GetPage(name: _about, page: () => const AboutScreen()),
-      // GetPage(name: _contact, page: () => const ContactScreen()),
+      GetPage(name: _products, page: () => ProductView()),
     ];
   }
 }

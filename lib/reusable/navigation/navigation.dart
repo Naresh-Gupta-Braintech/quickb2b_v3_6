@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
@@ -43,7 +45,7 @@ Widget bottomNavigationMenu() {
                     child: GestureDetector(
                       onTap: () {
                         controller.setSelectedIndex(i);
-                        
+                        Get.find<ProductController>().page = 0;
                       },
                       child: Column(
                         children: [
@@ -106,6 +108,36 @@ Widget menueList({required List<String> list}) {
                     controller.setSelectedTopNavigation(index);
                   },
                   child: _customText(text: list[index], isSelected: index == controller.topNavigationSelectedIndex),
+                ),
+
+                Visibility(visible: list.length - 1 != index, child: Text("|")),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
+Widget categoryListMenu({required List<Category> list}) {
+  return GetBuilder<NavigationController>(
+    builder: (controller) {
+      return SizedBox(
+        height: 20.r,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    controller.setSelectedTopNavigation(index);
+                    Get.find<ProductController>().page = 0;
+                    Get.find<ProductController>().searchProductByCategoryId(list[index].id ?? "");
+                  },
+                  child: _customText(text: list[index].name ?? "", isSelected: index == controller.topNavigationSelectedIndex),
                 ),
 
                 Visibility(visible: list.length - 1 != index, child: Text("|")),

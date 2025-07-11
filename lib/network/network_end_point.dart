@@ -1,4 +1,4 @@
-enum Endpoints { customerDetails, login, register, getHomeItems, getCompanyDetails, getCartList, getCustomerList, getOutLet, getProfile, updateBusinesDetails, getCustomerDetails, updateProfile, updatePostalAddress, getUserOrders, getLinkPost, getAppUserguide }
+enum Endpoints { searchProductByCategory, getCategories, customerDetails, login, register, getHomeItems, getCompanyDetails, getCartList, getCustomerList, getOutLet, getProfile, updateBusinesDetails, getCustomerDetails, updateProfile, updatePostalAddress, getUserOrders, getLinkPost, getAppUserguide }
 
 const Map<Endpoints, String> endpointRawValues = {
   // AUTHENTICATION
@@ -18,4 +18,6 @@ const Map<Endpoints, String> endpointRawValues = {
   Endpoints.getLinkPost: "/apis/linksPost",
   Endpoints.getAppUserguide: "/apis/app_cms",
   Endpoints.customerDetails: "/apis/ac/customerDetails",
+  Endpoints.getCategories: "/apis/GetCategories_v3_4",
+  Endpoints.searchProductByCategory: "/apis/search_product_bycategory_v3_4",
 };

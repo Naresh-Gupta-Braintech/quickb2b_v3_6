@@ -23,14 +23,13 @@ Widget headers({required String appname, required int showPrice, String? rightTe
                     Padding(padding: EdgeInsets.only(left: 10.r, bottom: 4.r), child: Text("0", style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12))),
                   ],
                 ),
-
-                Visibility(visible: showPrice == 1 ? true : false, child: Text("Total \$0.00")),
               ],
             ),
           ],
         ),
       ),
       Visibility(visible: rightText != null, child: Text(rightText ?? "")),
+      Visibility(visible: showPrice == 1 ? true : false, child: Text("Total \$0.00")),
     ],
   );
 }

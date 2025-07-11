@@ -89,7 +89,7 @@ class _HomeViewState extends State<HomeView> {
                                                 scrollDirection: Axis.horizontal,
                                                 itemCount: controller.homeItems?.data?.allCategories?.length,
                                                 itemBuilder: (context, index) {
-                                                  return Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
+                                                  return Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: categoryWidget(url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "", text: controller.homeItems?.data?.allCategories?[index].name ?? ""));
                                                 },
                                               ),
                                             ),
@@ -146,7 +146,7 @@ class _HomeViewState extends State<HomeView> {
                                                   itemBuilder: (context, index) {
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                                      child: productOfProductList(
+                                                      child: verticalProduct(
                                                         onChanged: (value) {
                                                           if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
                                                             controller.onChaged(controller.homeItems?.data?.allInventories?[index].controller1, index);

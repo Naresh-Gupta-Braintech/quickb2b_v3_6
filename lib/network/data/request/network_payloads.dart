@@ -92,4 +92,24 @@ class NetworkPayload {
       "postal_country": payload.postalCountry,
     };
   }
+
+  static Map<String, dynamic>? categoryPayload({required CategoryPayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "acm_code": payload.acmCode,
+      "user_code": payload.userCode
+    };
+  }
+
+ static Map<String, dynamic>? productPayload({required ProductPayload payload}) {
+    return {
+      "device_id": payload.deviceId,
+      "client_code": payload.clientCode,
+      "acm_code": payload.acmCode,
+      "user_code": payload.userCode,
+      "category_id":payload.categoryId,
+      "page":payload.page
+    };
+  }
 }

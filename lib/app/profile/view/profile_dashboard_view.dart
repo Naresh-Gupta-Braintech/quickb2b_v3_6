@@ -30,7 +30,7 @@ class ProfileDashboardView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 0.r),
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8), child: headers(appname: "", showPrice: 1)),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8), child: headers(appname: "develope", showPrice: 1)),
                       SizedBox(height: 6.r),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8),

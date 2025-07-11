@@ -1,3 +1,7 @@
+class AbstractPayload {
+  String? deviceId;
+}
+
 class HomeItemsPayload {
   String? clientCode;
   String? userCode;
@@ -34,7 +38,6 @@ class CustomerListPayload {
   String? appType;
   String? clientCode;
   String? search;
-  
 }
 
 class OutletPayload {
@@ -79,4 +82,20 @@ class CustomerPayload {
   String? clientCode;
   String? appType;
   String? userCode;
+}
+
+class CategoryPayload {
+  String? userCode;
+  String? clientCode;
+  String? acmCode;
+  String? deviceId;
+}
+
+class ProductPayload {
+  String? userCode;
+  String? categoryId;
+  String? clientCode;
+  String? acmCode;
+  String? deviceId;
+  int? page;
 }
