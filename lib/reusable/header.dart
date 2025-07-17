@@ -11,7 +11,8 @@ Widget headers({required String appname, required int showPrice, String? rightTe
     children: [
       Text(appname, style: TextStyle(fontSize: Dimensions.font14, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold)),
       Visibility(
-        visible: rightText != null && rightText.isEmpty,
+        visible: rightText == null || rightText.isEmpty,
+        replacement: Text(rightText ?? ""),
         child: Row(
           children: [
             Row(
@@ -19,36 +20,66 @@ Widget headers({required String appname, required int showPrice, String? rightTe
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    Visibility(visible: rightText == null, child: Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover)),
-                    Padding(padding: EdgeInsets.only(left: 10.r, bottom: 4.r), child: Text("0", style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12))),
+                    Visibility(visible: rightText == null || rightText.isEmpty, child: Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover)),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.r, bottom: 4.r),
+                      child: Text(
+                        "0",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontFamily: TypographyResources.openSans,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Dimensions.font12,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
+                Visibility(visible: showPrice == 1 ? true : false, child: Text("Total \$0.00")),
               ],
             ),
           ],
         ),
-      ),
-      Visibility(visible: rightText != null, child: Text(rightText ?? "")),
-      Visibility(visible: showPrice == 1 ? true : false, child: Text("Total \$0.00")),
+      ), //(rightText != null && rightText.isNotEmpty)
+      // Visibility(visible: true, child: Text(rightText ?? "hellos")),
     ],
   );
 }
 
-Widget headerWithSearch({bool showOutlet = true, VoidCallback? onTap, bool isSearchBarFull = false, int showPrice = 1, String? rightText, String? hint, TextAlign textAlignment = TextAlign.left, required String appName}) {
+Widget headerWithSearch({
+  bool showOutlet = true,
+  VoidCallback? onTap,
+  bool isSearchBarFull = false,
+  int showPrice = 1,
+  String? rightText,
+  String? hint,
+  TextAlign textAlignment = TextAlign.left,
+  required String appName,
+}) {
   return SizedBox(
-    height: 68.r,
+    height: 85.r,
     child: Column(
       children: [
         Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: headers(appname: appName, showPrice: showPrice ?? 0, rightText: rightText)),
         SizedBox(height: Dimensions.padding10),
         Padding(
-          padding: EdgeInsets.only(bottom: 2.r),
+          padding: EdgeInsets.only(bottom: 0.r),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               customSearchBar(textController: TextEditingController(), isFull: isSearchBarFull, textAlignment: textAlignment, hint: hint),
-              Visibility(visible: showOutlet, child: InkWell(onTap: onTap, child: Container(padding: EdgeInsets.all(7.r), decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)), child: Image.asset(Images.outlet, height: 19.r)))),
+              Visibility(
+                visible: showOutlet,
+                child: InkWell(
+                  onTap: onTap,
+                  child: Container(
+                    padding: EdgeInsets.all(7.r),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)),
+                    child: Image.asset(Images.outlet, height: 19.r),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

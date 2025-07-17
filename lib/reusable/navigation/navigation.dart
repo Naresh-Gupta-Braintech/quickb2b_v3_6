@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
@@ -67,7 +68,13 @@ Widget bottomNavigationMenu() {
                   ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(right: 25.r), child: Text("Devloped By QuickB2B", style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 8.r, fontWeight: FontWeight.w400))),
+            Padding(
+              padding: EdgeInsets.only(right: 25.r),
+              child: Text(
+                "Devloped By QuickB2B",
+                style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 8.r, fontWeight: FontWeight.w400),
+              ),
+            ),
           ],
         ),
       );
@@ -84,7 +91,6 @@ Widget menueList({required List<String> list}) {
           scrollDirection: Axis.horizontal,
           itemCount: list.length,
           itemBuilder: (context, index) {
-            print("index :: $index");
             return Row(
               children: [
                 GestureDetector(
@@ -98,6 +104,7 @@ Widget menueList({required List<String> list}) {
                         onPressed: () {
                           controller.sharedPreferences.remove(Keys.loginData);
                           controller.sharedPreferences.remove(Keys.acmCode);
+                          controller.sharedPreferences.remove(Keys.customerDetails);
                           Get.offNamed(RoutesHelper.splash);
                         },
                         showCancelBtn: true,
@@ -152,7 +159,7 @@ Widget categoryListMenu({required List<Category> list}) {
 }
 
 Widget myListMenue({required List<DataWithCategory> list}) {
-  return GetBuilder<NavigationController>(
+  return GetBuilder<MyListController>(
     builder: (controller) {
       return SizedBox(
         height: 20.r,
@@ -167,7 +174,7 @@ Widget myListMenue({required List<DataWithCategory> list}) {
                     controller.setSelectedTopNavigation(index);
                     Get.find<ProductController>().page = 0;
                   },
-                  child: _customText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationSelectedIndex),
+                  child: _customText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationIndex),
                 ),
 
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
@@ -183,9 +190,17 @@ Widget myListMenue({required List<DataWithCategory> list}) {
 Widget _customText({required String text, required bool isSelected}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 4.r),
-    child: Center(child: Text(text, style: TextStyle(decorationColor: Colors.teal, decoration: isSelected ? TextDecoration.underline : TextDecoration.none, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600, color: isSelected ? Colors.teal : Colors.black))),
+    child: Center(
+      child: Text(
+        text,
+        style: TextStyle(
+          decorationColor: Colors.teal,
+          decoration: isSelected ? TextDecoration.underline : TextDecoration.none,
+          fontFamily: TypographyResources.openSans,
+          fontWeight: FontWeight.w600,
+          color: isSelected ? Colors.teal : Colors.black,
+        ),
+      ),
+    ),
   );
 }
-
-
-// 

@@ -13,7 +13,7 @@ class NavigationController extends GetxController implements GetxService {
     Navigation(iconUrl: Images.home, name: "Home", route: RoutesHelper.home),
     Navigation(iconUrl: Images.heart, name: "My List", route: RoutesHelper.myList),
     Navigation(iconUrl: Images.search, name: "Products", route: RoutesHelper.products),
-    Navigation(iconUrl: Images.cart, name: "My Order", route: RoutesHelper.home),
+    Navigation(iconUrl: Images.cart, name: "My Order", route: RoutesHelper.myOrder),
     Navigation(iconUrl: Images.home, name: "Account", route: RoutesHelper.account),
   ];
 

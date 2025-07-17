@@ -30,7 +30,11 @@ Widget customCarousel({required double width, required double height, required L
                 images.map((banner) {
                   return Builder(
                     builder: (context) {
-                      return Container(width: width, height: height, child: cachedImageNetwork(url: banner.image ?? "", height: height, width: width, fit: BoxFit.fill));
+                      return Container(
+                        width: width,
+                        height: height,
+                        child: cachedImageNetwork(url: banner.image ?? "", height: height, width: width, fit: BoxFit.fill),
+                      );
                     },
                   );
                 }).toList(),
@@ -38,21 +42,25 @@ Widget customCarousel({required double width, required double height, required L
 
           // Fixed overlay (stays in place)
           Positioned(
-            bottom: 10.r,
+            bottom: 2.r,
             left: 0,
             right: 0,
             child: Column(
               children: [
-                Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding16), child: HtmlWidget(images[bannerController.activeIndex].bannerText ?? "")),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Dimensions.padding16),
+                  child: HtmlWidget(images[bannerController.activeIndex].bannerText ?? ""),
+                ),
                 SizedBox(height: 10),
                 AnimatedSmoothIndicator(
                   activeIndex: bannerController.activeIndex,
                   count: images.length,
-                  effect: WormEffect(dotHeight: 8, dotWidth: 8, dotColor: Colors.white, activeDotColor: Colors.black, radius: 0),
+                  effect: WormEffect(dotHeight: 6, dotWidth: 6, dotColor: Colors.white, activeDotColor: Colors.black, radius: 0),
                   onDotClicked: (index) {
                     bannerController.carouselController.animateToPage(index);
                   },
                 ),
+                SizedBox(height: 16),
               ],
             ),
           ),

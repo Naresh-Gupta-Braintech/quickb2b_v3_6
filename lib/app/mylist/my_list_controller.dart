@@ -11,8 +11,17 @@ class MyListController extends GetxController implements GetxService {
   MyListRepository repository;
   bool loading = false;
   MyListModel? myList;
+  List<DataWithCategory>? dataWithCategory;
+  int topNavigationIndex = 0;
 
   void getUserData(int reset) {
     getUserItems(reset);
   }
+
+  void setSelectedTopNavigation(int index) {
+    topNavigationIndex = index;
+    update();
+  }
+
+ 
 }

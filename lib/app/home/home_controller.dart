@@ -26,8 +26,6 @@ class HomeController extends GetxController implements GetxService {
   HashMap<String, dynamic> productItemsMap = HashMap();
   CustomerDetailsModel? customerDetails;
 
-  List<String> customer = ["Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen", "Additional Contact - Foresglen"];
-
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
   void gethomeItems() {
@@ -56,11 +54,13 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void customerDetail(SingleCustmer customer) {
-     getCustomersDetails(customer);
+    getCustomersDetails(customer);
   }
 
   void onChaged(TextEditingController? controller, int index) {
     String value = controller?.text.trim() ?? "";
+    if (value == '.') value = '0$value';
+    print("value :: $value");
     if (value.isQuantityValid()) {
     } else {
       if (value.isNotEmpty) {

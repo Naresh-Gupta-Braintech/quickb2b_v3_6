@@ -7,7 +7,6 @@ extension MyListDataService on MyListController {
   Future<void> getUserItems(int reset) async {
     loading = true;
     MyListPayload payload = MyListPayload();
-
     payload.clientCode = "TK3757";
     payload.deviceId = "a1ad67eaf5b9140f";
     payload.userCode = "FGA";
@@ -16,7 +15,8 @@ extension MyListDataService on MyListController {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-
+          myList = response;
+          dataWithCategory = response?.dataWithCategory ?? [];
           update();
           break;
         case Result.onFailed:

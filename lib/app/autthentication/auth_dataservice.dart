@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
-import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
@@ -15,7 +15,8 @@ extension AuthDataservice on AuthController {
     payload.clientCode = "TK3757";
     payload.deviceId = "a1ad67eaf5b9140f";
     payload.username = userNameController.text.trim();
-    payload.deviceToken = "ckIH3g7vQPayt65ik6tZvH:APA91bFrQWbVlDj44DZNTIzPUfoBdUYzX_xktROmHDtqqmeGW9f8HtUpmOb7MSjjUklOYjY2uv3t4j6jdaGjyJLvkaBNf4aGJ9zTPKC-Z6Q3xGIAz2zsGNg";
+    payload.deviceToken =
+        "ckIH3g7vQPayt65ik6tZvH:APA91bFrQWbVlDj44DZNTIzPUfoBdUYzX_xktROmHDtqqmeGW9f8HtUpmOb7MSjjUklOYjY2uv3t4j6jdaGjyJLvkaBNf4aGJ9zTPKC-Z6Q3xGIAz2zsGNg";
     payload.appType = "Dual";
     payload.deviceType = GlobalConstants.getDeviceType();
     payload.type = "Dual";
@@ -25,12 +26,8 @@ extension AuthDataservice on AuthController {
         case Result.onSuccess:
           loading = false;
           loginData = response;
-          print("in auth :: ${loginData?.outlets}");
-          print("in auth :: ${loginData?.toJson()}");
           LocalStorage.saveLoginData(loginData);
-          await goToRoutes();
-          // Get.offAllNamed(RoutesHelper.home);
-          goToRoutes();
+          Get.find<SplashController>().init();
           break;
         case Result.onFailed:
           loading = false;

@@ -7,6 +7,7 @@ import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -37,7 +38,14 @@ class ProfileDashboardView extends StatelessWidget {
                         child: Container(
                           width: Get.width,
                           decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6.r)),
-                          child: Padding(padding: EdgeInsets.symmetric(vertical: 4.r), child: Text(textAlign: TextAlign.center, controller.list[controller.selectedIndex], style: TextStyle(color: Colors.white, fontSize: Dimensions.font16, fontFamily: TypographyResources.openSans))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4.r),
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              controller.list[controller.selectedIndex],
+                              style: TextStyle(color: Colors.white, fontSize: Dimensions.font16, fontFamily: TypographyResources.openSans),
+                            ),
+                          ),
                         ),
                       ),
                       Padding(padding: EdgeInsets.symmetric(vertical: 10.r), child: menueList(list: controller.list)),
@@ -54,6 +62,18 @@ class ProfileDashboardView extends StatelessWidget {
   }
 
   Widget _customText({required String text, required bool isSelected}) {
-    return Container(padding: EdgeInsets.symmetric(horizontal: 4.r), child: Center(child: Text(text, style: TextStyle(decoration: isSelected ? TextDecoration.underline : TextDecoration.none, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600))));
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.r),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            decoration: isSelected ? TextDecoration.underline : TextDecoration.none,
+            fontFamily: TypographyResources.openSans,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
   }
 }

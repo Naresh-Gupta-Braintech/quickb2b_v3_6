@@ -19,8 +19,8 @@ class SplashController extends GetxController implements GetxService {
   bool isCartFetchedSuccess = false;
 
   void init() async {
-    String acmCode = await sharedPreferences.getString(Keys.acmCode) ?? "";
-    if (acmCode != null && acmCode.isNotEmpty) {
+    String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
+    if (acmCode.isNotEmpty) {
       routeifManagerLogin();
       return;
     }
@@ -31,13 +31,11 @@ class SplashController extends GetxController implements GetxService {
   void routes() async {
     await Get.find<HomeController>().getCompanyDetails();
     await Get.find<CartController>().getCart();
-    final loginData = sharedPreferences.getString(Keys.loginData);
-    LoginData? data = await LocalStorage.getLoginData();
+    LoginData? loginData = await LocalStorage.getLoginData();
 
     if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
-      if (loginData != null && loginData.isNotEmpty) {
+      if (loginData != null) {
         Get.offAllNamed(RoutesHelper.home);
-        // ignore: prefer_is_empty
       } else {
         Get.offAllNamed(RoutesHelper.login);
       }
@@ -46,10 +44,13 @@ class SplashController extends GetxController implements GetxService {
 
   void routeifManagerLogin() async {
     CustomerDetailsModel? customerDetails = await LocalStorage.getCustomerDetails();
+    print("customer details == $customerDetails");
     if (customerDetails == null) {
       Get.offAllNamed(RoutesHelper.customerList);
       return;
+    } else {
+      Get.offAllNamed(RoutesHelper.home);
+      return;
     }
-    routes();
   }
 }

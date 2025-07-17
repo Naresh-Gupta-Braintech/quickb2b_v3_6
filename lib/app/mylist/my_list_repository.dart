@@ -15,7 +15,7 @@ class MyListRepository extends GetxController implements GetxService {
 
   Future<void> getUserItems(MyListPayload payload, Function(Result result, MyListModel? response, String? message) completion) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getHomeItems, method: HTTPMethod.post, payload: NetworkPayload.myListPayload(payload: payload));
+      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getUserItems, method: HTTPMethod.post, payload: NetworkPayload.myListPayload(payload: payload));
       try {
         final response = MyListModel.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");

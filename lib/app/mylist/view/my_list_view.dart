@@ -1,3 +1,4 @@
+import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,9 +22,11 @@ class MyListView extends StatefulWidget {
 }
 
 class _MyListState extends State<MyListView> {
+  int? selectedIndex;
   @override
   void initState() {
     super.initState();
+
     Get.find<MyListController>().getUserData(0);
   }
 
@@ -31,12 +34,12 @@ class _MyListState extends State<MyListView> {
   Widget build(BuildContext context) {
     return GetBuilder<MyListController>(
       builder: (mylistController) {
-        final menuList = mylistController.myList?.dataWithCategory ?? [];
+        final menuList = mylistController.dataWithCategory ?? [];
         print(menuList.length);
         return GetBuilder<HomeController>(
           builder: (controller) {
             var bannersList = controller.homeItems?.data?.bannerLists ?? [];
-            return GetBuilder<ProductController>( 
+            return GetBuilder<ProductController>(
               builder: (productController) {
                 return Scaffold(
                   backgroundColor: Colors.white,
@@ -45,58 +48,107 @@ class _MyListState extends State<MyListView> {
                     child:
                         mylistController.loading
                             ? customLoader()
-                            : Column(
+                            : Stack(
                               children: [
-                                headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
-                                Expanded(
-                                  child: Stack(
-                                    children: [
-                                      SingleChildScrollView(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        child: Column(
-                                          children: [
-                                            Visibility(
-                                              visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                              child: Padding(padding: EdgeInsets.only(top: 5.r), child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? [])),
-                                            ),
-                                            SizedBox(height: 6.r),
-                                            myListMenue(list: menuList),
-                                            SizedBox(height: 6.r),
+                                Column(
+                                  children: [
+                                    headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
 
-                                            //list view
-                                            SizedBox(
-                                              height: Get.height - (65.r + 90.r),
-                                              width: Get.width,
-                                              child: ListView.builder(
-                                                physics: const ClampingScrollPhysics(),
-
-                                                itemCount: productController.productsInventry.length,
-                                                itemBuilder: (context, index) {
-                                                  String showImage = productController.productdata?.showImage ?? "";
-                                                  return Padding(
-                                                    padding: EdgeInsets.symmetric(vertical: 4.r),
-                                                    child: horizontalProduct(
-                                                      onTap: () {},
-                                                      url: productController.productsInventry[index]?.image ?? "",
-                                                      price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                      name: productController.productsInventry[index]?.itemName ?? "",
-                                                      isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                      hint: productController.productsInventry[index]?.uom ?? "",
-                                                      isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1: TextEditingController(),
-                                                      controller2: TextEditingController(),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                    Visibility(
+                                      visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 5.r),
+                                        child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
                                       ),
-                                      Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(height: 6.r),
+                                    myListMenue(list: mylistController.dataWithCategory ?? []),
+                                    SizedBox(height: 6.r),
+                                    mylistController.myList?.showItemInGridView == 0
+                                        ?
+                                        //list view
+                                        Expanded(
+                                          child: SizedBox(
+                                            height: Get.height,
+                                            child: ReorderableListView.builder(
+                                              onReorder: (oldIndex, newIndex) {
+                                                final list = mylistController.dataWithCategory?[mylistController.topNavigationIndex].data;
+                                                if (list == null) return;
+                                                if (newIndex > oldIndex) newIndex -= 1;
+                                                final item = list.removeAt(oldIndex);
+                                                list.insert(newIndex, item);
+                                                mylistController.update();
+                                              },
+                                              physics: const ClampingScrollPhysics(),
+                                              itemCount: mylistController.dataWithCategory?[mylistController.topNavigationIndex].data?.length ?? 0,
+                                              itemBuilder: (context, index) {
+                                                String showImage = mylistController.myList?.showImage ?? "";
+                                                final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
+                                                return Container(
+                                                  key: ValueKey(index),
+                                                  padding: EdgeInsets.symmetric(vertical: 4.r),
+                                                  child: horizontalProduct(
+                                                    onTap: () {},
+                                                    onChanged: (value) {
+                                                      if (products?.data?[index].isMeasBox == 0) {
+                                                        controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                      } else {
+                                                        controller.onChaged(products?.data?[index].textEditingController1, index);
+                                                        controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                      }
+                                                    },
+                                                    url: products?.data?[index].image ?? "",
+                                                    price: products?.data?[index].itemPrice ?? "",
+                                                    name: products?.data?[index].itemName ?? "",
+                                                    isMeasBox: products?.data?[index].isMeasBox ?? 0,
+                                                    hint: products?.data?[index].uom ?? "",
+                                                    isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                    controller1: products?.data?[index].textEditingController1 ?? TextEditingController(),
+                                                    controller2: products?.data?[index].textEditingController2 ?? TextEditingController(),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                        :
+                                        //Grid view
+                                        Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 4.r),
+                                          child: SizedBox(
+                                            height: Get.height - (65.r + 60.r),
+                                            child: DynamicHeightGridView(
+                                              physics: const ClampingScrollPhysics(),
+                                              builder: (context, index) {
+                                                String showImage = productController.productdata?.showImage ?? "";
+                                                final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
+                                                return verticalProduct(
+                                                  url: productController.productsInventry[index]?.image ?? "",
+                                                  price: productController.productsInventry[index]?.itemPrice ?? "",
+                                                  name: productController.productsInventry[index]?.itemName ?? "",
+                                                  isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
+                                                  hint: productController.productsInventry[index]?.uom ?? "",
+                                                  isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                  controller1: TextEditingController(),
+                                                  controller2: TextEditingController(),
+                                                  onChanged: (value) {
+                                                    if (products?.data?[index].isMeasBox == 0) {
+                                                      controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                    } else {
+                                                      controller.onChaged(products?.data?[index].textEditingController1, index);
+                                                      controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                              itemCount: productController.productsInventry.length,
+                                              crossAxisCount: 2,
+                                            ),
+                                          ),
+                                        ),
+                                  ],
                                 ),
+                                Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
                               ],
                             ),
                   ),
@@ -121,11 +173,23 @@ class _MyListState extends State<MyListView> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(padding: EdgeInsets.only(bottom: Dimensions.padding8), child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600))),
+              Padding(
+                padding: EdgeInsets.only(bottom: Dimensions.padding8),
+                child: Text(
+                  "Select the outlet to place an order",
+                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
+                ),
+              ),
               for (int i = 0; i < controller.outlets.length; i++)
                 Padding(
                   padding: EdgeInsets.only(bottom: Dimensions.padding8),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)), Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale))]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
+                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
+                    ],
+                  ),
                 ),
             ],
           ),

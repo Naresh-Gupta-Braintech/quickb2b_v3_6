@@ -30,7 +30,6 @@ class _ProductViewState extends State<ProductView> {
         if (_productScrollController.position.pixels == 0) {
         } else {
           Get.find<ProductController>().page += 1;
-          // Get.find<ProductController>().searchProductByCategoryId(Get.find<ProductController>().previousCategory);
         }
       }
     });
@@ -70,7 +69,14 @@ class _ProductViewState extends State<ProductView> {
                                       children: [
                                         Visibility(
                                           visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                          child: Padding(padding: EdgeInsets.only(top: 5.r), child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? [])),
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 5.r),
+                                            child: customCarousel(
+                                              width: Get.width,
+                                              height: 130.r,
+                                              images: controller.homeItems?.data?.bannerLists ?? [],
+                                            ),
+                                          ),
                                         ),
                                         SizedBox(height: 6.r),
                                         categoryListMenu(list: productController.categories?.categories ?? []),
@@ -96,8 +102,16 @@ class _ProductViewState extends State<ProductView> {
                                                       isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
                                                       hint: productController.productsInventry[index]?.uom ?? "",
                                                       isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1: TextEditingController(),
-                                                      controller2: TextEditingController(),
+                                                      controller1: productController.productsInventry[index]?.textEditingController1 ??TextEditingController(),
+                                                      controller2: productController.productsInventry[index]?.textEditingController2 ??TextEditingController(),
+                                                      onChanged: (value) {
+                                                    if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
+                                                    } else {
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController1 ??TextEditingController(), index);
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
+                                                    }
+                                                  },
                                                     ),
                                                   );
                                                 },
@@ -123,8 +137,17 @@ class _ProductViewState extends State<ProductView> {
                                                       isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
                                                       hint: productController.productsInventry[index]?.uom ?? "",
                                                       isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1: TextEditingController(),
-                                                      controller2: TextEditingController(),
+                                                      controller1: productController.productsInventry[index]?.textEditingController1 ??TextEditingController(),
+                                                      controller2: productController.productsInventry[index]?.textEditingController2 ??TextEditingController(),
+                                                      onChanged: (value) {
+                                                    if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
+                                                    } else {
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController1 ??TextEditingController(), index);
+                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
+                                                    }
+                                                  },
+                                                      
                                                     );
                                                   },
                                                   itemCount: productController.productsInventry.length,
@@ -161,11 +184,23 @@ class _ProductViewState extends State<ProductView> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(padding: EdgeInsets.only(bottom: Dimensions.padding8), child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600))),
+              Padding(
+                padding: EdgeInsets.only(bottom: Dimensions.padding8),
+                child: Text(
+                  "Select the outlet to place an order",
+                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
+                ),
+              ),
               for (int i = 0; i < controller.outlets.length; i++)
                 Padding(
                   padding: EdgeInsets.only(bottom: Dimensions.padding8),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)), Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale))]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
+                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
+                    ],
+                  ),
                 ),
             ],
           ),

@@ -15,7 +15,7 @@ Widget customButton({required String textLabel,required VoidCallback onPressed})
       child: Text(textLabel, style: TextStyle(color: Colors.black, fontSize: Dimensions.font16, fontFamily: 'AcuminRegular')),
     ),
   );
-}
+      }
 
 Widget customButton2({required String textLabel, required double width, required Color color, required VoidCallback onPressed}) {
   return Container(

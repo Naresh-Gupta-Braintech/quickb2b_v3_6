@@ -34,7 +34,15 @@ class _CustomersListState extends State<CustomersList> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        headerWithSearch(showOutlet: false, isSearchBarFull: true, showPrice: 0, rightText: "Add Customers", hint: "Search all Customers", textAlignment: TextAlign.center,appName: ""),
+        headerWithSearch(
+          showOutlet: false,
+          isSearchBarFull: true,
+          showPrice: 0,
+          rightText: "Add Customers",
+          hint: "Search all Customers",
+          textAlignment: TextAlign.center,
+          appName: "",
+        ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.r),
@@ -48,7 +56,12 @@ class _CustomersListState extends State<CustomersList> {
                       onTap: () {
                         controller.customerDetail(controller.customers?.data?[index] ?? SingleCustmer());
                       },
-                      child: Padding(padding: EdgeInsets.symmetric(vertical: Dimensions.padding8), child: Text("${controller.customers?.data?[index].businessName ?? ""} - ${controller.customers?.data?[index].deliverySuburb}")),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: Dimensions.padding8),
+                        child: Text(
+                          "${controller.customers?.data?[index].businessName ?? ""} - ${controller.customers?.data?[index].deliverySuburb}",
+                        ),
+                      ),
                     ),
                     Divider(thickness: 0.5),
                   ],

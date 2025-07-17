@@ -7,7 +7,6 @@ import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 extension CartDataservice on CartController {
   Future<void> getCart() async {
     loading = true;
-    update();
     CartPayload payload = CartPayload();
     payload.acmCode = "";
     payload.appType = "Dual";

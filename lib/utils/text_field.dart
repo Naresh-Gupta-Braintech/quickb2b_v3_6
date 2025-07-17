@@ -9,7 +9,12 @@ Widget customTextField({required TextEditingController controller, required Stri
     height: Dimensions.viewHeight30,
     margin: EdgeInsets.symmetric(horizontal: 50),
     decoration: BoxDecoration(color: Colors.white.withAlpha(220)),
-    child: TextField(controller: controller, decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none), textAlign: TextAlign.center, textAlignVertical: TextAlignVertical.center),
+    child: TextField(
+      controller: controller,
+      decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none),
+      textAlign: TextAlign.center,
+      textAlignVertical: TextAlignVertical.center,
+    ),
   );
 }
 
@@ -18,23 +23,47 @@ Widget customObsecureTextField({required TextEditingController controller, requi
     height: Dimensions.viewHeight30,
     margin: EdgeInsets.symmetric(horizontal: 50),
     decoration: BoxDecoration(color: Colors.white.withAlpha(220)),
-    child: TextField(controller: controller, decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none), obscureText: obsecureText, textAlignVertical: TextAlignVertical.center, textAlign: TextAlign.center),
+    child: TextField(
+      controller: controller,
+      decoration: InputDecoration(hintText: textFieldLabel, hintStyle: TextStyle(color: Color(0xFF696969)), border: InputBorder.none),
+      obscureText: obsecureText,
+      textAlignVertical: TextAlignVertical.center,
+      textAlign: TextAlign.center,
+    ),
   );
 }
 
-Widget customTextField2({required TextEditingController controller, required String textFieldLabel, TextInputType? keyboardType}) {
+Widget customTextField2({
+  required TextEditingController controller,
+  required String textFieldLabel,
+  TextInputType? keyboardType,
+  Color? borderColor,
+  double? borderWidth,
+  int? maxLine,
+  double? height,
+}) {
   return SizedBox(
-    height: 30.r,
+    height: height ?? 30.r,
     child: TextField(
+      maxLines: maxLine ?? 1,
       keyboardType: keyboardType ?? TextInputType.text,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         hintText: textFieldLabel,
         hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
         contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 1.r), borderRadius: BorderRadius.circular(0)),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 1.r), borderRadius: BorderRadius.circular(0)),
-        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black, width: 1.r), borderRadius: BorderRadius.circular(0)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+          borderRadius: BorderRadius.circular(0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+          borderRadius: BorderRadius.circular(0),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+          borderRadius: BorderRadius.circular(0),
+        ),
       ),
       style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
     ),
@@ -49,17 +78,33 @@ Widget dropDown({required List<String> items}) {
       padding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
       underline: SizedBox.shrink(),
       isExpanded: true,
-      hint: Text('Select Region', style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey)),
+      hint: Text(
+        'Select Region',
+        style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+      ),
       items:
           items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(alignment: Alignment.center, value: value, child: Text(textAlign: TextAlign.center, value, style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.black)));
+            return DropdownMenuItem<String>(
+              alignment: Alignment.center,
+              value: value,
+              child: Text(
+                textAlign: TextAlign.center,
+                value,
+                style: TextStyle(
+                  fontSize: Dimensions.font12,
+                  fontFamily: TypographyResources.acumin,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            );
           }).toList(),
       onChanged: (String? newValue) {},
     ),
   );
 }
 
-Widget customSearchBar({required TextEditingController textController, bool isFull = false, String? hint,required TextAlign textAlignment }) {
+Widget customSearchBar({required TextEditingController textController, bool isFull = false, String? hint, required TextAlign textAlignment}) {
   return SizedBox(
     height: 39,
     width: isFull ? Get.width * 0.98 : Get.width / 1.19,
@@ -77,6 +122,31 @@ Widget customSearchBar({required TextEditingController textController, bool isFu
         focusColor: Colors.black,
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
       ),
+    ),
+  );
+}
+
+Widget customTextFieldWithSuffix({
+  required TextEditingController controller,
+  required String textFieldLabel,
+  TextInputType? keyboardType,
+  required IconData icon,
+}) {
+  return SizedBox(
+    height: 30.r,
+    child: TextField(
+      keyboardType: keyboardType ?? TextInputType.text,
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        suffixIcon: Icon(icon),
+        hintText: textFieldLabel,
+        hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+        contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
+        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
+      ),
+      style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
     ),
   );
 }

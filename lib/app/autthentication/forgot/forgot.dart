@@ -16,7 +16,11 @@ class ForgetPasswordPage extends StatelessWidget {
       appBar: AppBar(
         leading: GestureDetector(onTap: Get.back, child: Icon(Icons.arrow_back, color: Colors.white)),
         backgroundColor: Colors.black,
-        title: Text(LocalText.forgotPassword, textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w600, fontSize: Dimensions.font20)),
+        title: Text(
+          LocalText.forgotPassword,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w600, fontSize: Dimensions.font20),
+        ),
       ),
       body: Column(
         children: [
@@ -25,8 +29,16 @@ class ForgetPasswordPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId),
-                Padding(padding: EdgeInsets.only(top: Dimensions.padding16), child: customButton2(textLabel: LocalText.continueText.toUpperCase(), width: double.infinity, color: Colors.black, onPressed: () {})),
+                customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId, maxLine: 1),
+                Padding(
+                  padding: EdgeInsets.only(top: Dimensions.padding16),
+                  child: customButton2(
+                    textLabel: LocalText.continueText.toUpperCase(),
+                    width: double.infinity,
+                    color: Colors.black,
+                    onPressed: () {},
+                  ),
+                ),
               ],
             ),
           ),

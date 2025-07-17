@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.decode(str));
 
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
@@ -18,7 +20,16 @@ class ProductModel {
   bool? displayAllItemsInApp;
   Products? data;
 
-  ProductModel({this.message, this.status, this.showPrice, this.showItemInGridView, this.showAppBanner, this.showImage, this.displayAllItemsInApp, this.data});
+  ProductModel({
+    this.message,
+    this.status,
+    this.showPrice,
+    this.showItemInGridView,
+    this.showAppBanner,
+    this.showImage,
+    this.displayAllItemsInApp,
+    this.data,
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
     message: json["message"],
@@ -31,7 +42,16 @@ class ProductModel {
     data: json["data"] == null ? null : Products.fromJson(json["data"]),
   );
 
-  Map<String, dynamic> toJson() => {"message": message, "status": status, "show_price": showPrice, "show_item_in_grid_view": showItemInGridView, "show_app_banner": showAppBanner, "show_image": showImage, "display_all_items_in_app": displayAllItemsInApp, "data": data?.toJson()};
+  Map<String, dynamic> toJson() => {
+    "message": message,
+    "status": status,
+    "show_price": showPrice,
+    "show_item_in_grid_view": showItemInGridView,
+    "show_app_banner": showAppBanner,
+    "show_image": showImage,
+    "display_all_items_in_app": displayAllItemsInApp,
+    "data": data?.toJson(),
+  };
 }
 
 class Products {
@@ -43,7 +63,10 @@ class Products {
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(
     bannerLists: json["bannerLists"] == null ? [] : List<BannerList>.from(json["bannerLists"]!.map((x) => BannerList.fromJson(x))),
-    inventoriesList: json["inventoriesList"] == null ? [] : List<ProductsInventoriesList>.from(json["inventoriesList"]!.map((x) => ProductsInventoriesList.fromJson(x))),
+    inventoriesList:
+        json["inventoriesList"] == null
+            ? []
+            : List<ProductsInventoriesList>.from(json["inventoriesList"]!.map((x) => ProductsInventoriesList.fromJson(x))),
     multiItems: json["multi_items"] == null ? [] : List<dynamic>.from(json["multi_items"]!.map((x) => x)),
   );
 
@@ -63,9 +86,21 @@ class BannerList {
 
   BannerList({this.image, this.bannerText, this.linkItem, this.linkItemType, this.linkItemTypeId});
 
-  factory BannerList.fromJson(Map<String, dynamic> json) => BannerList(image: json["image"], bannerText: json["banner_text"], linkItem: json["link_item"], linkItemType: json["link_item_type"], linkItemTypeId: json["link_item_type_id"]);
+  factory BannerList.fromJson(Map<String, dynamic> json) => BannerList(
+    image: json["image"],
+    bannerText: json["banner_text"],
+    linkItem: json["link_item"],
+    linkItemType: json["link_item_type"],
+    linkItemTypeId: json["link_item_type_id"],
+  );
 
-  Map<String, dynamic> toJson() => {"image": image, "banner_text": bannerText, "link_item": linkItem, "link_item_type": linkItemType, "link_item_type_id": linkItemTypeId};
+  Map<String, dynamic> toJson() => {
+    "image": image,
+    "banner_text": bannerText,
+    "link_item": linkItem,
+    "link_item_type": linkItemType,
+    "link_item_type_id": linkItemTypeId,
+  };
 }
 
 class ProductsInventoriesList {
@@ -93,6 +128,8 @@ class ProductsInventoriesList {
   int? inMyList;
   int? id;
   int? priority;
+  TextEditingController textEditingController1 = TextEditingController();
+  TextEditingController textEditingController2 = TextEditingController();
 
   ProductsInventoriesList({
     this.itemCode,
