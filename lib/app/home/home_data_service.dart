@@ -48,11 +48,11 @@ extension HomeDataService on HomeController {
     payload.type = "Dual";
     payload.userCode = "FGA";
     payload.deviceId = "a1ad67eaf5b9140f";
-    await repository.getHomeItems(payload, (result, response, message) {
+    await repository.getCompanyDetails(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-          homeItems = response;
+          companyDetails = response;
           Get.find<SplashController>().isCompanyDetailsFetchedSuccess = true;
           update();
           break;

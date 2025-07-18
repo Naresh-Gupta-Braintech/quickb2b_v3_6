@@ -14,7 +14,7 @@ class NavigationController extends GetxController implements GetxService {
     Navigation(iconUrl: Images.heart, name: "My List", route: RoutesHelper.myList),
     Navigation(iconUrl: Images.search, name: "Products", route: RoutesHelper.products),
     Navigation(iconUrl: Images.cart, name: "My Order", route: RoutesHelper.myOrder),
-    Navigation(iconUrl: Images.home, name: "Account", route: RoutesHelper.account),
+    Navigation(iconUrl: Images.user, name: "Account", route: RoutesHelper.account),
   ];
 
   void setSelectedIndex(int index) {

@@ -28,6 +28,7 @@ extension AuthDataservice on AuthController {
           loginData = response;
           LocalStorage.saveLoginData(loginData);
           Get.find<SplashController>().init();
+          print("login success");
           break;
         case Result.onFailed:
           loading = false;

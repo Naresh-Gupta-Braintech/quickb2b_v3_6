@@ -159,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
                                                           if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
                                                             controller.onChaged(
                                                               controller.homeItems?.data?.allInventories?[index].controller2,
-                                                              
+
                                                               index,
                                                             );
                                                           } else {
@@ -183,6 +183,8 @@ class _HomeViewState extends State<HomeView> {
                                                         price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "",
                                                         name: controller.homeItems?.data?.allInventories?[index].itemName ?? "",
                                                         isMeasBox: controller.homeItems?.data?.allInventories?[index].isMeasBox ?? 0,
+                                                        originQty: controller.homeItems?.data?.allInventories?[index].originQty ?? "",
+                                                        measureQty: controller.homeItems?.data?.allInventories?[index].measureQty ?? "",
                                                       ),
                                                     );
                                                   },

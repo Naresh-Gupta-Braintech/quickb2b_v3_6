@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
+import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
+import 'package:quickb2b_v3_6/network/data/response/banner_list.dart';
 
 class HomeItemsData {
   String? message;
@@ -150,141 +152,9 @@ class AllCategory {
   Map<String, dynamic> toJson() => {"id": id, "name": name, "thumb_image": thumbImage};
 }
 
-class AllInventory {
-  String? itemCode;
-  String? itemName;
-  String? itemPrice;
-  Status? status;
-  String? uom;
-  String? quantity;
-  String? measureQty;
-  String? originQty;
-  String? comment;
-  int? specialItemId;
-  int? specialTitle;
-  int? orderBy;
-  int? orderByCat;
-  String? portion;
-  String? imageDescription;
-  String? image;
-  String? thumbImage;
-  int? categoryId;
-  int? retailCategoryId;
-  int? isDelete;
-  int? inMyList;
-  int? isMeasBox;
-  int? id;
-  int? priority;
-  TextEditingController? controller1 = TextEditingController();
-  TextEditingController? controller2 = TextEditingController();
 
-  AllInventory({
-    this.itemCode,
-    this.itemName,
-    this.itemPrice,
-    this.status,
-    this.uom,
-    this.quantity,
-    this.measureQty,
-    this.originQty,
-    this.comment,
-    this.specialItemId,
-    this.specialTitle,
-    this.orderBy,
-    this.orderByCat,
-    this.portion,
-    this.imageDescription,
-    this.image,
-    this.thumbImage,
-    this.categoryId,
-    this.retailCategoryId,
-    this.isDelete,
-    this.inMyList,
-    this.isMeasBox,
-    this.id,
-    this.priority,
-  });
 
-  factory AllInventory.fromRawJson(String str) => AllInventory.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
-
-  factory AllInventory.fromJson(Map<String, dynamic> json) => AllInventory(
-    itemCode: json["item_code"],
-    itemName: json["item_name"],
-    itemPrice: json["item_price"],
-    status: statusValues.map[json["status"]]!,
-    uom: json["uom"],
-    quantity: json["quantity"],
-    measureQty: json["measureQty"],
-    originQty: json["originQty"],
-    comment: json["comment"],
-    specialItemId: json["special_item_id"],
-    specialTitle: json["special_title"],
-    orderBy: json["order_by"],
-    orderByCat: json["order_by_cat"],
-    portion: json["portion"],
-    imageDescription: json["image_description"],
-    image: json["image"],
-    thumbImage: json["thumb_image"],
-    categoryId: json["category_id"],
-    retailCategoryId: json["retail_category_id"],
-    isDelete: json["is_delete"],
-    inMyList: json["inMyList"],
-    isMeasBox: json["is_meas_box"],
-    id: json["id"],
-    priority: json["priority"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "item_code": itemCode,
-    "item_name": itemName,
-    "item_price": itemPrice,
-    "status": statusValues.reverse[status],
-    "uom": uom,
-    "quantity": quantity,
-    "measureQty": measureQty,
-    "originQty": originQty,
-    "comment": comment,
-    "special_item_id": specialItemId,
-    "special_title": specialTitle,
-    "order_by": orderBy,
-    "order_by_cat": orderByCat,
-    "portion": portion,
-    "image_description": imageDescription,
-    "image": image,
-    "thumb_image": thumbImage,
-    "category_id": categoryId,
-    "retail_category_id": retailCategoryId,
-    "is_delete": isDelete,
-    "inMyList": inMyList,
-    "is_meas_box": isMeasBox,
-    "id": id,
-    "priority": priority,
-  };
-}
-
-enum Status { ACTIVE }
-
-final statusValues = EnumValues({"Active": Status.ACTIVE});
-
-class BannerList {
-  String? image;
-  String? bannerText;
-  int? linkItem;
-  String? linkItemType;
-  String? linkItemTypeId;
-
-  BannerList({this.image, this.bannerText, this.linkItem, this.linkItemType, this.linkItemTypeId});
-
-  factory BannerList.fromRawJson(String str) => BannerList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory BannerList.fromJson(Map<String, dynamic> json) => BannerList(image: json["image"], bannerText: json["banner_text"], linkItem: json["link_item"], linkItemType: json["link_item_type"], linkItemTypeId: json["link_item_type_id"]);
-
-  Map<String, dynamic> toJson() => {"image": image, "banner_text": bannerText, "link_item": linkItem, "link_item_type": linkItemType, "link_item_type_id": linkItemTypeId};
-}
 
 class FeaturedItemImage {
   String? image;

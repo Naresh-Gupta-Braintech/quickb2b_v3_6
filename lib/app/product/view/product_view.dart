@@ -95,6 +95,8 @@ class _ProductViewState extends State<ProductView> {
                                                   return Padding(
                                                     padding: EdgeInsets.symmetric(vertical: 4.r),
                                                     child: horizontalProduct(
+                                                      originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                      measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                       onTap: () {},
                                                       url: productController.productsInventry[index]?.image ?? "",
                                                       price: productController.productsInventry[index]?.itemPrice ?? "",
@@ -102,16 +104,32 @@ class _ProductViewState extends State<ProductView> {
                                                       isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
                                                       hint: productController.productsInventry[index]?.uom ?? "",
                                                       isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1: productController.productsInventry[index]?.textEditingController1 ??TextEditingController(),
-                                                      controller2: productController.productsInventry[index]?.textEditingController2 ??TextEditingController(),
+                                                      controller1:
+                                                          productController.productsInventry[index]?.textEditingController1 ??
+                                                          TextEditingController(),
+                                                      controller2:
+                                                          productController.productsInventry[index]?.textEditingController2 ??
+                                                          TextEditingController(),
                                                       onChanged: (value) {
-                                                    if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
-                                                    } else {
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController1 ??TextEditingController(), index);
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
-                                                    }
-                                                  },
+                                                        if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                        } else {
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController1 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                        }
+                                                      },
                                                     ),
                                                   );
                                                 },
@@ -131,23 +149,40 @@ class _ProductViewState extends State<ProductView> {
                                                     String showImage = productController.productdata?.showImage ?? "";
 
                                                     return verticalProduct(
+                                                      originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                      measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                       url: productController.productsInventry[index]?.image ?? "",
                                                       price: productController.productsInventry[index]?.itemPrice ?? "",
                                                       name: productController.productsInventry[index]?.itemName ?? "",
                                                       isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
                                                       hint: productController.productsInventry[index]?.uom ?? "",
                                                       isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1: productController.productsInventry[index]?.textEditingController1 ??TextEditingController(),
-                                                      controller2: productController.productsInventry[index]?.textEditingController2 ??TextEditingController(),
+                                                      controller1:
+                                                          productController.productsInventry[index]?.textEditingController1 ??
+                                                          TextEditingController(),
+                                                      controller2:
+                                                          productController.productsInventry[index]?.textEditingController2 ??
+                                                          TextEditingController(),
                                                       onChanged: (value) {
-                                                    if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
-                                                    } else {
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController1 ??TextEditingController(), index);
-                                                      controller.onChaged(productController.productsInventry[index]?.textEditingController2 ??TextEditingController(), index);
-                                                    }
-                                                  },
-                                                      
+                                                        if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                        } else {
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController1 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                          controller.onChaged(
+                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                                TextEditingController(),
+                                                            index,
+                                                          );
+                                                        }
+                                                      },
                                                     );
                                                   },
                                                   itemCount: productController.productsInventry.length,

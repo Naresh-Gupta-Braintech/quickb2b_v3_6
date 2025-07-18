@@ -19,33 +19,36 @@ class SplashController extends GetxController implements GetxService {
   bool isCartFetchedSuccess = false;
 
   void init() async {
-    String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
-    if (acmCode.isNotEmpty) {
-      routeifManagerLogin();
-      return;
-    }
+    LoginData? loginData = await LocalStorage.getLoginData();
+    if (loginData != null) {
+      print("already login");
+      print("started company details api");
 
-    routes();
+      await Get.find<HomeController>().getCompanyDetails();
+      print("company details api completed");
+      print("started cart api");
+
+      await Get.find<CartController>().getCart();
+      print("start cart api completed");
+
+      String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
+      acmCode.isNotEmpty ? routeifManagerLogin() : routes();
+    } else {
+      Get.offAllNamed(RoutesHelper.login);
+    }
   }
 
   void routes() async {
-    await Get.find<HomeController>().getCompanyDetails();
-    await Get.find<CartController>().getCart();
-    LoginData? loginData = await LocalStorage.getLoginData();
-
     if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
-      if (loginData != null) {
-        Get.offAllNamed(RoutesHelper.home);
-      } else {
-        Get.offAllNamed(RoutesHelper.login);
-      }
+      Get.offAllNamed(RoutesHelper.home);
     }
   }
 
   void routeifManagerLogin() async {
     CustomerDetailsModel? customerDetails = await LocalStorage.getCustomerDetails();
-    print("customer details == $customerDetails");
     if (customerDetails == null) {
+      print("go to company login");
+
       Get.offAllNamed(RoutesHelper.customerList);
       return;
     } else {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
@@ -65,5 +66,27 @@ class LocalStorage {
   static setUserCode(String str) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(Keys.userCode, str);
+  }
+
+  static Future<void> saveCartDetails(CartData? cart) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = cart!.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.cart, data);
+  }
+
+  static Future<CartData?> getCartDetails() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.cart);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return CartData.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:quickb2b_v3_6/reusable/network_image.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
@@ -48,7 +49,19 @@ Widget verticalProduct({
   required int isShowImage,
   required TextEditingController controller1,
   required TextEditingController controller2,
+  required String originQty,
+  required String measureQty,
 }) {
+  double orgQty = double.tryParse(originQty) ?? 0;
+  if (orgQty == 0) {
+    originQty = "";
+  }
+  if (isMeasBox == 0) {
+    controller2.text = originQty;
+  } else {
+    controller1.text = measureQty;
+    controller2.text = originQty;
+  }
   return Container(
     width: 160.r,
     height: 230.r,
@@ -144,22 +157,60 @@ Widget _textField({
   return SizedBox(
     width: textFieldWidth,
     child: TextFormField(
+      textInputAction: TextInputAction.done,
       onChanged: onChanged,
       controller: controller,
-      cursorHeight: 10.r, // Optional: match it to text size
-      style: TextStyle(fontSize: 10.r), // Ensure text and cursor match
-      textAlignVertical: TextAlignVertical.center, // Vertically center text
+      cursorHeight: 10.r,
+      style: TextStyle(fontSize: 10.r),
+      textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(fontSize: 10.r),
-        contentPadding: EdgeInsets.symmetric(vertical: 0.r, horizontal: 0.r), // Balanced padding
-        // isDense: true, // Reduces height further
-        constraints: BoxConstraints(maxHeight: 25.r), // Control total height
+        contentPadding: EdgeInsets.symmetric(vertical: 0.r, horizontal: 0.r),
+        constraints: BoxConstraints(maxHeight: 25.r),
         focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: .8, color: Colors.grey)),
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: .8, color: Colors.grey)),
       ),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
+    ),
+  );
+}
+
+Widget _cupertinoTextField({
+  required String hint,
+  required TextEditingController controller,
+  Function(String value)? onChanged,
+  required double textFieldWidth,
+}) {
+  final FocusNode _focusNode = FocusNode();
+  return KeyboardActions(
+    config: KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      actions: [
+        KeyboardActionsItem(focusNode: _focusNode, toolbarButtons: [(node) => TextButton(onPressed: () => node.unfocus(), child: Text("Done"))]),
+      ],
+    ),
+    child: SizedBox(
+      width: textFieldWidth,
+      child: TextFormField(
+        textInputAction: TextInputAction.done,
+        onChanged: onChanged,
+        controller: controller,
+        cursorHeight: 10.r,
+        style: TextStyle(fontSize: 10.r),
+        textAlignVertical: TextAlignVertical.center,
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(fontSize: 10.r),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.r, horizontal: 0.r),
+          constraints: BoxConstraints(maxHeight: 25.r),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: .8, color: Colors.grey)),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: .8, color: Colors.grey)),
+        ),
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+      ),
     ),
   );
 }
@@ -272,7 +323,19 @@ Widget horizontalProduct({
   required TextEditingController controller1,
   required TextEditingController controller2,
   required VoidCallback onTap,
+  required String originQty,
+  required String measureQty,
 }) {
+  double orgQty = double.tryParse(originQty) ?? 0;
+  if (orgQty == 0) {
+    originQty = "";
+  }
+  if (isMeasBox == 0) {
+    controller2.text = originQty;
+  } else {
+    controller1.text = measureQty;
+    controller2.text = originQty;
+  }
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 2.r),
 

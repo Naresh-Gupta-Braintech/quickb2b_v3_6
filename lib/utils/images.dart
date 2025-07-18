@@ -20,4 +20,5 @@ class Images {
   static final rightTale = "$_basePath/right_tale.png";
   static final reorder = "$_basePath/reorder.png";
   static final radioAdd = "$_basePath/radio_add.png";
+  static final user = "$_basePath/user.png";
 }

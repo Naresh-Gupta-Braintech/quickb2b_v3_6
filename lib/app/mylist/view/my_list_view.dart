@@ -105,6 +105,8 @@ class _MyListState extends State<MyListView> {
                                                     isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
                                                     controller1: products?.data?[index].textEditingController1 ?? TextEditingController(),
                                                     controller2: products?.data?[index].textEditingController2 ?? TextEditingController(),
+                                                    originQty: products?.data?[index].originQty ?? "",
+                                                    measureQty: products?.data?[index].measureQty ?? "",
                                                   ),
                                                 );
                                               },
@@ -123,6 +125,8 @@ class _MyListState extends State<MyListView> {
                                                 String showImage = productController.productdata?.showImage ?? "";
                                                 final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
                                                 return verticalProduct(
+                                                  originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                  measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                   url: productController.productsInventry[index]?.image ?? "",
                                                   price: productController.productsInventry[index]?.itemPrice ?? "",
                                                   name: productController.productsInventry[index]?.itemName ?? "",

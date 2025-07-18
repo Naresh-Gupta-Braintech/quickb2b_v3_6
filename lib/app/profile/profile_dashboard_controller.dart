@@ -6,6 +6,7 @@ import 'package:quickb2b_v3_6/app/profile/view/account.dart';
 import 'package:quickb2b_v3_6/app/profile/view/app_user_guide.dart';
 import 'package:quickb2b_v3_6/app/profile/view/links_page.dart';
 import 'package:quickb2b_v3_6/app/profile/view/past_order.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/past_order_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/profile_app_link.dart';
 import 'package:quickb2b_v3_6/network/data/response/profile_app_user_guide.dart';
@@ -137,5 +138,10 @@ class ProfileDashboardController extends GetxController {
 
   void getUserGuide() {
     getAppUserGuide();
+  }
+
+  void logOut() {
+    sharedPreferences.clear();
+    Get.offNamed(RoutesHelper.splash);
   }
 }

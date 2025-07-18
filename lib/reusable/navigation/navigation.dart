@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
+import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
@@ -102,10 +103,7 @@ Widget menueList({required List<String> list}) {
                     if (index == 5) {
                       showLogoutAlert(
                         onPressed: () {
-                          controller.sharedPreferences.remove(Keys.loginData);
-                          controller.sharedPreferences.remove(Keys.acmCode);
-                          controller.sharedPreferences.remove(Keys.customerDetails);
-                          Get.offNamed(RoutesHelper.splash);
+                          Get.find<ProfileDashboardController>().logOut();
                         },
                         showCancelBtn: true,
                         description: LocalText.logoutDiscription,

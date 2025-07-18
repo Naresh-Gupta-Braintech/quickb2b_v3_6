@@ -32,8 +32,9 @@ class _CartViewState extends State<CartView> {
       builder: (cartController) {
         return GetBuilder<HomeController>(
           builder: (controller) {
-            var bannersList = controller.homeItems?.data?.bannerLists ?? [];
+            var bannersList = cartController.cartData?.data?.bannerLists ?? [];
             var orders = cartController.cartData?.data?.allInventories ?? [];
+            var multiItemOrder = cartController.cartData?.data?.multiItems ?? [];
             return Scaffold(
               backgroundColor: Colors.white,
               bottomNavigationBar: bottomNavigationMenu(),
