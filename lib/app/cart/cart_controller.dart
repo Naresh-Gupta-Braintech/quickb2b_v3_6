@@ -15,9 +15,38 @@ class CartController extends GetxController implements GetxService {
   bool loading = true;
   CartData? cartData;
   double? cartPrice = 0.00;
+  bool isEdit = false;
+  List<AllInventory?> templist = [];
+
+  void makeEditable() {
+    cartData?.data?.allInventories?.forEach((order) {
+      order.controller2?.text = order.quantity ?? "";
+      order.controller1?.text = order.measureQty ?? "";
+      print("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
+    });
+    isEdit = true;
+    update();
+  }
+
+  void saveEditable() {
+    cartData?.data?.allInventories?.forEach((order) {
+      order.quantity = order.controller2?.text;
+      order.measureQty = order.controller1?.text;
+      calculateCartPrice();
+      print("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
+    });
+    isEdit = false;
+    update();
+  }
 
   void getCartData() {
     getCart();
+  }
+
+  void removedItem(index) {
+    // templist.add(cartData?.data?.allInventories?[index]);
+    cartData?.data?.allInventories?.removeAt(index);
+    update();
   }
 
   void addItemToCartLocally({String? itemCode}) async {

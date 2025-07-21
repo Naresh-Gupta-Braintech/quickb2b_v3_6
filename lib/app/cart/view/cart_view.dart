@@ -9,6 +9,7 @@ import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/network_image.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
+import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/text_field.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -35,6 +36,9 @@ class _CartViewState extends State<CartView> {
             var bannersList = cartController.cartData?.data?.bannerLists ?? [];
             var orders = cartController.cartData?.data?.allInventories ?? [];
             var multiItemOrder = cartController.cartData?.data?.multiItems ?? [];
+            bool isShowPrice = false;
+            bool isShowMeasureQty = false;
+
             return Scaffold(
               backgroundColor: Colors.white,
               bottomNavigationBar: bottomNavigationMenu(),
@@ -46,173 +50,147 @@ class _CartViewState extends State<CartView> {
                     children: [
                       SizedBox(height: Dimensions.padding10),
                       headerWithSearch(appName: controller.homeItems?.appName ?? "", isSearchBarFull: true, showOutlet: false),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          physics: const ClampingScrollPhysics(),
-                          child: Column(
+                      Visibility(
+                        visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 5.r),
+                          child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
+                        ),
+                      ),
+                      SizedBox(height: 8.r),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 0.5),
+                          borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                        ),
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(child: Row(children: [Visibility(visible: false, child: Icon(Icons.ac_unit)), Text("Item")])),
+                            Flexible(
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("Qty"), Text("Measure"), Text("Price")]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: cartController.cartData?.data?.allInventories?.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Visibility(
-                                visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 5.r),
-                                  child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
-                                ),
-                              ),
-                              SizedBox(height: 8.r),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4.r),
-                                child: Table(
-                                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                                  columnWidths: {
-                                    0: FixedColumnWidth((Get.width) * 0.45),
-                                    1: FixedColumnWidth((Get.width) * 0.15),
-                                    2: FixedColumnWidth((Get.width) * 0.25),
-                                    3: FixedColumnWidth((Get.width) * 0.15),
-                                  },
-                                  border: const TableBorder.symmetric(inside: BorderSide.none, outside: BorderSide.none),
+                              Flexible(
+                                child: Row(
                                   children: [
-                                    TableRow(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey, width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                                      ),
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(vertical: 8.r, horizontal: 4.r),
-                                          child: Text(
-                                            "Item".toUpperCase(),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontFamily: TypographyResources.openSans,
-                                              fontSize: Dimensions.font14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          "QTY",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontFamily: TypographyResources.openSans,
-                                            fontSize: Dimensions.font14,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 4.r),
-                                          child: Text(
-                                            "Measure".toUpperCase(),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontFamily: TypographyResources.openSans,
-                                              fontSize: Dimensions.font14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 4.r),
-                                          child: Text(
-                                            "price".toUpperCase(),
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              fontFamily: TypographyResources.openSans,
-                                              fontSize: Dimensions.font14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    for (var order in orders)
-                                      TableRow(
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 2.r, vertical: 16.r),
-                                            child: SizedBox(
-                                              width: Get.width * 0.5,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  cachedImageNetwork(url: order.image ?? "", height: 30),
-                                                  Flexible(
-                                                    child: Text(
-                                                      order.itemName ?? "",
-                                                      textAlign: TextAlign.left,
-                                                      overflow: TextOverflow.clip,
-                                                      maxLines: 1,
-                                                      style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 2.r),
-                                            child: Text(
-                                              order.quantity ?? "",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 2.r),
-
-                                            child: Text(
-                                              order.measureQty ?? "",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14),
-                                            ),
-                                          ),
-                                          Text(
-                                            " ${cartController.cartData?.currencySymbol ?? ""}${order.itemPrice}" ?? "",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14),
-                                          ),
-                                        ],
-                                      ),
+                                    cartController.isEdit
+                                        ? GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () {
+                                            cartController.removedItem(index);
+                                          },
+                                          child: Image.asset(Images.redCross, height: 30.r),
+                                        )
+                                        : cachedImageNetwork(url: orders[index].image ?? "", height: 30.r),
+                                    Flexible(child: Text(orders[index].itemName ?? "", maxLines: 1)),
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 8.r),
-                              Divider(color: Colors.grey, thickness: 0.5),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                child: customTextFieldWithSuffix(
-                                  textFieldLabel: "Delivery:",
-                                  controller: TextEditingController(),
-                                  icon: Icons.calendar_month,
-                                ),
-                              ),
-                              SizedBox(height: 8.r),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                child: customTextField2(
-                                  controller: TextEditingController(),
-                                  textFieldLabel: "PO Number",
-                                  borderColor: Colors.grey,
-                                  borderWidth: 0.5.r,
-                                  // maxLine: 1,
-                                ),
-                              ),
-                              SizedBox(height: 8.r),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                child: customTextField2(
-                                  controller: TextEditingController(),
-                                  textFieldLabel: "",
-                                  borderColor: Colors.grey,
-                                  borderWidth: 0.5.r,
-                                  maxLine: 5,
-                                  height: 250.r,
-                                ),
-                              ),
+                              Flexible(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // if (orders[index].isMeasBox == 0)
+                                    cartController.isEdit
+                                        ? customTextFieldWithWidthConstraint(
+                                          controller: cartController.cartData?.data?.allInventories?[index].controller2 ?? TextEditingController(),
+                                          textFieldLabel: "",
+                                          borderColor: Colors.grey,
+                                        )
+                                        : Text(orders[index].quantity ?? ""),
 
-                              customButton2(textLabel: "Edit order", width: 120.r, color: Colors.black54, onPressed: () {}),
+                                    // if (orders[index].isMeasBox == 1)
+                                    cartController.isEdit
+                                        ? customTextFieldWithWidthConstraint(
+                                          controller: cartController.cartData?.data?.allInventories?[index].controller1 ?? TextEditingController(),
+                                          textFieldLabel: "",
+                                          borderColor: Colors.grey,
+                                        )
+                                        : Text(orders[index].measureQty ?? "-"),
+                                    Text("\$ ${orders[index].itemPrice}"),
+                                  ],
+                                ),
+                              ),
                             ],
-                          ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10.r),
+                      Divider(color: Colors.grey, thickness: 0.5),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.r),
+                        child: customTextFieldWithSuffix(
+                          textFieldLabel: "Delivery:",
+                          controller: TextEditingController(),
+                          icon: Icons.calendar_month,
                         ),
+                      ),
+                      SizedBox(height: 8.r),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.r),
+                        child: customTextField2(
+                          controller: TextEditingController(),
+                          textFieldLabel: "PO Number",
+                          borderColor: Colors.grey,
+                          borderWidth: 0.5.r,
+                        ),
+                      ),
+                      SizedBox(height: 8.r),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.r),
+                        child: customTextField2(
+                          controller: TextEditingController(),
+                          textFieldLabel: "",
+                          borderColor: Colors.grey,
+                          borderWidth: 0.5.r,
+                          // maxLine: 5,
+                        ),
+                      ),
+                      SizedBox(height: 16.r),
+
+                      cartController.isEdit
+                          ? customButton2(
+                            textLabel: "Save Changes",
+                            width: 140.r,
+                            color: Colors.grey,
+                            height: 40,
+                            fontSize: Dimensions.font14,
+                            onPressed: () {
+                              cartController.saveEditable();
+                            },
+                          )
+                          : customButton2(
+                            textLabel: "Edit",
+                            width: 140.r,
+                            color: Colors.grey,
+                            height: 40,
+                            fontSize: Dimensions.font14,
+                            onPressed: () {
+                              cartController.makeEditable();
+                            },
+                          ),
+
+                      SizedBox(height: 8.r),
+
+                      customButton2(
+                        textLabel: "Submit Order",
+                        width: 140.r,
+                        color: Colors.black,
+                        height: 40,
+                        fontSize: Dimensions.font14,
+                        onPressed: () {},
                       ),
                     ],
                   ),

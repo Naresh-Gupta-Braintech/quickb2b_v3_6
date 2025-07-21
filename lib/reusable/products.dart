@@ -325,6 +325,7 @@ Widget horizontalProduct({
   required VoidCallback onTap,
   required String originQty,
   required String measureQty,
+  int inMyList = 0,
 }) {
   double orgQty = double.tryParse(originQty) ?? 0;
   if (orgQty == 0) {
@@ -407,7 +408,7 @@ Widget horizontalProduct({
                 Row(
                   children: [
                     Visibility(visible: isMeasBox == 1, child: Icon(Icons.add, color: Colors.black, size: 20.r)),
-                    Image.asset(Images.radioAdd, height: 30.r),
+                    inMyList == 1 ? Image.asset(Images.hyphenInsideCircle, height: 30.r) : Image.asset(Images.radioAdd, height: 30.r),
                   ],
                 ),
                 SizedBox(height: Dimensions.padding4),

@@ -41,32 +41,33 @@ Widget customTextField2({
   double? borderWidth,
   int? maxLine,
   double? height,
+  double? width,
 }) {
-  return SizedBox(
-    height: height ?? 30.r,
-    child: TextField(
-      maxLines: maxLine ?? 1,
-      keyboardType: keyboardType ?? TextInputType.text,
-      textAlignVertical: TextAlignVertical.center,
-      decoration: InputDecoration(
-        hintText: textFieldLabel,
-        hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
-        contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
-          borderRadius: BorderRadius.circular(0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
-          borderRadius: BorderRadius.circular(0),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
-          borderRadius: BorderRadius.circular(0),
-        ),
+  return TextField(
+    controller: controller,
+    keyboardType: keyboardType ?? TextInputType.text,
+    textAlignVertical: TextAlignVertical.center,
+    cursorRadius: Radius.circular(50.r),
+    cursorHeight: 12.r,
+    decoration: InputDecoration(
+      constraints: BoxConstraints(maxHeight: height ?? 30.r, maxWidth: width ?? Get.width),
+      hintText: textFieldLabel,
+      hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+      contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10, vertical: 8.r),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
       ),
-      style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
+      ),
     ),
+    style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
   );
 }
 
@@ -132,21 +133,59 @@ Widget customTextFieldWithSuffix({
   TextInputType? keyboardType,
   required IconData icon,
 }) {
-  return SizedBox(
-    height: 30.r,
-    child: TextField(
-      keyboardType: keyboardType ?? TextInputType.text,
-      textAlignVertical: TextAlignVertical.center,
-      decoration: InputDecoration(
-        suffixIcon: Icon(icon),
-        hintText: textFieldLabel,
-        hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
-        contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
-        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
-        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
-      ),
-      style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
+  return TextField(
+    keyboardType: keyboardType ?? TextInputType.text,
+    textAlignVertical: TextAlignVertical.center,
+    cursorRadius: Radius.circular(50.r),
+    cursorHeight: 12.r,
+
+    decoration: InputDecoration(
+      constraints: BoxConstraints(maxHeight: 30.r),
+
+      suffixIcon: Icon(icon),
+      hintText: textFieldLabel,
+      hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+      contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10),
+      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
+      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
+      border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.5.r), borderRadius: BorderRadius.circular(0)),
     ),
+    style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
+  );
+}
+
+Widget customTextFieldWithWidthConstraint({
+  required TextEditingController controller,
+  required String textFieldLabel,
+  TextInputType? keyboardType,
+  Color? borderColor,
+  double? borderWidth,
+}) {
+  return TextField(
+    controller: controller,
+    keyboardType: keyboardType ?? TextInputType.text,
+    textAlignVertical: TextAlignVertical.center,
+    textAlign: TextAlign.center,
+    cursorRadius: Radius.circular(50.r),
+    cursorHeight: 12.r,
+    decoration: InputDecoration(
+      constraints: BoxConstraints(maxHeight: 30.r, maxWidth: 50.r),
+      hintText: textFieldLabel,
+      hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+      contentPadding: EdgeInsets.symmetric(vertical: 8.r),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(0),
+      ),
+    ),
+    style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
   );
 }

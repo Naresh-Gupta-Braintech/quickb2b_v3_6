@@ -19,6 +19,7 @@ enum Endpoints {
   getLinkPost,
   getAppUserguide,
   updateUserInventry,
+  removeItemFromList,
 }
 
 const Map<Endpoints, String> endpointRawValues = {
@@ -43,4 +44,5 @@ const Map<Endpoints, String> endpointRawValues = {
   Endpoints.searchProductByCategory: "/apis/search_product_bycategory_v3_4",
   Endpoints.getUserItems: "/apis/get_user_items_v3_4",
   Endpoints.updateUserInventry: "/apis/update_user_inventory_v6",
+  Endpoints.removeItemFromList: "/apis/user_item_delete_v6",
 };

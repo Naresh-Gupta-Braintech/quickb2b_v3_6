@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
-Widget customButton({required String textLabel,required VoidCallback onPressed}) {
+Widget customButton({required String textLabel, required VoidCallback onPressed}) {
   return Container(
     height: Dimensions.viewHeight30,
     width: Get.width / 2.2,
@@ -15,11 +15,18 @@ Widget customButton({required String textLabel,required VoidCallback onPressed})
       child: Text(textLabel, style: TextStyle(color: Colors.black, fontSize: Dimensions.font16, fontFamily: 'AcuminRegular')),
     ),
   );
-      }
+}
 
-Widget customButton2({required String textLabel, required double width, required Color color, required VoidCallback onPressed}) {
+Widget customButton2({
+  required String textLabel,
+  required double width,
+  required Color color,
+  required VoidCallback onPressed,
+  double? height,
+  double? fontSize,
+}) {
   return Container(
-    height: Dimensions.viewHeight30,
+    height: height ?? Dimensions.viewHeight30,
     width: width,
     margin: EdgeInsets.symmetric(),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: color),
@@ -28,7 +35,12 @@ Widget customButton2({required String textLabel, required double width, required
       onPressed: onPressed,
       child: Text(
         textLabel,
-        style: TextStyle(color: Colors.white, fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w700),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize ?? Dimensions.font12,
+          fontFamily: TypographyResources.acumin,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     ),
   );
