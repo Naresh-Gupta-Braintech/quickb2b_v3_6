@@ -5,6 +5,7 @@ import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension HomeDataService on HomeController {
@@ -53,6 +54,8 @@ extension HomeDataService on HomeController {
         case Result.onSuccess:
           loading = false;
           companyDetails = response;
+          LocalStorage.saveCompanyDetails(companyDetails);
+          sharedPreferences.setString(Keys.appName, response?.data?.appName ?? "");
           Get.find<SplashController>().isCompanyDetailsFetchedSuccess = true;
           update();
           break;
@@ -103,8 +106,8 @@ extension HomeDataService on HomeController {
     final loginData = await LocalStorage.getLoginData();
     payload.clientCode = "TK3757";
     payload.appType = "Dual";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.acmCode = loginData?.data?.acmCode;
+    payload.deviceId = "dae303720ab0e176";
+    payload.acmCode = loginData?.data?.acmCode ?? "";
     payload.type = "Dual";
     payload.userCode = "QB2BDEV";
     await repository.getOutlets(payload, (result, response, message) {

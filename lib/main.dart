@@ -14,7 +14,6 @@ void main() async {
 class QuickB2b extends StatelessWidget {
   const QuickB2b({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));

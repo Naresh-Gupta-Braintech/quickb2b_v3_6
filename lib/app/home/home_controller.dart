@@ -29,6 +29,7 @@ class HomeController extends GetxController implements GetxService {
   HashMap<String, dynamic> productItemsMap = HashMap();
   CustomerDetailsModel? customerDetails;
   CompanyDetailsData? companyDetails;
+  int selectedOutled = 0;
 
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
@@ -79,6 +80,10 @@ class HomeController extends GetxController implements GetxService {
       }
       update();
     }
+  }
+
+  void getOutletinfo() {
+    getOutlets();
   }
 
   void increaseCount(String productId) {}

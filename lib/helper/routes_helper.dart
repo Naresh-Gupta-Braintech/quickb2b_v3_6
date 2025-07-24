@@ -11,7 +11,9 @@ import 'package:quickb2b_v3_6/app/mylist/view/my_list_view.dart';
 import 'package:quickb2b_v3_6/app/product/view/product_view.dart';
 import 'package:quickb2b_v3_6/app/profile/view/profile_dashboard_view.dart';
 import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
+import 'package:quickb2b_v3_6/app/splash/outlet/outlet_view.dart';
 import 'package:quickb2b_v3_6/app/splash/view/splash.dart';
+import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 
 class RoutesHelper {
   static const String _home = '/';
@@ -27,6 +29,7 @@ class RoutesHelper {
   static const String _products = '/products';
   static const String _myList = '/mylist';
   static const String _myOrder = '/my_order';
+  static const String _outlet = '/outlet';
 
   // Add more routes as needed
   static String get home => _home;
@@ -42,6 +45,7 @@ class RoutesHelper {
   static String get products => _products;
   static String get myList => _myList;
   static String get myOrder => _myOrder;
+  static String get outlet => _outlet;
 
   static List<GetPage> getRoutes() {
     return [
@@ -55,6 +59,7 @@ class RoutesHelper {
       GetPage(name: _products, page: () => ProductView()),
       GetPage(name: _myList, page: () => MyListView()),
       GetPage(name: _myOrder, page: () => CartView()),
+      GetPage(name: _outlet, page: () => OutletView()),
     ];
   }
 }

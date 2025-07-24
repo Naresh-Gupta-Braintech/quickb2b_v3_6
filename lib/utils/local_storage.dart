@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,6 +50,13 @@ class LocalStorage {
     await prefs.setString(Keys.customerDetails, data);
   }
 
+  static Future<void> saveCompanyDetails(CompanyDetailsData? company) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = company!.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.companyDetails, data);
+  }
+
   static Future<CustomerDetailsModel?> getCustomerDetails() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -75,6 +84,28 @@ class LocalStorage {
     await prefs.setString(Keys.cart, data);
   }
 
+  static Future<void> saveOutletsInfo(OutletData? outlet) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = outlet!.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.outlet, data);
+  }
+
+  static Future<CartData?> getOutletsDetails() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.outlet);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return CartData.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
+  }
+
   static Future<CartData?> getCartDetails() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -84,6 +115,21 @@ class LocalStorage {
       }
       final jsonData = jsonDecode(data);
       return CartData.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
+  }
+
+  static Future<CompanyDetailsData?> getCompanyDetails() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.companyDetails);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return CompanyDetailsData.fromJson(jsonData);
     } catch (e) {
       print("Error retrieving login data: $e");
       return null;

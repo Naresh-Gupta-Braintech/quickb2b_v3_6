@@ -10,7 +10,6 @@ import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/products.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
-import 'package:quickb2b_v3_6/utils/text_field.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class HomeView extends StatefulWidget {

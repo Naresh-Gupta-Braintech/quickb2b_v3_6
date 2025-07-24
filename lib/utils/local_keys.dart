@@ -5,4 +5,7 @@ class Keys {
   static String customerDetails = "customer_details";
   static String userCode = "user_code";
   static String cart = "cart";
+  static String companyDetails = "company_details";
+  static String appName = "app_name";
+  static String outlet = "outlet";
 }

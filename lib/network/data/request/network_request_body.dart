@@ -1,61 +1,30 @@
 class AbstractPayload {
   String? deviceId;
-}
-
-class HomeItemsPayload {
   String? clientCode;
   String? userCode;
-  String? deviceId;
   String? acmCode;
   String? appType;
   String? type;
 }
 
-class LoginPayload {
-  String? deviceId;
-  String? acmCode;
+class HomeItemsPayload extends AbstractPayload {}
+
+class LoginPayload extends AbstractPayload {
   String? username;
   String? password;
-  String? clientCode;
-  String? appType;
-  String? type;
   String? deviceType;
   String? deviceToken;
 }
 
-class CartPayload {
-  String? deviceId;
-  String? clientCode;
-  String? appType;
-  String? type;
-  String? userCode;
-  String? acmCode;
-}
+class CartPayload extends AbstractPayload {}
 
-class CustomerListPayload {
-  String? deviceId;
-  String? acmCode;
-  String? appType;
-  String? clientCode;
+class CustomerListPayload extends AbstractPayload {
   String? search;
 }
 
-class OutletPayload {
-  String? userCode;
-  String? clientCode;
-  String? deviceId;
-  String? acmCode;
-  String? appType;
-  String? type;
-}
+class OutletPayload extends AbstractPayload {}
 
-class ProfilePayload {
-  String? userCode;
-  String? clientCode;
-  String? acmCode;
-  String? deviceId;
-  String? appType;
-  String? type;
+class ProfilePayload extends AbstractPayload {
   String? customerId;
   String? businessName;
   String? firstName;
@@ -76,33 +45,15 @@ class ProfilePayload {
   String? postalPostal;
 }
 
-class CustomerPayload {
-  String? deviceId;
-  String? acmCode;
-  String? clientCode;
-  String? appType;
-  String? userCode;
-}
+class CustomerPayload extends AbstractPayload {}
 
-class CategoryPayload {
-  String? userCode;
-  String? clientCode;
-  String? acmCode;
-  String? deviceId;
-}
+class CategoryPayload extends AbstractPayload {}
 
-class ProductPayload {
-  String? userCode;
+class ProductPayload extends AbstractPayload {
   String? categoryId;
-  String? clientCode;
-  String? acmCode;
-  String? deviceId;
   int? page;
 }
 
-class MyListPayload {
-  String? userCode;
+class MyListPayload extends AbstractPayload {
   int? reset;
-  String? clientCode;
-  String? deviceId;
 }

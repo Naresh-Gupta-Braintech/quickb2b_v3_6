@@ -39,9 +39,10 @@ class SplashController extends GetxController implements GetxService {
   }
 
   void routes() async {
-    if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
-      Get.offAllNamed(RoutesHelper.home);
-    }
+    Get.offAllNamed(RoutesHelper.outlet);
+    // if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
+    //   Get.offAllNamed(RoutesHelper.home);
+    // }
   }
 
   void routeifManagerLogin() async {

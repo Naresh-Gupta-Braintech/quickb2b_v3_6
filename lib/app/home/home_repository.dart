@@ -69,7 +69,7 @@ class HomeRepository extends GetxController implements GetxService {
 
   Future<void> getOutlets(OutletPayload payload, Function(Result result, OutletData? response, String? message) completion) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getCustomerList, method: HTTPMethod.post, payload: NetworkPayload.outletPayload(payload: payload));
+      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getOutLet, method: HTTPMethod.post, payload: NetworkPayload.outletPayload(payload: payload));
       try {
         final response = OutletData.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
