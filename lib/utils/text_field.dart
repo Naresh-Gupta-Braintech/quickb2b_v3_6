@@ -140,8 +140,7 @@ Widget customTextFieldWithSuffix({
     cursorHeight: 12.r,
 
     decoration: InputDecoration(
-      constraints: BoxConstraints(maxHeight: 30.r),
-
+      constraints: BoxConstraints(maxHeight: 40.r),
       suffixIcon: Icon(icon),
       hintText: textFieldLabel,
       hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
@@ -169,10 +168,47 @@ Widget customTextFieldWithWidthConstraint({
     cursorRadius: Radius.circular(50.r),
     cursorHeight: 12.r,
     decoration: InputDecoration(
-      constraints: BoxConstraints(maxHeight: 30.r, maxWidth: 50.r),
+      constraints: BoxConstraints(maxHeight: 25.r, maxWidth: 60.r),
       hintText: textFieldLabel,
       hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
-      contentPadding: EdgeInsets.symmetric(vertical: 8.r),
+      contentPadding: EdgeInsets.only(top: 8.r),
+
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+    ),
+    style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400),
+  );
+}
+
+Widget customTextFieldWithMaxLines({
+  required TextEditingController controller,
+  required String textFieldLabel,
+  TextInputType? keyboardType,
+  Color? borderColor,
+  double? borderWidth,
+  required int maxLine,
+}) {
+  return TextField(
+    maxLines: maxLine,
+    controller: controller,
+    keyboardType: keyboardType ?? TextInputType.text,
+    textAlignVertical: TextAlignVertical.center,
+    cursorRadius: Radius.circular(50.r),
+    cursorHeight: 12.r,
+    decoration: InputDecoration(
+      hintText: textFieldLabel,
+      hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
+      contentPadding: EdgeInsets.symmetric(horizontal: Dimensions.padding10, vertical: 8.r),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: borderColor ?? Colors.black, width: borderWidth ?? 1.r),
         borderRadius: BorderRadius.circular(0),

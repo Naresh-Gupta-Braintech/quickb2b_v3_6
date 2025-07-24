@@ -140,8 +140,9 @@ class _CartViewState extends State<CartView> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.r),
                         child: customTextField2(
+                          height: 40.r,
                           controller: TextEditingController(),
-                          textFieldLabel: "PO Number",
+                          textFieldLabel: "PO Number:",
                           borderColor: Colors.grey,
                           borderWidth: 0.5.r,
                         ),
@@ -150,12 +151,12 @@ class _CartViewState extends State<CartView> {
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.r),
-                        child: customTextField2(
+                        child: customTextFieldWithMaxLines(
                           controller: TextEditingController(),
-                          textFieldLabel: "",
+                          textFieldLabel: "Comment:",
                           borderColor: Colors.grey,
                           borderWidth: 0.5.r,
-                          // maxLine: 5,
+                          maxLine: 5,
                         ),
                       ),
                       SizedBox(height: 16.r),
