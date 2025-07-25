@@ -95,9 +95,17 @@ class _ProductViewState extends State<ProductView> {
                                                   return Padding(
                                                     padding: EdgeInsets.symmetric(vertical: 4.r),
                                                     child: horizontalProduct(
+                                                      inMyList: productController.productsInventry[index]?.inMyList ?? 0,
+                                                      icon: Images.radioAdd,
                                                       originQty: productController.productsInventry[index]?.originQty ?? "",
                                                       measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                       onTap: () {},
+                                                      onTapIcon: () {
+                                                        print("hello");
+                                                        productController.addUserItemToMyList(
+                                                          productController.productsInventry[index]?.itemCode ?? "",
+                                                        );
+                                                      },
                                                       url: productController.productsInventry[index]?.image ?? "",
                                                       price: productController.productsInventry[index]?.itemPrice ?? "",
                                                       name: productController.productsInventry[index]?.itemName ?? "",

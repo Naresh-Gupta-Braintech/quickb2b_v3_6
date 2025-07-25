@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/get_device_type_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
@@ -57,6 +58,13 @@ class LocalStorage {
     await prefs.setString(Keys.companyDetails, data);
   }
 
+  static Future<void> saveDeviceData(GetDeviceTypeModel? deviceData) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = deviceData!.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.deviceData, data);
+  }
+
   static Future<CustomerDetailsModel?> getCustomerDetails() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -66,6 +74,21 @@ class LocalStorage {
       }
       final jsonData = jsonDecode(data);
       return CustomerDetailsModel.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
+  }
+
+  static Future<GetDeviceTypeModel?> getDeviceData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.deviceData);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return GetDeviceTypeModel.fromJson(jsonData);
     } catch (e) {
       print("Error retrieving login data: $e");
       return null;

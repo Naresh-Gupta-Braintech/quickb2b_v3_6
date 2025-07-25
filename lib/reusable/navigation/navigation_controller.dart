@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
@@ -26,6 +27,7 @@ class NavigationController extends GetxController implements GetxService {
 
   void setSelectedTopNavigation(int index) {
     topNavigationSelectedIndex = index;
+    Get.find<ProfileDashboardController>().selectedIndex = index;
     update();
   }
 }

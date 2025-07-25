@@ -19,12 +19,16 @@ enum Endpoints {
   getLinkPost,
   getAppUserguide,
   updateUserInventry,
-  removeItemFromList,
+  getDevice,
+  userItemAdd,
+  userItemDelete,
 }
 
 const Map<Endpoints, String> endpointRawValues = {
   // AUTHENTICATION
+  //
   Endpoints.login: "/apis/ac/loginNew",
+  Endpoints.getDevice: "/apis/get_device",
   Endpoints.register: "/apis/ac/customer/registration",
   Endpoints.getHomeItems: "/apis/get_home_items_v6",
   Endpoints.getCompanyDetails: "/apis/getCompanydetails",
@@ -44,5 +48,6 @@ const Map<Endpoints, String> endpointRawValues = {
   Endpoints.searchProductByCategory: "/apis/search_product_bycategory_v3_4",
   Endpoints.getUserItems: "/apis/get_user_items_v3_4",
   Endpoints.updateUserInventry: "/apis/update_user_inventory_v6",
-  Endpoints.removeItemFromList: "/apis/user_item_delete_v6",
+  Endpoints.userItemAdd: "/apis/user_item_add_v6",
+  Endpoints.userItemDelete: "/apis/user_item_delete_v6",
 };

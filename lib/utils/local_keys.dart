@@ -8,4 +8,5 @@ class Keys {
   static String companyDetails = "company_details";
   static String appName = "app_name";
   static String outlet = "outlet";
+  static String deviceData = "device_data";
 }

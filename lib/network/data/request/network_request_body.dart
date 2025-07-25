@@ -57,3 +57,59 @@ class ProductPayload extends AbstractPayload {
 class MyListPayload extends AbstractPayload {
   int? reset;
 }
+
+class GetDevicePayload extends AbstractPayload {
+  String? ipAddress;
+  String? deviceModel;
+  String? deviceToken;
+  String? deviceType;
+}
+
+class UserItemAddPayload extends AbstractPayload {
+  String? itemCode;
+}
+
+class UpdateUserInventory extends AbstractPayload {
+  int? orderFlag;
+  List<CartItemElement?> cartItems = [];
+
+    factory UpdateUserInventory.fromJson(Map<String, dynamic> json) => CartItem(
+        cartItems: json["cartItems"] == null ? [] : List<CartItemElement>.from(json["cartItems"]!.map((x) => CartItemElement.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "cartItems": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
+    };
+}
+
+class CartItemElement {
+  int? id;
+  int? isMeasBox;
+  int? quantity;
+  String? itemCode;
+  int? measureQty;
+  int? originQty;
+  int? priority;
+
+  CartItemElement({this.id, this.isMeasBox, this.quantity, this.itemCode, this.measureQty, this.originQty, this.priority});
+
+  factory CartItemElement.fromJson(Map<String, dynamic> json) => CartItemElement(
+    id: json["id"],
+    isMeasBox: json["is_meas_box"],
+    quantity: json["quantity"],
+    itemCode: json["item_code"],
+    measureQty: json["measureQty"],
+    originQty: json["originQty"],
+    priority: json["priority"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "is_meas_box": isMeasBox,
+    "quantity": quantity,
+    "item_code": itemCode,
+    "measureQty": measureQty,
+    "originQty": originQty,
+    "priority": priority,
+  };
+}

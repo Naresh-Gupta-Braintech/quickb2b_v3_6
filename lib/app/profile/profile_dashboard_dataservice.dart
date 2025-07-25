@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
+import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 
 extension ProfileDashboardDataservice on ProfileDashboardController {
@@ -9,9 +10,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = sharedPreferences.getString(Keys.acmCode);
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     // update();
     await repository.getProfile(payload, (result, response, message) {
       switch (result) {
@@ -38,9 +39,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getPastOrders(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -66,9 +67,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getLinks(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -94,9 +95,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getAppUserGuide(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -122,9 +123,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     payload.businessName = businessNameController.text;
     payload.firstName = firstNameController.text;
     payload.lastName = lastNameController.text;
@@ -157,9 +158,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     payload.deliveryStreetNumber = deliveryStreetNumberController.text;
     payload.deliverySuberb = deliverySuberbController.text;
     payload.deliveryCountry = deliveryCountryController.text;
@@ -192,9 +193,9 @@ extension ProfileDashboardDataservice on ProfileDashboardController {
     loading = true;
     ProfilePayload payload = ProfilePayload();
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     payload.postalStreetNumber = postalStreetNumberController.text;
     payload.postalSuberb = postalSuberbController.text;
     payload.postalCountry = postalCountryController.text;

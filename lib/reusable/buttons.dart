@@ -48,7 +48,6 @@ Widget customButton2({
 
 Widget customRadioButton({required List<String> labels, required List<String> values}) {
   return Column(
-    spacing: 0,
     children: [
       for (int i = 0; i < labels.length; i++)
         ListTile(

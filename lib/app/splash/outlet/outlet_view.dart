@@ -22,48 +22,45 @@ class _OutletViewState extends State<OutletView> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(builder: (controller) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            Image.asset(Images.login, fit: BoxFit.cover, width: Get.width, height: Get.height),
-            Container(
-              color: Colors.grey[300],
-              width: Get.width,
-              child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      textAlign: TextAlign.center,
-                      Get.find<SplashController>().sharedPreferences.getString(Keys.appName) ?? "",
-                      style: TextStyle(
-                        fontSize: Dimensions.font14,
-                        fontFamily: TypographyResources.openSans,
-                        fontWeight: FontWeight.bold,
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              Image.asset(Images.login, fit: BoxFit.cover, width: Get.width, height: Get.height),
+              Container(
+                color: Colors.grey[300],
+                width: Get.width,
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        Get.find<SplashController>().sharedPreferences.getString(Keys.appName) ?? "",
+                        style: TextStyle(fontSize: Dimensions.font14, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      "Select the outlet to place an order",
-                      style: TextStyle(
-                        fontSize: Dimensions.font12,
-                        fontFamily: TypographyResources.openSans,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        textAlign: TextAlign.center,
+                        "Select the outlet to place an order",
+                        style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    SizedBox(height: 8.r),
-                    ListView.builder(
+                      SizedBox(height: 8.r),
+                      ListView.builder(
                         shrinkWrap: true,
                         itemCount: controller.outlet?.data?.length,
                         itemBuilder: (context, index) {
-                          return Container(
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              controller.handleOnTapOutlet(index);
+                            },
+                            child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 8.r),
-                              decoration: controller.selectedOutled == index
-                                  ? BoxDecoration(color: Colors.grey)
-                                  : BoxDecoration(color: Colors.grey[300]),
+                              decoration:
+                                  controller.selectedOutled == index ? BoxDecoration(color: Colors.grey) : BoxDecoration(color: Colors.grey[300]),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -75,17 +72,21 @@ class _OutletViewState extends State<OutletView> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Icon(Icons.arrow_back)
+                                  Icon(Icons.arrow_back),
                                 ],
-                              ));
-                        })
-                  ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            )
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      },
+    );
   }
 }

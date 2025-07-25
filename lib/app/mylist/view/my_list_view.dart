@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_data_service.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
@@ -88,6 +89,10 @@ class _MyListState extends State<MyListView> {
                                                   key: ValueKey(index),
                                                   padding: EdgeInsets.symmetric(vertical: 4.r),
                                                   child: horizontalProduct(
+                                                    icon: Images.hyphenInsideCircle,
+                                                    onTapIcon: () {
+                                                      mylistController.removeFromMyList(products?.data?[index].itemCode ?? "");
+                                                    },
                                                     onTap: () {},
                                                     onChanged: (value) {
                                                       if (products?.data?[index].isMeasBox == 0) {

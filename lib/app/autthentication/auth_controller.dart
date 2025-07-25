@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
+import 'package:quickb2b_v3_6/app/home/home_controller.dart';
+import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/get_device_type_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/login_data.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
@@ -35,6 +41,7 @@ class AuthController extends GetxController implements GetxService {
   TextEditingController postcodeZipController = TextEditingController();
   TextEditingController postalAddressController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
+  GetDeviceTypeModel? deviceData;
 
   void initregister() {
     customerIdController = TextEditingController();
@@ -64,6 +71,45 @@ class AuthController extends GetxController implements GetxService {
 
   void signin() {
     login();
+  }
+
+  void loginRoutes() async {
+    print("get device api start");
+    await Get.find<AuthController>().getDevice();
+    print("get device api complete");
+    print("get company details api start");
+    await Get.find<HomeController>().getCompanyDetails();
+    print("get cart data api start");
+    print("get company details api complete");
+    await Get.find<CartController>().getCart();
+    print("get cart data api complete");
+    String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
+    acmCode.isNotEmpty ? routeifManagerLogin() : routes();
+  }
+
+  void routes() async {
+    int outletLength = Get.find<AuthController>().loginData?.outlets ?? 0;
+    print("Outlet :: $outletLength");
+    if (outletLength > 0) {
+      print("going to outlet");
+      Get.offAllNamed(RoutesHelper.outlet);
+    } else {
+      print("going to home");
+      Get.offAllNamed(RoutesHelper.home);
+    }
+  }
+
+  void routeifManagerLogin() async {
+    CustomerDetailsModel? customerDetails = await LocalStorage.getCustomerDetails();
+    if (customerDetails == null) {
+      print("go to company login");
+
+      Get.offAllNamed(RoutesHelper.customerList);
+      return;
+    } else {
+      Get.offAllNamed(RoutesHelper.home);
+      return;
+    }
   }
 
   Future<void> goToRoutes() async {

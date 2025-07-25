@@ -2,15 +2,19 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/string_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,17 +66,17 @@ class HomeController extends GetxController implements GetxService {
     getCustomersDetails(customer);
   }
 
+  void getCompanyDetail() {
+    getCompanyDetails();
+  }
+
   void onChaged(TextEditingController? controller, int index) {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
-      print("starting item removing from the  cart");
-
       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
     } else if (value.isQuantityValid()) {
-      print("value is valid :: ${value}");
-      print("starting item adding to cart");
       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
     } else {
       if (value.isNotEmpty) {
@@ -87,4 +91,11 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void increaseCount(String productId) {}
+
+  void handleOnTapOutlet(int index) async {
+    sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "");
+    Get.find<AuthController>().getDevice();
+    Get.find<CartController>().getCartData();
+    Get.offAllNamed(RoutesHelper.home);
+  }
 }

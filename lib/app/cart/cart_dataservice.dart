@@ -3,6 +3,8 @@ import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
+import 'package:quickb2b_v3_6/utils/global_constant.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension CartDataservice on CartController {
@@ -12,9 +14,9 @@ extension CartDataservice on CartController {
     payload.acmCode = "";
     payload.appType = "Dual";
     payload.type = "Dual";
-    payload.userCode = "FGA";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
     await repository.getCartList(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:

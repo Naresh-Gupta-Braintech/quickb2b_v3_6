@@ -48,7 +48,7 @@ class _PastOrderState extends State<PastOrder> {
                               child: Table(
                                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                                 columnWidths: {0: FixedColumnWidth((Get.width) / 5), 1: FixedColumnWidth(width / 5), 2: FixedColumnWidth(width / 5), 3: FixedColumnWidth(width / 5)},
-                                border: const TableBorder.symmetric(inside: BorderSide.none, outside: BorderSide.none),
+                                border:  TableBorder.symmetric(inside: BorderSide.none, outside: BorderSide.none),
                                 children: [
                                   TableRow(
                                     decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(4.r))),

@@ -5,6 +5,7 @@ import 'package:quickb2b_v3_6/network/data/request/network_payloads.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/product_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/user_item_model.dart';
 import 'package:quickb2b_v3_6/network/network_end_point.dart';
 import 'package:quickb2b_v3_6/network/network_exception.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';
@@ -37,6 +38,23 @@ class ProductRepository extends GetxController implements GetxService {
         final response = ProductModel.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
         completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, "");
+      } catch (e) {
+        debugConsole("Exception :: ${e.toString()}");
+        throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);
+      }
+    } catch (exception) {
+      completion(Result.onException, null, exception.toString());
+      rethrow;
+    }
+  }
+
+  Future<void> addToMyList(UserItemAddPayload payload, Function(Result result, UserItemModel? response, String? message) completion) async {
+    try {
+      final networkResponse = await network.loadHTTP(endpoint: Endpoints.userItemAdd, method: HTTPMethod.post, payload: NetworkPayload.userItemPayload(payload: payload));
+      try {
+        final response = UserItemModel.fromJson(networkResponse);
+        print("Home Repository :: ${response.status}");
+        completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, response.message);
       } catch (e) {
         debugConsole("Exception :: ${e.toString()}");
         throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);

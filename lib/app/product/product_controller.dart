@@ -3,6 +3,7 @@ import 'package:quickb2b_v3_6/app/product/product_dataservice.dart';
 import 'package:quickb2b_v3_6/app/product/product_repository.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/product_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/user_item_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductController extends GetxController implements GetxService {
@@ -14,6 +15,7 @@ class ProductController extends GetxController implements GetxService {
   ProductModel? productdata;
   List<ProductsInventoriesList?> productsInventry = [];
   String previousCategory = "";
+  UserItemModel? userItems;
 
   int page = 0;
 
@@ -25,4 +27,7 @@ class ProductController extends GetxController implements GetxService {
     getAllProductByCategory(categoryId);
   }
 
+  void addUserItemToMyList(String itemCode) {
+    addItemsToMYList(itemCode);
+  }
 }

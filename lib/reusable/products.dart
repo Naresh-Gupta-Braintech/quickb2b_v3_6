@@ -124,7 +124,7 @@ Widget verticalProduct({
                 visible: isMeasBox == 1,
                 child: Row(
                   children: [
-                    Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
+                    Icon(Icons.add, color: Colors.black, size: 15.r),
                     SizedBox(width: 2.r),
                     _textField(hint: "Qty", controller: controller1, onChanged: onChanged, textFieldWidth: 55.r),
                     Padding(
@@ -137,7 +137,7 @@ Widget verticalProduct({
               _textField(hint: hint, controller: controller2, textFieldWidth: 43.r, onChanged: onChanged),
               Visibility(
                 visible: isMeasBox == 1,
-                child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r)]),
+                child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, size: 15.r)]),
               ),
             ],
           ),
@@ -287,7 +287,7 @@ Widget specialProducts({
                 visible: isMeasBox == 1,
                 child: Row(
                   children: [
-                    Icon(Icons.add, color: Colors.black, blendMode: BlendMode.darken, size: 15.r),
+                    Icon(Icons.add, color: Colors.black, size: 15.r),
                     SizedBox(width: 2.r),
                     _textField(hint: "Qty", controller: controller1, textFieldWidth: 43.r),
                     Padding(
@@ -300,7 +300,7 @@ Widget specialProducts({
               _textField(hint: hint, controller: controller2, textFieldWidth: 43.r),
               Visibility(
                 visible: isMeasBox == 1,
-                child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, blendMode: BlendMode.darken, size: 15.r)]),
+                child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, size: 15.r)]),
               ),
             ],
           ),
@@ -325,6 +325,8 @@ Widget horizontalProduct({
   required VoidCallback onTap,
   required String originQty,
   required String measureQty,
+  required VoidCallback onTapIcon,
+  required String icon,
   int inMyList = 0,
 }) {
   double orgQty = double.tryParse(originQty) ?? 0;
@@ -408,7 +410,9 @@ Widget horizontalProduct({
                 Row(
                   children: [
                     Visibility(visible: isMeasBox == 1, child: Icon(Icons.add, color: Colors.black, size: 20.r)),
-                    inMyList == 1 ? Image.asset(Images.hyphenInsideCircle, height: 30.r) : Image.asset(Images.radioAdd, height: 30.r),
+                    inMyList == 1
+                        ? SizedBox(height: 30.r)
+                        : GestureDetector(onTap: onTapIcon, behavior: HitTestBehavior.opaque, child: Image.asset(icon, height: 30.r)),
                   ],
                 ),
                 SizedBox(height: Dimensions.padding4),

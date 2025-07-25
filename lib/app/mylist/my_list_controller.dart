@@ -3,6 +3,7 @@ import 'package:quickb2b_v3_6/app/mylist/my_list_data_service.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_repository.dart';
 
 import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/user_item_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyListController extends GetxController implements GetxService {
@@ -13,6 +14,7 @@ class MyListController extends GetxController implements GetxService {
   MyListModel? myList;
   List<DataWithCategory>? dataWithCategory;
   int topNavigationIndex = 0;
+  UserItemModel? item;
 
   void getUserData(int reset) {
     getUserItems(reset);
@@ -22,6 +24,4 @@ class MyListController extends GetxController implements GetxService {
     topNavigationIndex = index;
     update();
   }
-
- 
 }

@@ -5,6 +5,7 @@ import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
+import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
@@ -15,9 +16,9 @@ extension HomeDataService on HomeController {
     HomeItemsPayload payload = HomeItemsPayload();
 
     payload.acmCode = "";
-    payload.clientCode = "TK3757";
-    payload.deviceId = "a1ad67eaf5b9140f";
-    payload.userCode = "FGA";
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getHomeItems(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -44,11 +45,9 @@ extension HomeDataService on HomeController {
     loading = true;
     update();
     HomeItemsPayload payload = HomeItemsPayload();
-    payload.clientCode = "TK3757";
+    payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
     payload.type = "Dual";
-    payload.userCode = "FGA";
-    payload.deviceId = "a1ad67eaf5b9140f";
     await repository.getCompanyDetails(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -75,9 +74,9 @@ extension HomeDataService on HomeController {
     loading = true;
     CustomerListPayload payload = CustomerListPayload();
     final loginData = await LocalStorage.getLoginData();
-    payload.clientCode = "TK3757";
+    payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
-    payload.deviceId = "a1ad67eaf5b9140f";
+    payload.deviceId = await GlobalConstants.getDeviceId();
     payload.acmCode = loginData?.data?.acmCode;
     payload.search = "";
     await repository.getCustomers(payload, (result, response, message) {
@@ -104,12 +103,12 @@ extension HomeDataService on HomeController {
     update();
     OutletPayload payload = OutletPayload();
     final loginData = await LocalStorage.getLoginData();
-    payload.clientCode = "TK3757";
+    payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
-    payload.deviceId = "dae303720ab0e176";
+    payload.deviceId = await GlobalConstants.getDeviceId();
     payload.acmCode = loginData?.data?.acmCode ?? "";
     payload.type = "Dual";
-    payload.userCode = "QB2BDEV";
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getOutlets(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
@@ -134,11 +133,11 @@ extension HomeDataService on HomeController {
     update();
     CustomerPayload payload = CustomerPayload();
     final loginData = await LocalStorage.getLoginData();
-    payload.clientCode = "TK3757";
+    payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
-    payload.deviceId = "a1ad67eaf5b9140f";
+    payload.deviceId = await GlobalConstants.getDeviceId();
     payload.acmCode = loginData?.data?.acmCode;
-    payload.userCode = customer.customerCode;
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
     await repository.getCustomerDetails(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:

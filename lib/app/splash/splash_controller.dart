@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
@@ -19,18 +21,11 @@ class SplashController extends GetxController implements GetxService {
   bool isCartFetchedSuccess = false;
 
   void init() async {
+    sharedPreferences.setString(Keys.userCode, "QB2BDEV");
+    await Get.find<HomeController>().getCompanyDetails();
     LoginData? loginData = await LocalStorage.getLoginData();
     if (loginData != null) {
-      print("already login");
-      print("started company details api");
-
-      await Get.find<HomeController>().getCompanyDetails();
-      print("company details api completed");
-      print("started cart api");
-
       await Get.find<CartController>().getCart();
-      print("start cart api completed");
-
       String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
       acmCode.isNotEmpty ? routeifManagerLogin() : routes();
     } else {
@@ -39,10 +34,9 @@ class SplashController extends GetxController implements GetxService {
   }
 
   void routes() async {
-    Get.offAllNamed(RoutesHelper.outlet);
-    // if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
-    //   Get.offAllNamed(RoutesHelper.home);
-    // }
+    if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
+      Get.offAllNamed(RoutesHelper.home);
+    }
   }
 
   void routeifManagerLogin() async {
@@ -57,4 +51,5 @@ class SplashController extends GetxController implements GetxService {
       return;
     }
   }
+
 }
