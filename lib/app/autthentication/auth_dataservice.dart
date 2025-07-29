@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
-import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
@@ -31,8 +30,6 @@ extension AuthDataservice on AuthController {
           LocalStorage.saveLoginData(loginData);
           loginRoutes();
           print("get device call success");
-
-          Get.find<SplashController>().init();
           print("login success");
           break;
         case Result.onFailed:
@@ -51,6 +48,7 @@ extension AuthDataservice on AuthController {
 
   Future<void> getDevice() async {
     loading = true;
+    Get.find<AuthController>().loading = true;
     GetDevicePayload payload = GetDevicePayload();
     payload.acmCode = "";
     payload.clientCode = GlobalConstants.clientCode;
@@ -68,8 +66,10 @@ extension AuthDataservice on AuthController {
       switch (result) {
         case Result.onSuccess:
           loading = false;
+          Get.find<AuthController>().loading = false;
           deviceData = response;
           LocalStorage.saveDeviceData(response);
+          isGetDeviceFetchCompleted = true;
           break;
         case Result.onFailed:
           loading = false;

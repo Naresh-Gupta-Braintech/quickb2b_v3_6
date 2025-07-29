@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quickb2b_v3_6/reusable/buttons.dart';
-import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/text_field.dart';
 
@@ -39,7 +38,9 @@ class RegistrationPage extends StatelessWidget {
                   children: [
                     // Radio Group
                     customRadioButton(
-                        labels: <String>[LocalText.forBusiness, LocalText.forHomeDelivery], values: <String>["business", "home_delivery"]),
+                      labels: <String>[LocalText.forBusiness, LocalText.forHomeDelivery],
+                      values: <String>["business", "home_delivery"],
+                    ),
 
                     // Dropdown (Spinner)
                     dropDown(items: ['Region 1', 'Region 2', 'Region 3']),
@@ -51,11 +52,13 @@ class RegistrationPage extends StatelessWidget {
                     Text('alphanumeric only, no spaces or special characters', style: TextStyle(color: Colors.black, fontSize: 12)),
 
                     // Password Fields
-                    Row(children: [
-                      Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)),
-                      SizedBox(width: 10),
-                      Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId))
-                    ]),
+                    Row(
+                      children: [
+                        Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)),
+                        SizedBox(width: 10),
+                        Expanded(child: customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId)),
+                      ],
+                    ),
 
                     // Other Input FieldscustomTextField2(controller: TextEditingController(), textFieldLabel: LocalText.customerId),
                     customTextField2(controller: TextEditingController(), textFieldLabel: LocalText.businessName),

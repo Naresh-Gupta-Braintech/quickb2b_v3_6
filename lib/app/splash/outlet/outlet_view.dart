@@ -9,6 +9,8 @@ import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class OutletView extends StatefulWidget {
+  const OutletView({super.key});
+
   @override
   State<OutletView> createState() => _OutletViewState();
 }
@@ -17,6 +19,7 @@ class _OutletViewState extends State<OutletView> {
   @override
   void initState() {
     super.initState();
+    print("outlet view");
     Get.find<HomeController>().getOutletinfo();
   }
 
@@ -24,6 +27,8 @@ class _OutletViewState extends State<OutletView> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
+        int length = controller.outlet?.data?.length ?? 0;
+        print("length :: $length && ${(23.r * length)}");
         return Scaffold(
           backgroundColor: Colors.white,
           body: Stack(
@@ -33,6 +38,7 @@ class _OutletViewState extends State<OutletView> {
                 color: Colors.grey[300],
                 width: Get.width,
                 child: SafeArea(
+                  bottom: false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -48,36 +54,38 @@ class _OutletViewState extends State<OutletView> {
                         style: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 8.r),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: controller.outlet?.data?.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              controller.handleOnTapOutlet(index);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 8.r),
-                              decoration:
-                                  controller.selectedOutled == index ? BoxDecoration(color: Colors.grey) : BoxDecoration(color: Colors.grey[300]),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    controller.outlet?.data?[index].name ?? "",
-                                    style: TextStyle(
-                                      fontSize: Dimensions.font15,
-                                      fontFamily: TypographyResources.openSans,
-                                      fontWeight: FontWeight.w600,
+                      SizedBox(
+                        height: (40.r * length),
+                        child: ListView.builder(
+                          itemCount: length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                controller.handleOnTapOutlet(index);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 8.r),
+                                decoration:
+                                    controller.selectedOutled == index ? BoxDecoration(color: Colors.grey) : BoxDecoration(color: Colors.grey[300]),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      controller.outlet?.data?[index].name ?? "",
+                                      style: TextStyle(
+                                        fontSize: Dimensions.font15,
+                                        fontFamily: TypographyResources.openSans,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  Icon(Icons.arrow_back),
-                                ],
+                                    Icon(Icons.arrow_back),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

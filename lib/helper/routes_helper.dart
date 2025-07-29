@@ -13,7 +13,6 @@ import 'package:quickb2b_v3_6/app/profile/view/profile_dashboard_view.dart';
 import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
 import 'package:quickb2b_v3_6/app/splash/outlet/outlet_view.dart';
 import 'package:quickb2b_v3_6/app/splash/view/splash.dart';
-import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 
 class RoutesHelper {
   static const String _home = '/';

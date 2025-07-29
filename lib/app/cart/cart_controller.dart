@@ -17,6 +17,7 @@ class CartController extends GetxController implements GetxService {
   double? cartPrice = 0.00;
   bool isEdit = false;
   List<AllInventory?> templist = [];
+  bool isCartFetchedSuccess = false;
 
   void makeEditable() {
     cartData?.data?.allInventories?.forEach((order) {

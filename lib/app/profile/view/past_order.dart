@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
-import 'package:quickb2b_v3_6/app/profile/view/order_model.dart';
-import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/past_order_model.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';

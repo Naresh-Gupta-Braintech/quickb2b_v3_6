@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
 import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/banner_list.dart';
 
@@ -109,7 +108,15 @@ class Data {
   List<AllInventory>? multiItems;
   FeaturedItemImage? featuredItemImage;
 
-  Data({this.bannerLists, this.categoryExists, this.allCategories, this.specialInventories, this.allInventories, this.multiItems, this.featuredItemImage});
+  Data({
+    this.bannerLists,
+    this.categoryExists,
+    this.allCategories,
+    this.specialInventories,
+    this.allInventories,
+    this.multiItems,
+    this.featuredItemImage,
+  });
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
@@ -152,10 +159,6 @@ class AllCategory {
   Map<String, dynamic> toJson() => {"id": id, "name": name, "thumb_image": thumbImage};
 }
 
-
-
-
-
 class FeaturedItemImage {
   String? image;
   String? content;
@@ -172,8 +175,16 @@ class FeaturedItemImage {
 
   String toRawJson() => json.encode(toJson());
 
-  factory FeaturedItemImage.fromJson(Map<String, dynamic> json) =>
-      FeaturedItemImage(image: json["image"], content: json["content"], price: json["price"], date: json["date"] == null ? null : DateTime.parse(json["date"]), visibility: json["visibility"], show: json["show"], onLogin: json["on_login"], onLaunch: json["on_launch"]);
+  factory FeaturedItemImage.fromJson(Map<String, dynamic> json) => FeaturedItemImage(
+    image: json["image"],
+    content: json["content"],
+    price: json["price"],
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
+    visibility: json["visibility"],
+    show: json["show"],
+    onLogin: json["on_login"],
+    onLaunch: json["on_launch"],
+  );
 
   Map<String, dynamic> toJson() => {
     "image": image,

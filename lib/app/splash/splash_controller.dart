@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
-import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
@@ -18,10 +14,14 @@ class SplashController extends GetxController implements GetxService {
   SharedPreferences sharedPreferences;
   SplashController({required this.sharedPreferences});
   bool isCompanyDetailsFetchedSuccess = false;
-  bool isCartFetchedSuccess = false;
 
   void init() async {
-    sharedPreferences.setString(Keys.userCode, "QB2BDEV");
+    print("login  :: ${await LocalStorage.getLoginData()}");
+    print("cart :: ${await LocalStorage.getCartDetails()}");
+    print("company Details :: ${await LocalStorage.getCompanyDetails()}");
+    print('device data :: ${await LocalStorage.getDeviceData()}');
+    print("userCode :: ${await LocalStorage.getUserCode()}");
+
     await Get.find<HomeController>().getCompanyDetails();
     LoginData? loginData = await LocalStorage.getLoginData();
     if (loginData != null) {
@@ -34,7 +34,7 @@ class SplashController extends GetxController implements GetxService {
   }
 
   void routes() async {
-    if (isCompanyDetailsFetchedSuccess == true && isCartFetchedSuccess == true) {
+    if (isCompanyDetailsFetchedSuccess == true && Get.find<CartController>().isCartFetchedSuccess == true) {
       Get.offAllNamed(RoutesHelper.home);
     }
   }
@@ -42,8 +42,6 @@ class SplashController extends GetxController implements GetxService {
   void routeifManagerLogin() async {
     CustomerDetailsModel? customerDetails = await LocalStorage.getCustomerDetails();
     if (customerDetails == null) {
-      print("go to company login");
-
       Get.offAllNamed(RoutesHelper.customerList);
       return;
     } else {
@@ -51,5 +49,4 @@ class SplashController extends GetxController implements GetxService {
       return;
     }
   }
-
 }

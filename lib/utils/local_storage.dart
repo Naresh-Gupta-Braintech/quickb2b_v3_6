@@ -46,7 +46,7 @@ class LocalStorage {
 
   static Future<void> saveCustomerDeatils(CustomerDetailsModel? customer) async {
     final prefs = await SharedPreferences.getInstance();
-    final jsonData = customer!.toJson();
+    final jsonData = customer?.toJson();
     String data = jsonEncode(jsonData);
     await prefs.setString(Keys.customerDetails, data);
   }
@@ -98,6 +98,20 @@ class LocalStorage {
   static setUserCode(String str) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(Keys.userCode, str);
+  }
+
+  static Future<String?> getUserCode() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.userCode);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      return data;
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
   }
 
   static Future<void> saveCartDetails(CartData? cart) async {

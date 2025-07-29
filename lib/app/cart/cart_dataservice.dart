@@ -10,6 +10,7 @@ import 'package:quickb2b_v3_6/utils/local_storage.dart';
 extension CartDataservice on CartController {
   Future<void> getCart() async {
     loading = true;
+    print("userCode :: ${sharedPreferences.getString(Keys.userCode)}");
     CartPayload payload = CartPayload();
     payload.acmCode = "";
     payload.appType = "Dual";
@@ -21,7 +22,7 @@ extension CartDataservice on CartController {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-          Get.find<SplashController>().isCartFetchedSuccess = true;
+          isCartFetchedSuccess = true;
           cartData = response;
           LocalStorage.saveCartDetails(cartData);
           calculateCartPrice();

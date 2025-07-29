@@ -5,16 +5,21 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
+import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
+import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/string_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,6 +39,7 @@ class HomeController extends GetxController implements GetxService {
   CustomerDetailsModel? customerDetails;
   CompanyDetailsData? companyDetails;
   int selectedOutled = 0;
+  List<CartItem> cartItems = [];
 
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
@@ -87,15 +93,42 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void getOutletinfo() {
+    // sharedPreferences.setString(Keys.userCode, "QB2BDEV");
     getOutlets();
   }
 
   void increaseCount(String productId) {}
 
   void handleOnTapOutlet(int index) async {
+    Get.find<SplashController>().isCompanyDetailsFetchedSuccess = false;
+    Get.find<CartController>().isCartFetchedSuccess = false;
+    Get.find<AuthController>().isGetDeviceFetchCompleted = false;
+    print("selected outlet ::${outlet?.data?[index].userCode ?? ""}");
     sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "");
-    Get.find<AuthController>().getDevice();
-    Get.find<CartController>().getCartData();
-    Get.offAllNamed(RoutesHelper.home);
+    await Get.find<AuthController>().getDevice();
+    if (Get.find<AuthController>().isGetDeviceFetchCompleted) {
+      await Get.find<CartController>().getCart();
+    }
+    if (Get.find<CartController>().isCartFetchedSuccess) {
+      Get.offAllNamed(RoutesHelper.home);
+    }
+  }
+
+  void updateUserInventoryHome() async {
+    CartData? cart = await LocalStorage.getCartDetails();
+    cart?.data?.allInventories?.forEach((item) {
+      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+        CartItem cartItem = CartItem();
+        cartItem.id = item.id;
+        cartItem.isMeasBox = item.isMeasBox;
+        cartItem.itemCode = item.itemCode;
+        cartItem.measureQty = item.measureQty;
+        cartItem.originQty = item.originQty;
+        cartItem.priority = item.priority;
+        cartItem.quantity = item.quantity;
+        cartItems.add(cartItem);
+      }
+    });
+    updateUserInventoryForHome(cartItems);
   }
 }

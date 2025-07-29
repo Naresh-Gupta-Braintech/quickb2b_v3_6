@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 
 class ProductItemModel {
   String? itemCode;

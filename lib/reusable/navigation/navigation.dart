@@ -4,13 +4,11 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
-import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
-import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 

@@ -20,7 +20,7 @@ class NavigationController extends GetxController implements GetxService {
 
   void setSelectedIndex(int index) {
     bottomNavigationSelectedIndex = index;
-    Get.toNamed(bottomNavigation[index].route);
+    Get.offNamed(bottomNavigation[index].route);
   }
 
   final List<String> list = ["Account", "Past Orders", "Links", "App user guide", "Reset My List A-Z", "Logout"];

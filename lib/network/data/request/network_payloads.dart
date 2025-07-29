@@ -186,13 +186,12 @@ class NetworkPayload {
   static Map<String, dynamic>? userItemPayload({required UserItemAddPayload payload}) {
     return {
       "user_code": payload.userCode,
-      "item_code":payload.itemCode,
+      "item_code": payload.itemCode,
       "client_code": payload.clientCode,
       "app_type": payload.appType,
       "acm_code": payload.acmCode,
       "device_id": payload.deviceId,
       "type": payload.type,
-      
     };
   }
 }

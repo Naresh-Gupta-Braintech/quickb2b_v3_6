@@ -30,6 +30,12 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    Get.find<HomeController>().updateUserInventoryHome();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {

@@ -6,6 +6,7 @@ import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
+import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/get_device_type_model.dart';
@@ -20,6 +21,7 @@ class AuthController extends GetxController implements GetxService {
   AuthController({required this.sharedPreferences, required this.repository});
   bool loading = false;
   LoginData? loginData;
+  bool isGetDeviceFetchCompleted = false;
   TextEditingController customerIdController = TextEditingController();
   TextEditingController forgotPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -74,17 +76,28 @@ class AuthController extends GetxController implements GetxService {
   }
 
   void loginRoutes() async {
-    print("get device api start");
-    await Get.find<AuthController>().getDevice();
-    print("get device api complete");
-    print("get company details api start");
-    await Get.find<HomeController>().getCompanyDetails();
-    print("get cart data api start");
-    print("get company details api complete");
-    await Get.find<CartController>().getCart();
-    print("get cart data api complete");
-    String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
-    acmCode.isNotEmpty ? routeifManagerLogin() : routes();
+    try {
+      sharedPreferences.setString(Keys.userCode, "QB2BDEV");
+
+      await Future.wait([Get.find<AuthController>().getDevice()]);
+
+      if (isGetDeviceFetchCompleted) {
+        await Future.wait([Get.find<HomeController>().getCompanyDetails()]);
+      }
+
+      if (Get.find<SplashController>().isCompanyDetailsFetchedSuccess) {
+        await Get.find<CartController>().getCart();
+      }
+
+      print("cart api status :: ${Get.find<CartController>().isCartFetchedSuccess}");
+
+      if (Get.find<CartController>().isCartFetchedSuccess) {
+        String acmCode = sharedPreferences.getString(Keys.acmCode) ?? "";
+        acmCode.isNotEmpty ? routeifManagerLogin() : routes();
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void routes() async {

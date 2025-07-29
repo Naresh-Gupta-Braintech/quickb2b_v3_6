@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
+import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
@@ -56,6 +59,7 @@ extension HomeDataService on HomeController {
           LocalStorage.saveCompanyDetails(companyDetails);
           sharedPreferences.setString(Keys.appName, response?.data?.appName ?? "");
           Get.find<SplashController>().isCompanyDetailsFetchedSuccess = true;
+          
           update();
           break;
         case Result.onFailed:
@@ -143,6 +147,44 @@ extension HomeDataService on HomeController {
         case Result.onSuccess:
           loading = false;
           customerDetails = response;
+          LocalStorage.saveCustomerDeatils(customerDetails);
+          LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
+          final customerData = LocalStorage.getCustomerDetails();
+          if (customerData != null) {
+            Get.offAllNamed(RoutesHelper.home);
+          }
+          update();
+          break;
+        case Result.onFailed:
+          loading = false;
+          Get.snackbar('Error', message?.tr ?? "error");
+          break;
+        case Result.onException:
+          loading = false;
+          if (message != "cancelled") Get.snackbar('Error', message?.tr ?? "error");
+          break;
+      }
+    });
+  }
+
+  Future<void> updateUserInventoryForHome(List<CartItem> cart) async {
+    loading = true;
+    update();
+    UpdateInventoryHome payload = UpdateInventoryHome();
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.appType = "Dual";
+    payload.type = "Dual";
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.acmCode = "";
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
+    payload.cartItems = cart;
+    payload.orderFlag = 0;
+    payload.userCode = sharedPreferences.getString(Keys.userCode);
+    await repository.updateUserInventoryForHome(payload, (result, response, message) {
+      switch (result) {
+        case Result.onSuccess:
+          loading = false;
+
           LocalStorage.saveCustomerDeatils(customerDetails);
           LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
           final customerData = LocalStorage.getCustomerDetails();

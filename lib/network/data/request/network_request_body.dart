@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AbstractPayload {
   String? deviceId;
   String? clientCode;
@@ -69,47 +71,92 @@ class UserItemAddPayload extends AbstractPayload {
   String? itemCode;
 }
 
-class UpdateUserInventory extends AbstractPayload {
-  int? orderFlag;
-  List<CartItemElement?> cartItems = [];
 
-    factory UpdateUserInventory.fromJson(Map<String, dynamic> json) => CartItem(
-        cartItems: json["cartItems"] == null ? [] : List<CartItemElement>.from(json["cartItems"]!.map((x) => CartItemElement.fromJson(x))),
+
+UpdateInventoryHome updateInventoryHomeFromJson(String str) => UpdateInventoryHome.fromJson(json.decode(str));
+
+String updateInventoryHomeToJson(UpdateInventoryHome data) => json.encode(data.toJson());
+
+class UpdateInventoryHome {
+    String? acmCode;
+    String? userCode;
+    String? clientCode;
+    String? type;
+    int? orderFlag;
+    String? appType;
+    String? deviceId;
+    List<CartItem>? cartItems;
+
+    UpdateInventoryHome({
+        this.acmCode,
+        this.userCode,
+        this.clientCode,
+        this.type,
+        this.orderFlag,
+        this.appType,
+        this.deviceId,
+        this.cartItems,
+    });
+
+    factory UpdateInventoryHome.fromJson(Map<String, dynamic> json) => UpdateInventoryHome(
+        acmCode: json["acm_code"],
+        userCode: json["user_code"],
+        clientCode: json["client_code"],
+        type: json["type"],
+        orderFlag: json["orderFlag"],
+        appType: json["app_type"],
+        deviceId: json["device_id"],
+        cartItems: json["cartItems"] == null ? [] : List<CartItem>.from(json["cartItems"]!.map((x) => CartItem.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
+        "acm_code": acmCode,
+        "user_code": userCode,
+        "client_code": clientCode,
+        "type": type,
+        "orderFlag": orderFlag,
+        "app_type": appType,
+        "device_id": deviceId,
         "cartItems": cartItems == null ? [] : List<dynamic>.from(cartItems!.map((x) => x.toJson())),
     };
 }
 
-class CartItemElement {
-  int? id;
-  int? isMeasBox;
-  int? quantity;
-  String? itemCode;
-  int? measureQty;
-  int? originQty;
-  int? priority;
+class CartItem {
+    int? id;
+    int? isMeasBox;
+    String? quantity;
+    String? itemCode;
+    String? measureQty;
+    String? originQty;
+    int? priority;
 
-  CartItemElement({this.id, this.isMeasBox, this.quantity, this.itemCode, this.measureQty, this.originQty, this.priority});
+    CartItem({
+        this.id,
+        this.isMeasBox,
+        this.quantity,
+        this.itemCode,
+        this.measureQty,
+        this.originQty,
+        this.priority,
+    });
 
-  factory CartItemElement.fromJson(Map<String, dynamic> json) => CartItemElement(
-    id: json["id"],
-    isMeasBox: json["is_meas_box"],
-    quantity: json["quantity"],
-    itemCode: json["item_code"],
-    measureQty: json["measureQty"],
-    originQty: json["originQty"],
-    priority: json["priority"],
-  );
+    factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
+        id: json["id"],
+        isMeasBox: json["is_meas_box"],
+        quantity: json["quantity"],
+        itemCode: json["item_code"],
+        measureQty: json["measureQty"],
+        originQty: json["originQty"],
+        priority: json["priority"],
+    );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "is_meas_box": isMeasBox,
-    "quantity": quantity,
-    "item_code": itemCode,
-    "measureQty": measureQty,
-    "originQty": originQty,
-    "priority": priority,
-  };
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "is_meas_box": isMeasBox,
+        "quantity": quantity,
+        "item_code": itemCode,
+        "measureQty": measureQty,
+        "originQty": originQty,
+        "priority": priority,
+    };
 }
