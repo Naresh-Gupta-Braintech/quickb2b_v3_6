@@ -18,9 +18,24 @@ class NavigationController extends GetxController implements GetxService {
     Navigation(iconUrl: Images.user, name: "Account", route: RoutesHelper.account),
   ];
 
+  @override
+  void onInit() {
+    super.onInit();
+    print("initilized Navigation controller");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("disposed Navigation controller");
+  }
+
   void setSelectedIndex(int index) {
+    if (bottomNavigationSelectedIndex == index) return;
+    print("index :: $index");
     bottomNavigationSelectedIndex = index;
-    Get.offNamed(bottomNavigation[index].route);
+
+    Get.toNamed(bottomNavigation[index].route);
   }
 
   final List<String> list = ["Account", "Past Orders", "Links", "App user guide", "Reset My List A-Z", "Logout"];

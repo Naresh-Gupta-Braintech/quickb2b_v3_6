@@ -47,6 +47,18 @@ class HomeController extends GetxController implements GetxService {
     getHomeDetails();
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    print("initilized Home controller");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("disposed Home controller");
+  }
+
   void initializeController() {
     int l = homeItems?.data?.allInventories?.length ?? 0;
     for (int i = 0; i < l; i++) {
@@ -93,7 +105,6 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void getOutletinfo() {
-    // sharedPreferences.setString(Keys.userCode, "QB2BDEV");
     getOutlets();
   }
 
@@ -104,7 +115,7 @@ class HomeController extends GetxController implements GetxService {
     Get.find<CartController>().isCartFetchedSuccess = false;
     Get.find<AuthController>().isGetDeviceFetchCompleted = false;
     print("selected outlet ::${outlet?.data?[index].userCode ?? ""}");
-    sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "");
+     sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "");
     await Get.find<AuthController>().getDevice();
     if (Get.find<AuthController>().isGetDeviceFetchCompleted) {
       await Get.find<CartController>().getCart();

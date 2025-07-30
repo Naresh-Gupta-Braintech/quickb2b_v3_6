@@ -10,6 +10,8 @@ import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
+  SharedPreferences? pref;
+
   static Future<String?>? getStringData({required String key}) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(key);
@@ -109,7 +111,7 @@ class LocalStorage {
       }
       return data;
     } catch (e) {
-      print("Error retrieving login data: $e");
+      print("Error user code: $e");
       return null;
     }
   }

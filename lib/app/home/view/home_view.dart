@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
+import 'package:quickb2b_v3_6/reusable/dialog.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/loader.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
@@ -206,7 +208,7 @@ class _HomeViewState extends State<HomeView> {
                                         child: _customSubHeading(text: "Featured", buttonText: ""),
                                       ),
                                       SizedBox(height: Dimensions.padding10),
-                                      Image.asset(Images.featuredGradient),
+                                      Image.asset(Images.featuredGradient, width: Get.width, fit: BoxFit.cover),
                                       SizedBox(height: Dimensions.padding10),
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 3.r),

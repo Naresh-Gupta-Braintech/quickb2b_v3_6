@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/loader.dart';
@@ -45,173 +46,179 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (controller) {
-        var bannersList = controller.homeItems?.data?.bannerLists ?? [];
-        return GetBuilder<ProductController>(
-          builder: (productController) {
-            return Scaffold(
-              backgroundColor: Colors.white,
-              bottomNavigationBar: bottomNavigationMenu(),
-              body: SafeArea(
-                child:
-                    productController.loading
-                        ? customLoader()
-                        : Column(
-                          children: [
-                            headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
-                            Expanded(
-                              child: Stack(
-                                children: [
-                                  SingleChildScrollView(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    child: Column(
-                                      children: [
-                                        Visibility(
-                                          visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: 5.r),
-                                            child: customCarousel(
-                                              width: Get.width,
-                                              height: 130.r,
-                                              images: controller.homeItems?.data?.bannerLists ?? [],
+    return WillPopScope(
+      onWillPop: () async {
+        Get.offAllNamed(RoutesHelper.home);
+        return false;
+      },
+      child: GetBuilder<HomeController>(
+        builder: (controller) {
+          var bannersList = controller.homeItems?.data?.bannerLists ?? [];
+          return GetBuilder<ProductController>(
+            builder: (productController) {
+              return Scaffold(
+                backgroundColor: Colors.white,
+                bottomNavigationBar: bottomNavigationMenu(),
+                body: SafeArea(
+                  child:
+                      productController.loading
+                          ? customLoader()
+                          : Column(
+                            children: [
+                              headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
+                              Expanded(
+                                child: Stack(
+                                  children: [
+                                    SingleChildScrollView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      child: Column(
+                                        children: [
+                                          Visibility(
+                                            visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(top: 5.r),
+                                              child: customCarousel(
+                                                width: Get.width,
+                                                height: 130.r,
+                                                images: controller.homeItems?.data?.bannerLists ?? [],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: 6.r),
-                                        categoryListMenu(list: productController.categories?.categories ?? []),
-                                        SizedBox(height: 6.r),
-                                        //list view
-                                        productController.productdata?.showItemInGridView == 0
-                                            ? SizedBox(
-                                              height: Get.height - (65.r + 90.r),
-                                              width: Get.width,
-                                              child: ListView.builder(
-                                                physics: const ClampingScrollPhysics(),
-                                                controller: _productScrollController,
-                                                itemCount: productController.productsInventry.length,
-                                                itemBuilder: (context, index) {
-                                                  String showImage = productController.productdata?.showImage ?? "";
-                                                  return Padding(
-                                                    padding: EdgeInsets.symmetric(vertical: 4.r),
-                                                    child: horizontalProduct(
-                                                      inMyList: productController.productsInventry[index]?.inMyList ?? 0,
-                                                      icon: Images.radioAdd,
-                                                      originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                      measureQty: productController.productsInventry[index]?.measureQty ?? "",
-                                                      onTap: () {},
-                                                      onTapIcon: () {
-                                                        print("hello");
-                                                        productController.addUserItemToMyList(
-                                                          productController.productsInventry[index]?.itemCode ?? "",
-                                                        );
-                                                      },
-                                                      url: productController.productsInventry[index]?.image ?? "",
-                                                      price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                      name: productController.productsInventry[index]?.itemName ?? "",
-                                                      isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                      hint: productController.productsInventry[index]?.uom ?? "",
-                                                      isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1:
-                                                          productController.productsInventry[index]?.textEditingController1 ??
-                                                          TextEditingController(),
-                                                      controller2:
-                                                          productController.productsInventry[index]?.textEditingController2 ??
-                                                          TextEditingController(),
-                                                      onChanged: (value) {
-                                                        if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                          controller.onChaged(
-                                                            productController.productsInventry[index]?.textEditingController2 ??
-                                                                TextEditingController(),
-                                                            index,
-                                                          );
-                                                        } else {
-                                                          controller.onChaged(
-                                                            productController.productsInventry[index]?.textEditingController1 ??
-                                                                TextEditingController(),
-                                                            index,
-                                                          );
-                                                          controller.onChaged(
-                                                            productController.productsInventry[index]?.textEditingController2 ??
-                                                                TextEditingController(),
-                                                            index,
-                                                          );
-                                                        }
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                            :
-                                            //Grid view
-                                            Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 4.r),
-                                              child: SizedBox(
-                                                height: Get.height - (65.r + 60.r),
-                                                child: DynamicHeightGridView(
+                                          SizedBox(height: 6.r),
+                                          categoryListMenu(list: productController.categories?.categories ?? []),
+                                          SizedBox(height: 6.r),
+                                          //list view
+                                          productController.productdata?.showItemInGridView == 0
+                                              ? SizedBox(
+                                                height: Get.height - (65.r + 90.r),
+                                                width: Get.width,
+                                                child: ListView.builder(
                                                   physics: const ClampingScrollPhysics(),
-
                                                   controller: _productScrollController,
-                                                  builder: (context, index) {
+                                                  itemCount: productController.productsInventry.length,
+                                                  itemBuilder: (context, index) {
                                                     String showImage = productController.productdata?.showImage ?? "";
-
-                                                    return verticalProduct(
-                                                      originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                      measureQty: productController.productsInventry[index]?.measureQty ?? "",
-                                                      url: productController.productsInventry[index]?.image ?? "",
-                                                      price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                      name: productController.productsInventry[index]?.itemName ?? "",
-                                                      isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                      hint: productController.productsInventry[index]?.uom ?? "",
-                                                      isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                      controller1:
-                                                          productController.productsInventry[index]?.textEditingController1 ??
-                                                          TextEditingController(),
-                                                      controller2:
-                                                          productController.productsInventry[index]?.textEditingController2 ??
-                                                          TextEditingController(),
-                                                      onChanged: (value) {
-                                                        if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                          controller.onChaged(
-                                                            productController.productsInventry[index]?.textEditingController2 ??
-                                                                TextEditingController(),
-                                                            index,
+                                                    return Padding(
+                                                      padding: EdgeInsets.symmetric(vertical: 4.r),
+                                                      child: horizontalProduct(
+                                                        inMyList: productController.productsInventry[index]?.inMyList ?? 0,
+                                                        icon: Images.radioAdd,
+                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
+                                                        onTap: () {},
+                                                        onTapIcon: () {
+                                                          print("hello");
+                                                          productController.addUserItemToMyList(
+                                                            productController.productsInventry[index]?.itemCode ?? "",
                                                           );
-                                                        } else {
-                                                          controller.onChaged(
+                                                        },
+                                                        url: productController.productsInventry[index]?.image ?? "",
+                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
+                                                        name: productController.productsInventry[index]?.itemName ?? "",
+                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
+                                                        hint: productController.productsInventry[index]?.uom ?? "",
+                                                        isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                        controller1:
                                                             productController.productsInventry[index]?.textEditingController1 ??
-                                                                TextEditingController(),
-                                                            index,
-                                                          );
-                                                          controller.onChaged(
+                                                            TextEditingController(),
+                                                        controller2:
                                                             productController.productsInventry[index]?.textEditingController2 ??
-                                                                TextEditingController(),
-                                                            index,
-                                                          );
-                                                        }
-                                                      },
+                                                            TextEditingController(),
+                                                        onChanged: (value) {
+                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                          } else {
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController1 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
                                                     );
                                                   },
-                                                  itemCount: productController.productsInventry.length,
-                                                  crossAxisCount: 2,
+                                                ),
+                                              )
+                                              :
+                                              //Grid view
+                                              Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 4.r),
+                                                child: SizedBox(
+                                                  height: Get.height - (65.r + 60.r),
+                                                  child: DynamicHeightGridView(
+                                                    physics: const ClampingScrollPhysics(),
+
+                                                    controller: _productScrollController,
+                                                    builder: (context, index) {
+                                                      String showImage = productController.productdata?.showImage ?? "";
+
+                                                      return verticalProduct(
+                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
+                                                        url: productController.productsInventry[index]?.image ?? "",
+                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
+                                                        name: productController.productsInventry[index]?.itemName ?? "",
+                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
+                                                        hint: productController.productsInventry[index]?.uom ?? "",
+                                                        isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                        controller1:
+                                                            productController.productsInventry[index]?.textEditingController1 ??
+                                                            TextEditingController(),
+                                                        controller2:
+                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                            TextEditingController(),
+                                                        onChanged: (value) {
+                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                          } else {
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController1 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                            controller.onChaged(
+                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                                  TextEditingController(),
+                                                              index,
+                                                            );
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                    itemCount: productController.productsInventry.length,
+                                                    crossAxisCount: 2,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
-                                ],
+                                    Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-              ),
-            );
-          },
-        );
-      },
+                            ],
+                          ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

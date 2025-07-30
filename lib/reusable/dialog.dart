@@ -17,41 +17,76 @@ showAlert({required VoidCallback onPressed, required bool showCancelBtn, require
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero)),
         content: Container(
           padding: EdgeInsets.all(10.r),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.r)), border: Border.all(color: Colors.white)),
-                    child: Padding(padding: EdgeInsets.all(4.r), child: GestureDetector(onTap: () => Get.back(), behavior: HitTestBehavior.opaque, child: Image.asset(Images.crossWhite, height: 8.r))),
+          child: SizedBox(
+            height: Get.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.r)), border: Border.all(color: Colors.white)),
+                      child: Padding(
+                        padding: EdgeInsets.all(4.r),
+                        child: GestureDetector(
+                          onTap: () => Get.back(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Image.asset(Images.crossWhite, height: 8.r),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.r),
+                Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: TypographyResources.openSans,
+                    fontSize: Dimensions.font12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
-                ],
-              ),
-              SizedBox(height: 20.r),
-              Text(description, textAlign: TextAlign.center, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12, fontWeight: FontWeight.w500, color: Colors.white)),
-              SizedBox(height: 10.r),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (showCancelBtn)
+                ),
+                SizedBox(height: 10.r),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (showCancelBtn)
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          LocalText.cancel,
+                          style: TextStyle(
+                            fontFamily: TypographyResources.openSans,
+                            fontSize: Dimensions.font12,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
                     TextButton(
                       onPressed: () {
                         Get.back();
+                        onPressed();
                       },
-                      child: Text(LocalText.cancel, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12, fontWeight: FontWeight.w400, color: Colors.red)),
+                      child: Text(
+                        buttonText,
+                        style: TextStyle(
+                          fontFamily: TypographyResources.openSans,
+                          fontSize: Dimensions.font14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  TextButton(
-                    onPressed: () {
-                      Get.back();
-                      onPressed();
-                    },
-                    child: Text(buttonText, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14, fontWeight: FontWeight.w400, color: Colors.white)),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -79,26 +114,58 @@ showLogoutAlert({required VoidCallback onPressed, required bool showCancelBtn, r
                 children: [
                   Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.r)), border: Border.all(color: Colors.white)),
-                    child: Padding(padding: EdgeInsets.all(4.r), child: GestureDetector(onTap: () => Get.back(), behavior: HitTestBehavior.opaque, child: Image.asset(Images.crossWhite, height: 8.r))),
+                    child: Padding(
+                      padding: EdgeInsets.all(4.r),
+                      child: GestureDetector(
+                        onTap: () => Get.back(),
+                        behavior: HitTestBehavior.opaque,
+                        child: Image.asset(Images.crossWhite, height: 8.r),
+                      ),
+                    ),
                   ),
                 ],
               ),
               SizedBox(height: 20.r),
-              Text(description, textAlign: TextAlign.center, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12, fontWeight: FontWeight.w500, color: Colors.white)),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: TypographyResources.openSans,
+                  fontSize: Dimensions.font12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
               SizedBox(height: 10.r),
               TextButton(
                 onPressed: () {
                   Get.back();
                   onPressed();
                 },
-                child: Text(buttonText, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font14, fontWeight: FontWeight.w400, color: Colors.white)),
+                child: Text(
+                  buttonText,
+                  style: TextStyle(
+                    fontFamily: TypographyResources.openSans,
+                    fontSize: Dimensions.font14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               if (showCancelBtn)
                 TextButton(
                   onPressed: () {
                     Get.back();
                   },
-                  child: Text(LocalText.cancel, style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12, fontWeight: FontWeight.w400, color: Colors.white)),
+                  child: Text(
+                    LocalText.cancel,
+                    style: TextStyle(
+                      fontFamily: TypographyResources.openSans,
+                      fontSize: Dimensions.font12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
             ],
           ),

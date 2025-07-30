@@ -46,7 +46,7 @@ Widget bottomNavigationMenu() {
                     child: GestureDetector(
                       onTap: () {
                         controller.setSelectedIndex(i);
-                        Get.find<ProductController>().page = 0;
+                        // Get.find<ProductController>().page = 0;
                       },
                       child: Column(
                         children: [
