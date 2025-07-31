@@ -18,6 +18,7 @@ import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart'
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
+import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/string_extension.dart';
@@ -114,21 +115,25 @@ class HomeController extends GetxController implements GetxService {
     Get.find<SplashController>().isCompanyDetailsFetchedSuccess = false;
     Get.find<CartController>().isCartFetchedSuccess = false;
     Get.find<AuthController>().isGetDeviceFetchCompleted = false;
-    print("selected outlet ::${outlet?.data?[index].userCode ?? ""}");
-     sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "");
+    print("selected outlet ::${outlet?.data?[index].userCode ?? "TapOutlet"}");
+    sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "TapOutlet");
+
+    LocalStorage.setUserCode(outlet?.data?[index].userCode ?? "TapOutlet"); //setUserCode
+
     await Get.find<AuthController>().getDevice();
     if (Get.find<AuthController>().isGetDeviceFetchCompleted) {
       await Get.find<CartController>().getCart();
     }
     if (Get.find<CartController>().isCartFetchedSuccess) {
-      Get.offAllNamed(RoutesHelper.home);
+      Get.offNamed(RoutesHelper.home);
     }
   }
 
   void updateUserInventoryHome() async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
-      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+      if (item.isMeasBox == 0 &&
+          (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
         cartItem.id = item.id;
         cartItem.isMeasBox = item.isMeasBox;
@@ -140,6 +145,20 @@ class HomeController extends GetxController implements GetxService {
         cartItems.add(cartItem);
       }
     });
-    updateUserInventoryForHome(cartItems);
+
+    UpdateInventoryHome payload = UpdateInventoryHome();
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.appType = "Dual";
+    payload.type = "Dual";
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.acmCode = "";
+    payload.userCode = sharedPreferences.getString(Keys.userCode); //raja
+    payload.cartItems = cartItems;
+    payload.orderFlag = 0;
+    updateUserInventoryForHome(payload);
+  }
+
+  void updateUserInventoryForMyList(UpdateInventoryHome payload) {
+    updateUserInventoryForHome(payload);
   }
 }

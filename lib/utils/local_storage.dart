@@ -100,15 +100,19 @@ class LocalStorage {
   static setUserCode(String str) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(Keys.userCode, str);
+    print("User Keys.userCode ${Keys.userCode}");
+    print("User code set: $str");
   }
 
   static Future<String?> getUserCode() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      print("User Keys.userCode ${Keys.userCode}");
       final data = prefs.getString(Keys.userCode);
       if (data == null || data.isEmpty) {
         return null;
       }
+      print("User code retrieved: $data");
       return data;
     } catch (e) {
       print("Error user code: $e");

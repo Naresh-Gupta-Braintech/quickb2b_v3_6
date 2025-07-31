@@ -35,11 +35,16 @@ Future<void> init() async {
   // Controllers
   Get.lazyPut(() => AuthController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => HomeController(sharedPreferences: sharedPreferences, repository: Get.find()));
-  Get.lazyPut(() => ProfileDashboardController(sharedPreferences: sharedPreferences, repository: Get.find()));
+  Get.lazyPut(
+    () => ProfileDashboardController(sharedPreferences: sharedPreferences, repository: Get.find()),
+    fenix: true,
+  );
   Get.lazyPut(() => CarouselBannerController());
   Get.lazyPut(() => SplashController(sharedPreferences: sharedPreferences));
-  Get.lazyPut(() => NavigationController(sharedPreferences: sharedPreferences));
+  Get.lazyPut(() => NavigationController(sharedPreferences: sharedPreferences), fenix: true);
   Get.lazyPut(() => CartController(sharedPreferences: sharedPreferences, repository: Get.find()));
-  Get.lazyPut(() => ProductController(sharedPreferences: sharedPreferences, repository: Get.find()));
+  Get.lazyPut(
+    () => ProductController(sharedPreferences: sharedPreferences, repository: Get.find()),
+  );
   Get.lazyPut(() => MyListController(sharedPreferences: sharedPreferences, repository: Get.find()));
 }

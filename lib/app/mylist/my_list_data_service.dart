@@ -4,6 +4,7 @@ import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension MyListDataService on MyListController {
   Future<void> getUserItems(int reset) async {
@@ -12,6 +13,9 @@ extension MyListDataService on MyListController {
     payload.clientCode = GlobalConstants.clientCode;
     payload.deviceId = await GlobalConstants.getDeviceId();
     payload.userCode = sharedPreferences.getString(Keys.userCode);
+    print("payload.userCode ${payload.userCode}");
+    print("LocalStorage.getUserCode() ${await LocalStorage.getUserCode()}");
+    payload.userCode = await LocalStorage.getUserCode();
     payload.reset = reset;
     await repository.getUserItems(payload, (result, response, message) {
       switch (result) {

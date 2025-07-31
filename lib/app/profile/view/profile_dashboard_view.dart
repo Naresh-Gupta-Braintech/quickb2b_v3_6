@@ -18,35 +18,51 @@ class ProfileDashboardView extends StatelessWidget {
         return GetBuilder<ProfileDashboardController>(
           builder: (controller) {
             return Scaffold(
-              bottomNavigationBar: bottomNavigationMenu(),
+              bottomNavigationBar: bottomNavigationMenu(context),
               backgroundColor: Colors.white,
               body: SafeArea(
-                bottom: false,
                 left: false,
                 right: false,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 0.r),
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8), child: headers(appname: "develope", showPrice: 1)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8),
+                        child: headers(appname: "develope", showPrice: 1),
+                      ),
                       SizedBox(height: 6.r),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: Dimensions.padding8),
                         child: Container(
                           width: Get.width,
-                          decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(6.r)),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.r),
                             child: Text(
                               textAlign: TextAlign.center,
                               controller.list[controller.selectedIndex],
-                              style: TextStyle(color: Colors.white, fontSize: Dimensions.font16, fontFamily: TypographyResources.openSans),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Dimensions.font16,
+                                fontFamily: TypographyResources.openSans,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 10.r), child: menueList(list: controller.list)),
-                      Expanded(child: controller.changePage(navigationController.topNavigationSelectedIndex)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10.r),
+                        child: menueList(list: controller.list),
+                      ),
+                      Expanded(
+                        child: controller.changePage(
+                          navigationController.topNavigationSelectedIndex,
+                        ),
+                      ),
                     ],
                   ),
                 ),

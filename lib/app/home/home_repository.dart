@@ -12,12 +12,16 @@ import 'package:quickb2b_v3_6/network/data/response/update_inventory.dart';
 import 'package:quickb2b_v3_6/network/network_end_point.dart';
 import 'package:quickb2b_v3_6/network/network_exception.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 class HomeRepository extends GetxController implements GetxService {
   final NetworkManager network;
   HomeRepository({required this.network});
 
-  Future<void> getHomeItems(HomeItemsPayload payload, Function(Result result, HomeItemsData? response, String? message) completion) async {
+  Future<void> getHomeItems(
+    HomeItemsPayload payload,
+    Function(Result result, HomeItemsData? response, String? message) completion,
+  ) async {
     try {
       final networkResponse = await network.loadHTTP(
         endpoint: Endpoints.getHomeItems,
@@ -27,7 +31,11 @@ class HomeRepository extends GetxController implements GetxService {
       try {
         final response = HomeItemsData.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
-        completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, response.message);
+        completion(
+          (response.status == 1) ? Result.onSuccess : Result.onFailed,
+          response,
+          response.message,
+        );
       } catch (e) {
         debugConsole("Exception :: ${e.toString()}");
         throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);
@@ -38,7 +46,10 @@ class HomeRepository extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getCompanyDetails(HomeItemsPayload payload, Function(Result result, CompanyDetailsData? response, String? message) completion) async {
+  Future<void> getCompanyDetails(
+    HomeItemsPayload payload,
+    Function(Result result, CompanyDetailsData? response, String? message) completion,
+  ) async {
     try {
       final networkResponse = await network.loadHTTP(
         endpoint: Endpoints.getCompanyDetails,
@@ -48,7 +59,11 @@ class HomeRepository extends GetxController implements GetxService {
       try {
         final response = CompanyDetailsData.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
-        completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, response.message);
+        completion(
+          (response.status == 1) ? Result.onSuccess : Result.onFailed,
+          response,
+          response.message,
+        );
       } catch (e) {
         debugConsole("Exception :: ${e.toString()}");
         throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);
@@ -59,7 +74,10 @@ class HomeRepository extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getCustomers(CustomerListPayload payload, Function(Result result, CustomersData? response, String? message) completion) async {
+  Future<void> getCustomers(
+    CustomerListPayload payload,
+    Function(Result result, CustomersData? response, String? message) completion,
+  ) async {
     try {
       final networkResponse = await network.loadHTTP(
         endpoint: Endpoints.getCustomerList,
@@ -80,7 +98,10 @@ class HomeRepository extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getOutlets(OutletPayload payload, Function(Result result, OutletData? response, String? message) completion) async {
+  Future<void> getOutlets(
+    OutletPayload payload,
+    Function(Result result, OutletData? response, String? message) completion,
+  ) async {
     try {
       final networkResponse = await network.loadHTTP(
         endpoint: Endpoints.getOutLet,
@@ -130,11 +151,21 @@ class HomeRepository extends GetxController implements GetxService {
     Function(Result result, UpdateInventoryModel? response, String? message) completion,
   ) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.updateUserInventry, method: HTTPMethod.post, payload: payload.toJson());
+      final networkResponse = await network.loadHTTP(
+        endpoint: Endpoints.updateUserInventry,
+        method: HTTPMethod.post,
+        payload: payload.toJson(),
+      );
       try {
-        final response = UpdateInventoryModel.fromJson(networkResponse);
+        final response = UpdateInventoryModel.fromJson(networkResponse); //raja
+        String localUserCode = await LocalStorage.getUserCode() ?? "";
+        print("localUserCode - ${localUserCode}");
         print("Home Repository :: ${response.status}");
         completion((response.status == 1) ? Result.onSuccess : Result.onFailed, response, "");
+        print("localUserCode - ${localUserCode}");
+        LocalStorage.setUserCode(localUserCode);
+        final customerDataCode = await LocalStorage.getUserCode();
+        print("customerDataCode - ${customerDataCode}");
       } catch (e) {
         debugConsole("Exception :: ${e.toString()}");
         throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);

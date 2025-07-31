@@ -105,7 +105,7 @@ class AuthController extends GetxController implements GetxService {
     print("Outlet :: $outletLength");
     if (outletLength > 0) {
       print("going to outlet");
-      Get.offAllNamed(RoutesHelper.outlet);
+      Get.offNamed(RoutesHelper.outlet);
     } else {
       print("going to home");
       Get.offAllNamed(RoutesHelper.home);

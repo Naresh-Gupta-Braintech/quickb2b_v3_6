@@ -58,7 +58,7 @@ class _ProductViewState extends State<ProductView> {
             builder: (productController) {
               return Scaffold(
                 backgroundColor: Colors.white,
-                bottomNavigationBar: bottomNavigationMenu(),
+                bottomNavigationBar: bottomNavigationMenu(context),
                 body: SafeArea(
                   child:
                       productController.loading
