@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/home/view/home_view.dart';
+import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
-import 'package:quickb2b_v3_6/app/mylist/view/my_list_view.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
@@ -23,67 +22,6 @@ class Navigation {
   Navigation({required this.iconUrl, required this.name, required this.route});
 }
 
-// Widget bottomNavigationMenu() {
-//   return GetBuilder<NavigationController>(
-//     builder: (controller) {
-//       return Container(
-//         decoration: BoxDecoration(
-//           border: Border(
-//             top: BorderSide(
-//               color: Colors.black, // change to your desired color
-//               width: 0.5, // change to your desired width
-//             ),
-//           ),
-//         ),
-//         height: 65.r,
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.end,
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//               children: [
-//                 for (int i = 0; i < controller.bottomNavigation.length; i++)
-//                   SizedBox(
-//                     // height: 60.r,
-//                     child: GestureDetector(
-//                       onTap: () {
-//                         controller.setSelectedIndex(i);
-//                         // Get.find<ProductController>().page = 0;
-//                       },
-//                       child: Column(
-//                         children: [
-//                           Image.asset(controller.bottomNavigation[i].iconUrl, height: 20.r),
-//                           Text(
-//                             controller.bottomNavigation[i].name,
-//                             style: TextStyle(
-//                               fontFamily: TypographyResources.openSans,
-//                               fontSize: 10.r,
-//                               color: controller.bottomNavigationSelectedIndex == i ? ColorsResources.activeColor : Colors.black,
-//                               fontWeight: FontWeight.w600,
-//                               decoration: controller.bottomNavigationSelectedIndex == i ? TextDecoration.underline : TextDecoration.none,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//               ],
-//             ),
-//             Padding(
-//               padding: EdgeInsets.only(right: 25.r),
-//               child: Text(
-//                 "Devloped By QuickB2B",
-//                 style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 8.r, fontWeight: FontWeight.w400),
-//               ),
-//             ),
-//           ],
-//         ),
-//       );
-//     },
-//   );
-// }
-
 Widget bottomNavigationMenu(BuildContext context) {
   return Container(
     decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.black, width: 0.5))),
@@ -96,10 +34,10 @@ Widget bottomNavigationMenu(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SizedBox(
-              // height: 60.r,
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(0);
+                  Get.find<HomeController>().modifyingValOfX = 0;
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.home);
                 },
@@ -125,10 +63,11 @@ Widget bottomNavigationMenu(BuildContext context) {
               ),
             ),
             SizedBox(
-              // height: 60.r,
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(1);
+                  // Get.find<HomeController>().modifyingValOfX = 0;
+
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.myList);
                 },
@@ -154,10 +93,11 @@ Widget bottomNavigationMenu(BuildContext context) {
               ),
             ),
             SizedBox(
-              // height: 60.r,
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(2);
+                  // Get.find<HomeController>().modifyingValOfX = 0;
+
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.products);
                 },
@@ -165,7 +105,7 @@ Widget bottomNavigationMenu(BuildContext context) {
                   children: [
                     Image.asset(Images.search, height: 20.r),
                     Text(
-                      "Prod ucts",
+                      "Products",
                       style: TextStyle(
                         fontFamily: TypographyResources.openSans,
                         fontSize: 10.r,
@@ -183,10 +123,11 @@ Widget bottomNavigationMenu(BuildContext context) {
               ),
             ),
             SizedBox(
-              // height: 60.r,
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(3);
+                  // Get.find<HomeController>().modifyingValOfX = 0;
+
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.myOrder);
                 },
@@ -216,6 +157,8 @@ Widget bottomNavigationMenu(BuildContext context) {
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(4);
+                  // Get.find<HomeController>().modifyingValOfX = 0;
+
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.account);
                 },

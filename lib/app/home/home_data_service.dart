@@ -22,8 +22,10 @@ extension HomeDataService on HomeController {
         case Result.onSuccess:
           loading = false;
           homeItems = response;
+          String previousRoute = Get.previousRoute;
           initializeController();
           update();
+          // updateUserInventory(previousRoute);
           break;
         case Result.onFailed:
           loading = false;

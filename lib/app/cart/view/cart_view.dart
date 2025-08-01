@@ -25,7 +25,14 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     super.initState();
+    String previousRoute = Get.previousRoute;
+    Get.find<HomeController>().updateUserInventory(previousRoute);
     Get.find<CartController>().getCartData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -110,71 +117,77 @@ class _CartViewState extends State<CartView> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: cartController.cartData?.data?.allInventories?.length,
                                 itemBuilder: (context, index) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Row(
-                                          children: [
-                                            cartController.isEdit
-                                                ? GestureDetector(
-                                                  behavior: HitTestBehavior.opaque,
-                                                  onTap: () {
-                                                    cartController.removedItem(index);
-                                                  },
-                                                  child: Image.asset(Images.redCross, height: 30.r),
-                                                )
-                                                : cachedImageNetwork(
-                                                  url: orders[index].image ?? "",
-                                                  height: 30.r,
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 5.r),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Row(
+                                            children: [
+                                              cartController.isEdit
+                                                  ? GestureDetector(
+                                                    behavior: HitTestBehavior.opaque,
+                                                    onTap: () {
+                                                      cartController.removedItem(index);
+                                                    },
+                                                    child: Image.asset(
+                                                      Images.redCross,
+                                                      height: 30.r,
+                                                    ),
+                                                  )
+                                                  : cachedImageNetwork(
+                                                    url: orders[index].image ?? "",
+                                                    height: 30.r,
+                                                  ),
+                                              Flexible(
+                                                child: Text(
+                                                  orders[index].itemName ?? "",
+                                                  maxLines: 1,
                                                 ),
-                                            Flexible(
-                                              child: Text(
-                                                orders[index].itemName ?? "",
-                                                maxLines: 1,
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Flexible(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // if (orders[index].isMeasBox == 0)
-                                            cartController.isEdit
-                                                ? customTextFieldWithWidthConstraint(
-                                                  controller:
-                                                      cartController
-                                                          .cartData
-                                                          ?.data
-                                                          ?.allInventories?[index]
-                                                          .controller2 ??
-                                                      TextEditingController(),
-                                                  textFieldLabel: "",
-                                                  borderColor: Colors.grey,
-                                                )
-                                                : Text(orders[index].quantity ?? ""),
+                                        Flexible(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              // if (orders[index].isMeasBox == 0)
+                                              cartController.isEdit
+                                                  ? customTextFieldWithWidthConstraint(
+                                                    controller:
+                                                        cartController
+                                                            .cartData
+                                                            ?.data
+                                                            ?.allInventories?[index]
+                                                            .controller2 ??
+                                                        TextEditingController(),
+                                                    textFieldLabel: "",
+                                                    borderColor: Colors.grey,
+                                                  )
+                                                  : Text(orders[index].quantity ?? ""),
 
-                                            // if (orders[index].isMeasBox == 1)
-                                            cartController.isEdit
-                                                ? customTextFieldWithWidthConstraint(
-                                                  controller:
-                                                      cartController
-                                                          .cartData
-                                                          ?.data
-                                                          ?.allInventories?[index]
-                                                          .controller1 ??
-                                                      TextEditingController(),
-                                                  textFieldLabel: "",
-                                                  borderColor: Colors.grey,
-                                                )
-                                                : Text(orders[index].measureQty ?? "-"),
-                                            Text("\$ ${orders[index].itemPrice}"),
-                                          ],
+                                              // if (orders[index].isMeasBox == 1)
+                                              cartController.isEdit
+                                                  ? customTextFieldWithWidthConstraint(
+                                                    controller:
+                                                        cartController
+                                                            .cartData
+                                                            ?.data
+                                                            ?.allInventories?[index]
+                                                            .controller1 ??
+                                                        TextEditingController(),
+                                                    textFieldLabel: "",
+                                                    borderColor: Colors.grey,
+                                                  )
+                                                  : Text(orders[index].measureQty ?? "-"),
+                                              Text("\$ ${orders[index].itemPrice}"),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   );
                                 },
                               ),

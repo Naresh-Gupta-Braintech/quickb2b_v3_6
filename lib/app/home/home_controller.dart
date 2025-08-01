@@ -8,6 +8,7 @@ import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
@@ -41,6 +42,8 @@ class HomeController extends GetxController implements GetxService {
   CompanyDetailsData? companyDetails;
   int selectedOutled = 0;
   List<CartItem> cartItems = [];
+  bool isUpdateInventory = false;
+  int modifyingValOfX = 0;
 
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
@@ -129,7 +132,7 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
-  void updateUserInventoryHome() async {
+  Future<void> updateUserInventoryHome() async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
       if (item.isMeasBox == 0 &&
@@ -158,7 +161,37 @@ class HomeController extends GetxController implements GetxService {
     updateUserInventoryForHome(payload);
   }
 
-  void updateUserInventoryForMyList(UpdateInventoryHome payload) {
+  Future<void> updateUserInventoryForMyList(UpdateInventoryHome payload) async {
     updateUserInventoryForHome(payload);
+  }
+
+  void updateUserInventory(String previouRoutes) {
+    print("updateUserInventory called with route: $previouRoutes");
+    if (previouRoutes == "/mylist") {
+      print("updateUserInventory 222222");
+      Get.find<MyListController>().updateUserInventoryMyList();
+      return;
+    } else {
+      print("updateUserInventory 333333");
+      if (modifyingValOfX == 0) {
+        updateUserInventoryHome();
+        modifyingValOfX++;
+      }
+      return;
+    }
+    // switch (previouRoutes) {
+    //   case "/":
+    //     updateUserInventoryHome();
+    //     break;
+    //   case "/mylist":
+    //     Get.find<MyListController>().updateUserInventoryMyList();
+    //     break;
+    //   case "/products":
+    //     updateUserInventoryHome();
+    //     break;
+    //   case "/cart":
+    //     updateUserInventoryHome();
+    //     break;
+    // }
   }
 }

@@ -6,7 +6,13 @@ import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
-showAlert({required VoidCallback onPressed, required bool showCancelBtn, required String description, required String buttonText}) {
+showAlert({
+  required VoidCallback onPressed,
+  required bool showCancelBtn,
+  required String description,
+  required String buttonText,
+}) {
+  print("clicked");
   Get.dialog(
     WillPopScope(
       onWillPop: () async => false,
@@ -18,7 +24,6 @@ showAlert({required VoidCallback onPressed, required bool showCancelBtn, require
         content: Container(
           padding: EdgeInsets.all(10.r),
           child: SizedBox(
-            height: Get.width,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -26,7 +31,10 @@ showAlert({required VoidCallback onPressed, required bool showCancelBtn, require
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.r)), border: Border.all(color: Colors.white)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                        border: Border.all(color: Colors.white),
+                      ),
                       child: Padding(
                         padding: EdgeInsets.all(4.r),
                         child: GestureDetector(
@@ -95,7 +103,12 @@ showAlert({required VoidCallback onPressed, required bool showCancelBtn, require
   );
 }
 
-showLogoutAlert({required VoidCallback onPressed, required bool showCancelBtn, required String description, required String buttonText}) {
+showLogoutAlert({
+  required VoidCallback onPressed,
+  required bool showCancelBtn,
+  required String description,
+  required String buttonText,
+}) {
   Get.dialog(
     WillPopScope(
       onWillPop: () async => false,
@@ -113,7 +126,10 @@ showLogoutAlert({required VoidCallback onPressed, required bool showCancelBtn, r
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.r)), border: Border.all(color: Colors.white)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      border: Border.all(color: Colors.white),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(4.r),
                       child: GestureDetector(

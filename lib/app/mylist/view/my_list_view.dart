@@ -28,15 +28,14 @@ class _MyListState extends State<MyListView> {
   @override
   void initState() {
     super.initState();
-
+    String previousRoute = Get.previousRoute;
+    Get.find<HomeController>().updateUserInventory(previousRoute);
     Get.find<MyListController>().getUserData(0);
   }
 
   @override
   void dispose() {
     super.dispose();
-    print("myList disposed");
-    // Get.find<MyListController>().updateUserInventoryMyList();
   }
 
   @override

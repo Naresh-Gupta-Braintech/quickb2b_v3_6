@@ -10,7 +10,6 @@ import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/products.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
-import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,16 +23,16 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    Get.find<HomeController>().gethomeItems();
+    String previousRoute = Get.previousRoute;
+    Get.find<HomeController>().updateUserInventory(previousRoute);
+    // Future.delayed(Duration(milliseconds: 5000), () {
     // });
+    Get.find<HomeController>().gethomeItems();
   }
 
   @override
   void dispose() {
     super.dispose();
-    // Get.find<HomeController>().updateUserInventoryHome();
   }
 
   @override

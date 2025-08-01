@@ -32,7 +32,7 @@ class MyListController extends GetxController implements GetxService {
     update();
   }
 
-  void updateUserInventoryMyList() async {
+  Future<void> updateUserInventoryMyList() async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
       if (item.isMeasBox == 0 &&

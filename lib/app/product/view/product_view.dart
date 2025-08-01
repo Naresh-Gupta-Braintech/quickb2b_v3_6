@@ -26,6 +26,7 @@ class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
     super.initState();
+    String previousRoute = Get.previousRoute;
     _productScrollController.addListener(() {
       if (_productScrollController.position.atEdge) {
         if (_productScrollController.position.pixels == 0) {
@@ -35,12 +36,14 @@ class _ProductViewState extends State<ProductView> {
       }
     });
     Get.find<ProductController>().getAllCategories();
+    Get.find<HomeController>().updateUserInventory(previousRoute);
   }
 
   @override
   void dispose() {
     super.dispose();
     print("dispose");
+    Get.find<HomeController>().modifyingValOfX = 0;
     _productScrollController.dispose();
   }
 
@@ -65,7 +68,10 @@ class _ProductViewState extends State<ProductView> {
                           ? customLoader()
                           : Column(
                             children: [
-                              headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
+                              headerWithSearch(
+                                hint: "Search all products",
+                                appName: controller.homeItems?.appName ?? "",
+                              ),
                               Expanded(
                                 child: Stack(
                                   children: [
@@ -74,18 +80,25 @@ class _ProductViewState extends State<ProductView> {
                                       child: Column(
                                         children: [
                                           Visibility(
-                                            visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                            visible:
+                                                (controller.homeItems?.showAppBanner == 1 &&
+                                                        bannersList.isNotEmpty)
+                                                    ? true
+                                                    : false,
                                             child: Padding(
                                               padding: EdgeInsets.only(top: 5.r),
                                               child: customCarousel(
                                                 width: Get.width,
                                                 height: 130.r,
-                                                images: controller.homeItems?.data?.bannerLists ?? [],
+                                                images:
+                                                    controller.homeItems?.data?.bannerLists ?? [],
                                               ),
                                             ),
                                           ),
                                           SizedBox(height: 6.r),
-                                          categoryListMenu(list: productController.categories?.categories ?? []),
+                                          categoryListMenu(
+                                            list: productController.categories?.categories ?? [],
+                                          ),
                                           SizedBox(height: 6.r),
                                           //list view
                                           productController.productdata?.showItemInGridView == 0
@@ -95,50 +108,104 @@ class _ProductViewState extends State<ProductView> {
                                                 child: ListView.builder(
                                                   physics: const ClampingScrollPhysics(),
                                                   controller: _productScrollController,
-                                                  itemCount: productController.productsInventry.length,
+                                                  itemCount:
+                                                      productController.productsInventry.length,
                                                   itemBuilder: (context, index) {
-                                                    String showImage = productController.productdata?.showImage ?? "";
+                                                    String showImage =
+                                                        productController.productdata?.showImage ??
+                                                        "";
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(vertical: 4.r),
                                                       child: horizontalProduct(
-                                                        inMyList: productController.productsInventry[index]?.inMyList ?? 0,
+                                                        inMyList:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.inMyList ??
+                                                            0,
                                                         icon: Images.radioAdd,
-                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
+                                                        originQty:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.originQty ??
+                                                            "",
+                                                        measureQty:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.measureQty ??
+                                                            "",
                                                         onTap: () {},
                                                         onTapIcon: () {
                                                           print("hello");
                                                           productController.addUserItemToMyList(
-                                                            productController.productsInventry[index]?.itemCode ?? "",
+                                                            productController
+                                                                    .productsInventry[index]
+                                                                    ?.itemCode ??
+                                                                "",
                                                           );
                                                         },
-                                                        url: productController.productsInventry[index]?.image ?? "",
-                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                        name: productController.productsInventry[index]?.itemName ?? "",
-                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                        hint: productController.productsInventry[index]?.uom ?? "",
-                                                        isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                        url:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.image ??
+                                                            "",
+                                                        price:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.itemPrice ??
+                                                            "",
+                                                        name:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.itemName ??
+                                                            "",
+                                                        isMeasBox:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.isMeasBox ??
+                                                            0,
+                                                        hint:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.uom ??
+                                                            "",
+                                                        isShowImage:
+                                                            showImage.trim().isNotEmpty
+                                                                ? int.tryParse(showImage) ?? 0
+                                                                : 0,
                                                         controller1:
-                                                            productController.productsInventry[index]?.textEditingController1 ??
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.textEditingController1 ??
                                                             TextEditingController(),
                                                         controller2:
-                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.textEditingController2 ??
                                                             TextEditingController(),
                                                         onChanged: (value) {
-                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          if (productController
+                                                                  .productsInventry[index]
+                                                                  ?.isMeasBox ==
+                                                              0) {
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController2 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
                                                           } else {
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController1 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController1 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController2 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
@@ -160,38 +227,86 @@ class _ProductViewState extends State<ProductView> {
 
                                                     controller: _productScrollController,
                                                     builder: (context, index) {
-                                                      String showImage = productController.productdata?.showImage ?? "";
+                                                      String showImage =
+                                                          productController
+                                                              .productdata
+                                                              ?.showImage ??
+                                                          "";
 
                                                       return verticalProduct(
-                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
-                                                        url: productController.productsInventry[index]?.image ?? "",
-                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                        name: productController.productsInventry[index]?.itemName ?? "",
-                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                        hint: productController.productsInventry[index]?.uom ?? "",
-                                                        isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                        originQty:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.originQty ??
+                                                            "",
+                                                        measureQty:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.measureQty ??
+                                                            "",
+                                                        url:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.image ??
+                                                            "",
+                                                        price:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.itemPrice ??
+                                                            "",
+                                                        name:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.itemName ??
+                                                            "",
+                                                        isMeasBox:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.isMeasBox ??
+                                                            0,
+                                                        hint:
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.uom ??
+                                                            "",
+                                                        isShowImage:
+                                                            showImage.trim().isNotEmpty
+                                                                ? int.tryParse(showImage) ?? 0
+                                                                : 0,
                                                         controller1:
-                                                            productController.productsInventry[index]?.textEditingController1 ??
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.textEditingController1 ??
                                                             TextEditingController(),
                                                         controller2:
-                                                            productController.productsInventry[index]?.textEditingController2 ??
+                                                            productController
+                                                                .productsInventry[index]
+                                                                ?.textEditingController2 ??
                                                             TextEditingController(),
                                                         onChanged: (value) {
-                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          if (productController
+                                                                  .productsInventry[index]
+                                                                  ?.isMeasBox ==
+                                                              0) {
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController2 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
                                                           } else {
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController1 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController1 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
                                                             controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
+                                                              productController
+                                                                      .productsInventry[index]
+                                                                      ?.textEditingController2 ??
                                                                   TextEditingController(),
                                                               index,
                                                             );
@@ -199,7 +314,8 @@ class _ProductViewState extends State<ProductView> {
                                                         },
                                                       );
                                                     },
-                                                    itemCount: productController.productsInventry.length,
+                                                    itemCount:
+                                                        productController.productsInventry.length,
                                                     crossAxisCount: 2,
                                                   ),
                                                 ),
@@ -207,7 +323,10 @@ class _ProductViewState extends State<ProductView> {
                                         ],
                                       ),
                                     ),
-                                    Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
+                                    Visibility(
+                                      visible: controller.toggleOutlet,
+                                      child: _outlets(controller),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -227,9 +346,16 @@ class _ProductViewState extends State<ProductView> {
       padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 0.r),
       child: Container(
         width: Get.width,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(4.r),
+        ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
+          padding: EdgeInsets.symmetric(
+            horizontal: Dimensions.padding6,
+            vertical: Dimensions.padding6,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +364,11 @@ class _ProductViewState extends State<ProductView> {
                 padding: EdgeInsets.only(bottom: Dimensions.padding8),
                 child: Text(
                   "Select the outlet to place an order",
-                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: TypographyResources.openSans,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               for (int i = 0; i < controller.outlets.length; i++)
@@ -247,8 +377,14 @@ class _ProductViewState extends State<ProductView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
-                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
+                      Text(
+                        controller.outlets[i],
+                        style: TextStyle(fontFamily: TypographyResources.openSans),
+                      ),
+                      Visibility(
+                        visible: controller.selectedOutlet == i,
+                        child: Image.asset(Images.rightTale),
+                      ),
                     ],
                   ),
                 ),
