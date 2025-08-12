@@ -23,10 +23,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    String previousRoute = Get.previousRoute;
-    Get.find<HomeController>().updateUserInventory(previousRoute);
-    // Future.delayed(Duration(milliseconds: 5000), () {
-    // });
     Get.find<HomeController>().gethomeItems();
   }
 

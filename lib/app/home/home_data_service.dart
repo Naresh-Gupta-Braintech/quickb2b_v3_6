@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
@@ -17,7 +18,7 @@ extension HomeDataService on HomeController {
     payload.clientCode = GlobalConstants.clientCode;
     payload.deviceId = await GlobalConstants.getDeviceId();
     payload.userCode = sharedPreferences.getString(Keys.userCode);
-    await repository.getHomeItems(payload, (result, response, message) {
+    await repository.getHomeItems(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
           loading = false;
@@ -25,7 +26,12 @@ extension HomeDataService on HomeController {
           String previousRoute = Get.previousRoute;
           initializeController();
           update();
-          // updateUserInventory(previousRoute);
+          if (previousRoute == RoutesHelper.myList) {
+            await Get.find<MyListController>().updateUserInventoryMyList();
+          } else {
+            await updateUserInventoryHome();
+          }
+
           break;
         case Result.onFailed:
           loading = false;
@@ -165,7 +171,10 @@ extension HomeDataService on HomeController {
     });
   }
 
-  Future<void> updateUserInventoryForHome(UpdateInventoryHome payload) async {
+  Future<void> updateUserInventoryForHome(
+    UpdateInventoryHome payload, {
+    bool routeToHome = false,
+  }) async {
     loading = true;
     update();
     await repository.updateUserInventoryForHome(payload, (result, response, message) {
@@ -176,7 +185,7 @@ extension HomeDataService on HomeController {
           LocalStorage.saveCustomerDeatils(customerDetails);
           LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
           final customerData = LocalStorage.getCustomerDetails();
-          if (customerData != null) {
+          if (customerData != null && routeToHome == true) {
             Get.offAllNamed(RoutesHelper.home);
           }
           update();

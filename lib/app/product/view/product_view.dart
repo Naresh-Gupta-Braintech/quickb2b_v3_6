@@ -26,7 +26,6 @@ class _ProductViewState extends State<ProductView> {
   @override
   void initState() {
     super.initState();
-    String previousRoute = Get.previousRoute;
     _productScrollController.addListener(() {
       if (_productScrollController.position.atEdge) {
         if (_productScrollController.position.pixels == 0) {
@@ -36,7 +35,7 @@ class _ProductViewState extends State<ProductView> {
       }
     });
     Get.find<ProductController>().getAllCategories();
-    Get.find<HomeController>().updateUserInventory(previousRoute);
+
   }
 
   @override

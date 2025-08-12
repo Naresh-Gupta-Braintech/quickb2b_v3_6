@@ -48,7 +48,7 @@ class HomeController extends GetxController implements GetxService {
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
   void gethomeItems() {
-    getHomeDetails();
+      getHomeDetails();
   }
 
   @override

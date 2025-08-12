@@ -15,7 +15,6 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    print("previous Routes :: ${Get.previousRoute}");
 
     Get.find<SplashController>().init();
   }

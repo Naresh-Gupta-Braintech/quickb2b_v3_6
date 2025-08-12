@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
@@ -18,8 +17,6 @@ class _AccountState extends State<Account> {
   @override
   void initState() {
     super.initState();
-    String previousRoute = Get.previousRoute;
-    Get.find<HomeController>().updateUserInventory(previousRoute);
     Get.find<ProfileDashboardController>().getProfile();
   }
 
@@ -146,7 +143,7 @@ class _AccountState extends State<Account> {
 
                     // Progress Indicator
                     Visibility(
-                      visible: false, // Change to true to show
+                      visible: false, 
                       child: Center(child: CircularProgressIndicator()),
                     ),
                   ],

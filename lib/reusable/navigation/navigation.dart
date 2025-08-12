@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/profile/profile_dashboard_controller.dart';
@@ -37,7 +36,6 @@ Widget bottomNavigationMenu(BuildContext context) {
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(0);
-                  Get.find<HomeController>().modifyingValOfX = 0;
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.home);
                 },

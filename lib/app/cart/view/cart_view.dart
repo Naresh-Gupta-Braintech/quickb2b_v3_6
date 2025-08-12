@@ -25,8 +25,6 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     super.initState();
-    String previousRoute = Get.previousRoute;
-    Get.find<HomeController>().updateUserInventory(previousRoute);
     Get.find<CartController>().getCartData();
   }
 
