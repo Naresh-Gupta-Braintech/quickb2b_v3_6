@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
-import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
@@ -25,12 +24,13 @@ extension HomeDataService on HomeController {
           homeItems = response;
           String previousRoute = Get.previousRoute;
           initializeController();
+
           update();
-          if (previousRoute == RoutesHelper.myList) {
-            await Get.find<MyListController>().updateUserInventoryMyList();
-          } else {
-            await updateUserInventoryHome();
-          }
+          // if (previousRoute == RoutesHelper.myList) {
+          //   await Get.find<MyListController>().updateUserInventoryMyList();
+          // } else {
+          //   await updateUserInventoryHome();
+          // }
 
           break;
         case Result.onFailed:
@@ -171,20 +171,19 @@ extension HomeDataService on HomeController {
     });
   }
 
-  Future<void> updateUserInventoryForHome(
-    UpdateInventoryHome payload, {
-    bool routeToHome = false,
-  }) async {
+  Future<void> updateUserInventoryForHome(UpdateInventoryHome payload, {bool routeToHome = false}) async {
     loading = true;
     update();
+    print("update inventory for home");
     await repository.updateUserInventoryForHome(payload, (result, response, message) {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-
-          LocalStorage.saveCustomerDeatils(customerDetails);
-          LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
+          // LocalStorage.saveCustomerDeatils(customerDetails);
+          // LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
           final customerData = LocalStorage.getCustomerDetails();
+
+          currentRoutes();
           if (customerData != null && routeToHome == true) {
             Get.offAllNamed(RoutesHelper.home);
           }

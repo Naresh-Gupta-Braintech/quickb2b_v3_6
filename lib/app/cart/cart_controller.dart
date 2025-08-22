@@ -94,6 +94,7 @@ class CartController extends GetxController implements GetxService {
   void removeItemFromCardLocally({String? itemCode}) async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == itemCode);
+    print("item code :: $itemCode");
     print("length :: ${cart?.data?.allInventories?.length ?? 0}");
     LocalStorage.saveCartDetails(cart);
     cartData = cart;

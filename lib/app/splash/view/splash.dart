@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
 

@@ -32,8 +32,16 @@ class NetworkResponse0<T> {
   NetworkResponse0({required this.status, required this.dataList, required this.message});
 
   factory NetworkResponse0.fromJson(Map<String, dynamic> json, T Function(dynamic json) fromJsonT) {
-    return NetworkResponse0<T>(message: json["message"], status: json["status"], dataList: json["data"] == null ? null : List<T>.from(json["data"].map((data) => fromJsonT(data))));
+    return NetworkResponse0<T>(
+      message: json["message"],
+      status: json["status"],
+      dataList: json["data"] == null ? null : List<T>.from(json["data"].map((data) => fromJsonT(data))),
+    );
   }
 
-  Map<String, dynamic> toJson(List<Map<String, dynamic>> Function(List<T>? dataList) toJsonT) => {"message": message, "status": status, "data": toJsonT(dataList)};
+  Map<String, dynamic> toJson(List<Map<String, dynamic>> Function(List<T>? dataList) toJsonT) => {
+    "message": message,
+    "status": status,
+    "data": toJsonT(dataList),
+  };
 }

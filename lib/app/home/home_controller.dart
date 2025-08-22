@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
@@ -9,6 +10,7 @@ import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
+import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
@@ -48,7 +50,7 @@ class HomeController extends GetxController implements GetxService {
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
   void gethomeItems() {
-      getHomeDetails();
+    getHomeDetails();
   }
 
   @override
@@ -97,6 +99,7 @@ class HomeController extends GetxController implements GetxService {
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
+      print("remove items from my card $index");
       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
     } else if (value.isQuantityValid()) {
       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
@@ -135,8 +138,8 @@ class HomeController extends GetxController implements GetxService {
   Future<void> updateUserInventoryHome() async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
-      if (item.isMeasBox == 0 &&
-          (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+      print("item code :: ${item.id}");
+      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
         cartItem.id = item.id;
         cartItem.isMeasBox = item.isMeasBox;
@@ -168,30 +171,73 @@ class HomeController extends GetxController implements GetxService {
   void updateUserInventory(String previouRoutes) {
     print("updateUserInventory called with route: $previouRoutes");
     if (previouRoutes == "/mylist") {
-      print("updateUserInventory 222222");
+      print("previouRoutes $previouRoutes");
       Get.find<MyListController>().updateUserInventoryMyList();
       return;
     } else {
-      print("updateUserInventory 333333");
-      if (modifyingValOfX == 0) {
-        updateUserInventoryHome();
-        modifyingValOfX++;
-      }
+      print("previouRoutes $previouRoutes");
+      // if (modifyingValOfX == 0) {
+      updateUserInventoryHome();
+      // modifyingValOfX++;
+      // }
       return;
     }
-    // switch (previouRoutes) {
-    //   case "/":
-    //     updateUserInventoryHome();
-    //     break;
-    //   case "/mylist":
-    //     Get.find<MyListController>().updateUserInventoryMyList();
-    //     break;
-    //   case "/products":
-    //     updateUserInventoryHome();
-    //     break;
-    //   case "/cart":
-    //     updateUserInventoryHome();
-    //     break;
-    // }
+  }
+
+  // make home list quantity
+  void makeHomeDataFromLocalCart() async {
+    CartData? localCart = await LocalStorage.getCartDetails();
+    int length = homeItems?.data?.allInventories?.length ?? 0;
+    print("api cart. daya beffore update item");
+
+    homeItems?.data?.allInventories?.forEach((inventory) {
+      print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
+    });
+    for (int i = 0; i < length; i++) {
+      compareAndUpdateHomeData(inventory: homeItems?.data?.allInventories?[i], index: i);
+    }
+
+    print("local Cart item");
+    localCart?.data?.allInventories?.forEach((localInventory) {
+      print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
+    });
+    print("api cart. daya after update item");
+
+    homeItems?.data?.allInventories?.forEach((inventory) {
+      print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
+    });
+    update();
+  }
+
+  void compareAndUpdateHomeData({AllInventory? inventory, required int index}) async {
+    CartData? localCart = await LocalStorage.getCartDetails();
+    localCart?.data?.allInventories?.forEach((localInventory) {
+      if (localInventory.id == inventory?.id) {
+        homeItems?.data?.allInventories?[index].originQty = localInventory.originQty ?? "";
+        homeItems?.data?.allInventories?[index].measureQty = localInventory.measureQty ?? "";
+      }
+    });
+  }
+
+  void currentRoutes() {
+    String currentRoute = Get.currentRoute;
+    print("current route $currentRoute");
+    switch (currentRoute) {
+      case '/':
+        Get.find<HomeController>().gethomeItems();
+        break;
+      case "/mylist":
+        print(" mylist ::");
+        Get.find<MyListController>().getUserData(0);
+        break;
+      case "/products":
+        Get.find<ProductController>().getAllCategories();
+        break;
+      case "/my_order":
+        Get.find<CartController>().getCartData();
+        break;
+      default:
+        break;
+    }
   }
 }

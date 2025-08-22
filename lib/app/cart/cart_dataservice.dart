@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
-import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';

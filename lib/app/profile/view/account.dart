@@ -7,7 +7,7 @@ import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class Account extends StatefulWidget {
-  Account({super.key});
+  const Account({super.key});
 
   @override
   State<Account> createState() => _AccountState();
@@ -46,9 +46,7 @@ class _AccountState extends State<Account> {
                         children: [
                           // Customer Details Title
                           _section(
-                            isEditButtonVisible:
-                                ((!controller.isEditCustomerDetailsSection) &&
-                                    (acm_code != null && acm_code.isNotEmpty)),
+                            isEditButtonVisible: ((!controller.isEditCustomerDetailsSection) && (acm_code != null && acm_code.isNotEmpty)),
                             text: "Customer Details",
                             onTap: () => {controller.makeCustomerEditable()},
                             buttonText: "Edit",
@@ -57,9 +55,7 @@ class _AccountState extends State<Account> {
                           // Customer ID
                           _customerDeatilsSection(
                             acm_code: acm_code,
-                            isEdit:
-                                (acm_code != null && acm_code.isNotEmpty) &&
-                                controller.isEditCustomerDetailsSection,
+                            isEdit: (acm_code != null && acm_code.isNotEmpty) && controller.isEditCustomerDetailsSection,
                             onTap: () {
                               controller.makePCustomerReadOnly();
                             },
@@ -95,15 +91,11 @@ class _AccountState extends State<Account> {
                       text: "Postal Address",
                       onTap: () => {controller.makePostalEditable()},
                       buttonText: "Edit",
-                      isEditButtonVisible:
-                          ((!controller.isEditCustomerDetailsSection) &&
-                              (acm_code != null && acm_code.isNotEmpty)),
+                      isEditButtonVisible: ((!controller.isEditCustomerDetailsSection) && (acm_code != null && acm_code.isNotEmpty)),
                     ),
                     _postalAddressSection(
                       acm_code: acm_code,
-                      isEdit:
-                          (acm_code != null && acm_code.isNotEmpty) &&
-                          controller.isEditPostalAddressSection,
+                      isEdit: (acm_code != null && acm_code.isNotEmpty) && controller.isEditPostalAddressSection,
                       onTap: () {
                         controller.makePostalReadOnly();
                       },
@@ -142,10 +134,7 @@ class _AccountState extends State<Account> {
                     ),
 
                     // Progress Indicator
-                    Visibility(
-                      visible: false, 
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
+                    Visibility(visible: false, child: Center(child: CircularProgressIndicator())),
                   ],
                 ),
               ),
@@ -234,11 +223,7 @@ class _AccountState extends State<Account> {
     );
   }
 
-  Widget _deliveryAddressSection({
-    required bool isEdit,
-    required VoidCallback onTap,
-    required ProfileDashboardController controller,
-  }) {
+  Widget _deliveryAddressSection({required bool isEdit, required VoidCallback onTap, required ProfileDashboardController controller}) {
     final userData = controller.userProfile;
     return Column(
       children: [
@@ -415,12 +400,7 @@ class _AccountState extends State<Account> {
     );
   }
 
-  Widget _section({
-    required String text,
-    VoidCallback? onTap,
-    String? buttonText,
-    required bool isEditButtonVisible,
-  }) {
+  Widget _section({required String text, VoidCallback? onTap, String? buttonText, required bool isEditButtonVisible}) {
     double width = Get.width * 0.4;
     return Row(
       children: [
@@ -429,12 +409,7 @@ class _AccountState extends State<Account> {
           child: Text(
             text,
             textAlign: TextAlign.right,
-            style: TextStyle(
-              fontFamily: TypographyResources.openSans,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-              fontSize: Dimensions.font14,
-            ),
+            style: TextStyle(fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w700, color: Colors.black, fontSize: Dimensions.font14),
           ),
         ),
 
@@ -471,10 +446,7 @@ class _AccountState extends State<Account> {
           backgroundColor: Colors.black,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.r))),
         ),
-        child: GestureDetector(
-          onTap: onTap,
-          child: Text("Save", style: TextStyle(color: Colors.white)),
-        ),
+        child: GestureDetector(onTap: onTap, child: Text("Save", style: TextStyle(color: Colors.white))),
       ),
     );
   }

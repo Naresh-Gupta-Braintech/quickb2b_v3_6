@@ -28,7 +28,8 @@ class _MyListState extends State<MyListView> {
   @override
   void initState() {
     super.initState();
-    Get.find<MyListController>().getUserData(0);
+    String previousRoute = Get.previousRoute;
+    Get.find<HomeController>().updateUserInventory(previousRoute);
   }
 
   @override
@@ -45,8 +46,6 @@ class _MyListState extends State<MyListView> {
       },
       child: GetBuilder<MyListController>(
         builder: (mylistController) {
-          final menuList = mylistController.dataWithCategory ?? [];
-          print(menuList.length);
           return GetBuilder<HomeController>(
             builder: (controller) {
               var bannersList = controller.homeItems?.data?.bannerLists ?? [];
@@ -55,6 +54,7 @@ class _MyListState extends State<MyListView> {
                   return Scaffold(
                     backgroundColor: Colors.white,
                     body: SafeArea(
+                      bottom: false,
                       child:
                           mylistController.loading
                               ? customLoader()
@@ -62,16 +62,9 @@ class _MyListState extends State<MyListView> {
                                 children: [
                                   Column(
                                     children: [
-                                      headerWithSearch(
-                                        hint: "Search all products",
-                                        appName: controller.homeItems?.appName ?? "",
-                                      ),
+                                      headerWithSearch(hint: "Search all products", appName: controller.homeItems?.appName ?? ""),
                                       Visibility(
-                                        visible:
-                                            (controller.homeItems?.showAppBanner == 1 &&
-                                                    bannersList.isNotEmpty)
-                                                ? true
-                                                : false,
+                                        visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 5.r),
                                           child: customCarousel(
@@ -92,11 +85,7 @@ class _MyListState extends State<MyListView> {
                                               height: Get.height,
                                               child: ReorderableListView.builder(
                                                 onReorder: (oldIndex, newIndex) {
-                                                  final list =
-                                                      mylistController
-                                                          .dataWithCategory?[mylistController
-                                                              .topNavigationIndex]
-                                                          .data;
+                                                  final list = mylistController.dataWithCategory?[mylistController.topNavigationIndex].data;
                                                   if (list == null) return;
                                                   if (newIndex > oldIndex) newIndex -= 1;
                                                   final item = list.removeAt(oldIndex);
@@ -104,20 +93,10 @@ class _MyListState extends State<MyListView> {
                                                   mylistController.update();
                                                 },
                                                 physics: const ClampingScrollPhysics(),
-                                                itemCount:
-                                                    mylistController
-                                                        .dataWithCategory?[mylistController
-                                                            .topNavigationIndex]
-                                                        .data
-                                                        ?.length ??
-                                                    0,
+                                                itemCount: mylistController.dataWithCategory?[mylistController.topNavigationIndex].data?.length ?? 0,
                                                 itemBuilder: (context, index) {
-                                                  String showImage =
-                                                      mylistController.myList?.showImage ?? "";
-                                                  final products =
-                                                      mylistController
-                                                          .dataWithCategory?[mylistController
-                                                          .topNavigationIndex];
+                                                  String showImage = mylistController.myList?.showImage ?? "";
+                                                  final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
                                                   return Container(
                                                     key: ValueKey(index),
                                                     padding: EdgeInsets.symmetric(vertical: 4.r),
@@ -125,28 +104,36 @@ class _MyListState extends State<MyListView> {
                                                       icon: Images.hyphenInsideCircle,
                                                       onTapIcon: () {
                                                         mylistController.removeFromMyList(
-                                                          products?.data?[index].itemCode ?? "",
+                                                          mylistController
+                                                                  .dataWithCategory?[mylistController.topNavigationIndex]
+                                                                  .data?[index]
+                                                                  .itemCode ??
+                                                              "",
                                                         );
                                                       },
                                                       onTap: () {},
                                                       onChanged: (value) {
+                                                        print("product id myList :: ${value}");
                                                         if (products?.data?[index].isMeasBox == 0) {
                                                           controller.onChaged(
-                                                            products
-                                                                ?.data?[index]
+                                                            mylistController
+                                                                .dataWithCategory?[mylistController.topNavigationIndex]
+                                                                .data?[index]
                                                                 .textEditingController2,
                                                             index,
                                                           );
                                                         } else {
                                                           controller.onChaged(
-                                                            products
-                                                                ?.data?[index]
+                                                            mylistController
+                                                                .dataWithCategory?[mylistController.topNavigationIndex]
+                                                                .data?[index]
                                                                 .textEditingController1,
                                                             index,
                                                           );
                                                           controller.onChaged(
-                                                            products
-                                                                ?.data?[index]
+                                                            mylistController
+                                                                .dataWithCategory?[mylistController.topNavigationIndex]
+                                                                .data?[index]
                                                                 .textEditingController2,
                                                             index,
                                                           );
@@ -155,27 +142,23 @@ class _MyListState extends State<MyListView> {
                                                       url: products?.data?[index].image ?? "",
                                                       price: products?.data?[index].itemPrice ?? "",
                                                       name: products?.data?[index].itemName ?? "",
-                                                      isMeasBox:
-                                                          products?.data?[index].isMeasBox ?? 0,
+                                                      isMeasBox: products?.data?[index].isMeasBox ?? 0,
                                                       hint: products?.data?[index].uom ?? "",
-                                                      isShowImage:
-                                                          showImage.trim().isNotEmpty
-                                                              ? int.tryParse(showImage) ?? 0
-                                                              : 0,
+                                                      isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
                                                       controller1:
-                                                          products
-                                                              ?.data?[index]
+                                                          mylistController
+                                                              .dataWithCategory?[mylistController.topNavigationIndex]
+                                                              .data?[index]
                                                               .textEditingController1 ??
                                                           TextEditingController(),
                                                       controller2:
-                                                          products
-                                                              ?.data?[index]
+                                                          mylistController
+                                                              .dataWithCategory?[mylistController.topNavigationIndex]
+                                                              .data?[index]
                                                               .textEditingController2 ??
                                                           TextEditingController(),
-                                                      originQty:
-                                                          products?.data?[index].originQty ?? "",
-                                                      measureQty:
-                                                          products?.data?[index].measureQty ?? "",
+                                                      originQty: products?.data?[index].originQty ?? "",
+                                                      measureQty: products?.data?[index].measureQty ?? "",
                                                     ),
                                                   );
                                                 },
@@ -184,100 +167,47 @@ class _MyListState extends State<MyListView> {
                                           )
                                           :
                                           //Grid view
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 4.r),
-                                            child: SizedBox(
-                                              height: Get.height - (65.r + 60.r),
-                                              child: DynamicHeightGridView(
-                                                physics: const ClampingScrollPhysics(),
-                                                builder: (context, index) {
-                                                  String showImage =
-                                                      productController.productdata?.showImage ??
-                                                      "";
-                                                  final products =
-                                                      mylistController
-                                                          .dataWithCategory?[mylistController
-                                                          .topNavigationIndex];
-                                                  return verticalProduct(
-                                                    originQty:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.originQty ??
-                                                        "",
-                                                    measureQty:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.measureQty ??
-                                                        "",
-                                                    url:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.image ??
-                                                        "",
-                                                    price:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.itemPrice ??
-                                                        "",
-                                                    name:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.itemName ??
-                                                        "",
-                                                    isMeasBox:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.isMeasBox ??
-                                                        0,
-                                                    hint:
-                                                        productController
-                                                            .productsInventry[index]
-                                                            ?.uom ??
-                                                        "",
-                                                    isShowImage:
-                                                        showImage.trim().isNotEmpty
-                                                            ? int.tryParse(showImage) ?? 0
-                                                            : 0,
-                                                    controller1: TextEditingController(),
-                                                    controller2: TextEditingController(),
-                                                    onChanged: (value) {
-                                                      if (products?.data?[index].isMeasBox == 0) {
-                                                        controller.onChaged(
-                                                          products
-                                                              ?.data?[index]
-                                                              .textEditingController2,
-                                                          index,
-                                                        );
-                                                      } else {
-                                                        controller.onChaged(
-                                                          products
-                                                              ?.data?[index]
-                                                              .textEditingController1,
-                                                          index,
-                                                        );
-                                                        controller.onChaged(
-                                                          products
-                                                              ?.data?[index]
-                                                              .textEditingController2,
-                                                          index,
-                                                        );
-                                                      }
-                                                    },
-                                                  );
-                                                },
-                                                itemCount:
-                                                    productController.productsInventry.length,
-                                                crossAxisCount: 2,
+                                          Expanded(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 4.r),
+                                              child: SizedBox(
+                                                height: Get.height - (65.r + 60.r),
+                                                child: DynamicHeightGridView(
+                                                  physics: const ClampingScrollPhysics(),
+                                                  builder: (context, index) {
+                                                    String showImage = productController.productdata?.showImage ?? "";
+                                                    final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
+                                                    return verticalProduct(
+                                                      originQty: productController.productsInventry[index]?.originQty ?? "",
+                                                      measureQty: productController.productsInventry[index]?.measureQty ?? "",
+                                                      url: productController.productsInventry[index]?.image ?? "",
+                                                      price: productController.productsInventry[index]?.itemPrice ?? "",
+                                                      name: productController.productsInventry[index]?.itemName ?? "",
+                                                      isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
+                                                      hint: productController.productsInventry[index]?.uom ?? "",
+                                                      isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
+                                                      controller1: TextEditingController(),
+                                                      controller2: TextEditingController(),
+                                                      onChanged: (value) {
+                                                        if (products?.data?[index].isMeasBox == 0) {
+                                                          controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                        } else {
+                                                          controller.onChaged(products?.data?[index].textEditingController1, index);
+                                                          controller.onChaged(products?.data?[index].textEditingController2, index);
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                  itemCount: productController.productsInventry.length,
+                                                  crossAxisCount: 2,
+                                                ),
                                               ),
                                             ),
                                           ),
                                       bottomNavigationMenu(context),
                                     ],
                                   ),
-                                  Visibility(
-                                    visible: controller.toggleOutlet,
-                                    child: _outlets(controller),
-                                  ),
+                                  Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
                                 ],
                               ),
                     ),
@@ -296,16 +226,9 @@ class _MyListState extends State<MyListView> {
       padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 0.r),
       child: Container(
         width: Get.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(4.r),
-        ),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.padding6,
-            vertical: Dimensions.padding6,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -314,11 +237,7 @@ class _MyListState extends State<MyListView> {
                 padding: EdgeInsets.only(bottom: Dimensions.padding8),
                 child: Text(
                   "Select the outlet to place an order",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: TypographyResources.openSans,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
                 ),
               ),
               for (int i = 0; i < controller.outlets.length; i++)
@@ -327,14 +246,8 @@ class _MyListState extends State<MyListView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        controller.outlets[i],
-                        style: TextStyle(fontFamily: TypographyResources.openSans),
-                      ),
-                      Visibility(
-                        visible: controller.selectedOutlet == i,
-                        child: Image.asset(Images.rightTale),
-                      ),
+                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
+                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
                     ],
                   ),
                 ),

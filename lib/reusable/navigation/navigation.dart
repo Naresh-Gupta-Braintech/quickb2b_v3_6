@@ -64,7 +64,6 @@ Widget bottomNavigationMenu(BuildContext context) {
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(1);
-                  // Get.find<HomeController>().modifyingValOfX = 0;
 
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.myList);
@@ -94,8 +93,6 @@ Widget bottomNavigationMenu(BuildContext context) {
               child: GestureDetector(
                 onTap: () {
                   // controller.setSelectedIndex(2);
-                  // Get.find<HomeController>().modifyingValOfX = 0;
-
                   Get.find<ProductController>().page = 0;
                   Get.offNamed(RoutesHelper.products);
                 },
@@ -185,14 +182,7 @@ Widget bottomNavigationMenu(BuildContext context) {
         ),
         Padding(
           padding: EdgeInsets.only(right: 25.r),
-          child: Text(
-            "Devloped By QuickB2B",
-            style: TextStyle(
-              fontFamily: TypographyResources.openSans,
-              fontSize: 8.r,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+          child: Text("Devloped By QuickB2B", style: TextStyle(fontFamily: TypographyResources.openSans, fontSize: 8.r, fontWeight: FontWeight.w400)),
         ),
       ],
     ),
@@ -213,12 +203,7 @@ Widget menueList({required List<String> list}) {
                 GestureDetector(
                   onTap: () {
                     if (index == 4) {
-                      showAlert(
-                        onPressed: () {},
-                        showCancelBtn: true,
-                        description: LocalText.resetListDescription,
-                        buttonText: LocalText.confirm,
-                      );
+                      showAlert(onPressed: () {}, showCancelBtn: true, description: LocalText.resetListDescription, buttonText: LocalText.confirm);
                       return;
                     }
                     if (index == 5) {
@@ -234,10 +219,7 @@ Widget menueList({required List<String> list}) {
                     }
                     controller.setSelectedTopNavigation(index);
                   },
-                  child: _customText(
-                    text: list[index],
-                    isSelected: index == controller.topNavigationSelectedIndex,
-                  ),
+                  child: _customText(text: list[index], isSelected: index == controller.topNavigationSelectedIndex),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],
@@ -266,10 +248,7 @@ Widget categoryListMenu({required List<Category> list}) {
                     Get.find<ProductController>().page = 0;
                     Get.find<ProductController>().searchProductByCategoryId(list[index].id ?? "");
                   },
-                  child: _customText(
-                    text: list[index].name ?? "",
-                    isSelected: index == controller.topNavigationSelectedIndex,
-                  ),
+                  child: _customText(text: list[index].name ?? "", isSelected: index == controller.topNavigationSelectedIndex),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],
@@ -297,10 +276,7 @@ Widget myListMenue({required List<DataWithCategory> list}) {
                     controller.setSelectedTopNavigation(index);
                     Get.find<ProductController>().page = 0;
                   },
-                  child: _customText(
-                    text: list[index].categoryTitle ?? "",
-                    isSelected: index == controller.topNavigationIndex,
-                  ),
+                  child: _customText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationIndex),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],

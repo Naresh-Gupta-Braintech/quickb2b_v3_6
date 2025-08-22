@@ -16,12 +16,6 @@ class SplashController extends GetxController implements GetxService {
   bool isCompanyDetailsFetchedSuccess = false;
 
   void init() async {
-    print("login  :: ${await LocalStorage.getLoginData()}");
-    print("cart :: ${await LocalStorage.getCartDetails()}");
-    print("company Details :: ${await LocalStorage.getCompanyDetails()}");
-    print('device data :: ${await LocalStorage.getDeviceData()}');
-    print("userCode :: ${await LocalStorage.getUserCode()}");
-
     await Get.find<HomeController>().getCompanyDetails();
     LoginData? loginData = await LocalStorage.getLoginData();
     if (loginData != null) {

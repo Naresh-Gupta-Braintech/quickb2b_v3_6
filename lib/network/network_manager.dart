@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart' as gt;
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
@@ -23,12 +22,7 @@ class NetworkManager extends gt.GetxService {
         baseUrl: _baseURL,
         connectTimeout: Duration(seconds: _timeoutInSeconds),
         receiveTimeout: Duration(seconds: _timeoutInSeconds),
-        headers: {
-          'charset': 'UTF-8',
-          'Charset': 'utf-8',
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers: {'charset': 'UTF-8', 'Charset': 'utf-8', 'Accept': 'application/json', 'Content-Type': 'application/json'},
       ),
     );
   }
@@ -39,12 +33,7 @@ class NetworkManager extends gt.GetxService {
   }
 
   void networkRequestCurlWith({String? token}) {
-    _requestCurl = {
-      'charset': 'UTF-8',
-      'Charset': 'utf-8',
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    };
+    _requestCurl = {'charset': 'UTF-8', 'Charset': 'utf-8', 'Accept': 'application/json', 'Content-Type': 'application/json'};
     if (token != null) {
       _requestCurl['Authorization'] = 'Bearer $token';
     }
@@ -99,18 +88,12 @@ class NetworkManager extends gt.GetxService {
           break;
         case HTTPMethod.multipartPUT:
         case HTTPMethod.multipartPOST:
-          response = await httpMultipart(
-            url: url,
-            method: method,
-            payload: multipartPayload,
-            files: multipartFiles,
-          );
+          response = await httpMultipart(url: url, method: method, payload: multipartPayload, files: multipartFiles);
           break;
       }
       return decodeHTTPResponseBody(httpResponse: response, endpoint: endpointPath);
     } on dio.DioException catch (e) {
-      if (e.type == dio.DioExceptionType.connectionTimeout ||
-          e.type == dio.DioExceptionType.receiveTimeout) {
+      if (e.type == dio.DioExceptionType.connectionTimeout || e.type == dio.DioExceptionType.receiveTimeout) {
         throw FetchNetworkException(exceptionRawValues[Exceptions.timedOutOrNoInternet]);
       }
       if (e.response != null) {
@@ -136,12 +119,7 @@ class NetworkManager extends gt.GetxService {
       for (var file in files) {
         if (file.file != null) {
           final fileName = file.file!.path.split('/').last;
-          formData.files.add(
-            MapEntry(
-              file.key,
-              await dio.MultipartFile.fromFile(file.file!.path, filename: fileName),
-            ),
-          );
+          formData.files.add(MapEntry(file.key, await dio.MultipartFile.fromFile(file.file!.path, filename: fileName)));
         }
       }
     }
@@ -149,10 +127,7 @@ class NetworkManager extends gt.GetxService {
     return await _dio.request(
       url,
       data: formData,
-      options: dio.Options(
-        method: method == HTTPMethod.multipartPUT ? 'PUT' : 'POST',
-        contentType: 'multipart/form-data',
-      ),
+      options: dio.Options(method: method == HTTPMethod.multipartPUT ? 'PUT' : 'POST', contentType: 'multipart/form-data'),
     );
   }
 

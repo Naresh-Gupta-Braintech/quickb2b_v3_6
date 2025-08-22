@@ -23,7 +23,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    Get.find<HomeController>().gethomeItems();
+    String previousRoute = Get.previousRoute;
+    if (previousRoute == "/splash") {
+      Get.find<HomeController>().gethomeItems();
+    } else {
+      // Get.find<HomeController>().updateUserInventory(previousRoute);
+    }
   }
 
   @override
@@ -59,11 +64,7 @@ class _HomeViewState extends State<HomeView> {
                                   child: Column(
                                     children: [
                                       Visibility(
-                                        visible:
-                                            (controller.homeItems?.showAppBanner == 1 &&
-                                                    bannersList.isNotEmpty)
-                                                ? true
-                                                : false,
+                                        visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 5.r),
                                           child: customCarousel(
@@ -75,47 +76,25 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       SizedBox(height: Dimensions.padding16),
                                       Visibility(
-                                        visible:
-                                            (controller.homeItems?.data?.categoryExists == 1 &&
-                                                categoriesList.isNotEmpty),
+                                        visible: (controller.homeItems?.data?.categoryExists == 1 && categoriesList.isNotEmpty),
                                         child: Column(
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                              child: _customSubHeading(
-                                                text: "Search by Categories",
-                                                buttonText: "See All",
-                                              ),
+                                              child: _customSubHeading(text: "Search by Categories", buttonText: "See All"),
                                             ),
                                             SizedBox(height: 8.r),
                                             SizedBox(
                                               height: 106.r,
                                               child: ListView.builder(
                                                 scrollDirection: Axis.horizontal,
-                                                itemCount:
-                                                    controller
-                                                        .homeItems
-                                                        ?.data
-                                                        ?.allCategories
-                                                        ?.length,
+                                                itemCount: controller.homeItems?.data?.allCategories?.length,
                                                 itemBuilder: (context, index) {
                                                   return Padding(
                                                     padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                     child: categoryWidget(
-                                                      url:
-                                                          controller
-                                                              .homeItems
-                                                              ?.data
-                                                              ?.allCategories?[index]
-                                                              .thumbImage ??
-                                                          "",
-                                                      text:
-                                                          controller
-                                                              .homeItems
-                                                              ?.data
-                                                              ?.allCategories?[index]
-                                                              .name ??
-                                                          "",
+                                                      url: controller.homeItems?.data?.allCategories?[index].thumbImage ?? "",
+                                                      text: controller.homeItems?.data?.allCategories?[index].name ?? "",
                                                     ),
                                                   );
                                                 },
@@ -132,11 +111,7 @@ class _HomeViewState extends State<HomeView> {
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                              child: _customSubHeading(
-                                                text:
-                                                    controller.homeItems?.specialHeaderTitle ?? "",
-                                                buttonText: "See All",
-                                              ),
+                                              child: _customSubHeading(text: controller.homeItems?.specialHeaderTitle ?? "", buttonText: "See All"),
                                             ),
                                             SizedBox(height: 8.r),
                                             Visibility(
@@ -144,45 +119,16 @@ class _HomeViewState extends State<HomeView> {
                                                 height: 235.r,
                                                 child: ListView.builder(
                                                   scrollDirection: Axis.horizontal,
-                                                  itemCount:
-                                                      controller
-                                                          .homeItems
-                                                          ?.data
-                                                          ?.allInventories
-                                                          ?.length,
+                                                  itemCount: controller.homeItems?.data?.allInventories?.length,
                                                   itemBuilder: (context, index) {
                                                     return Padding(
-                                                      padding: EdgeInsets.symmetric(
-                                                        horizontal: 3.r,
-                                                      ),
+                                                      padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: specialProducts(
-                                                        controller2:
-                                                            controller
-                                                                .myListControllers[index][1] ??
-                                                            TextEditingController(),
-                                                        controller1:
-                                                            controller.myListControllers[index][0]!,
-                                                        url:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.specialInventories?[index]
-                                                                .image ??
-                                                            "",
-                                                        price:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.specialInventories?[index]
-                                                                .itemPrice ??
-                                                            "",
-                                                        name:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.specialInventories?[index]
-                                                                .itemName ??
-                                                            "",
+                                                        controller2: controller.myListControllers[index][1] ?? TextEditingController(),
+                                                        controller1: controller.myListControllers[index][0]!,
+                                                        url: controller.homeItems?.data?.specialInventories?[index].image ?? "",
+                                                        price: controller.homeItems?.data?.specialInventories?[index].itemPrice ?? "",
+                                                        name: controller.homeItems?.data?.specialInventories?[index].itemName ?? "",
                                                         isMeasBox: 1,
                                                         hint: "",
                                                       ),
@@ -196,139 +142,54 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                       ),
                                       Visibility(
-                                        visible:
-                                            (controller.homeItems?.showMyProduct == 1 &&
-                                                allInventories.isNotEmpty),
+                                        visible: (controller.homeItems?.showMyProduct == 1 && allInventories.isNotEmpty),
                                         child: Column(
                                           children: [
                                             Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                              child: _customSubHeading(
-                                                text: "My Products List",
-                                                buttonText: "See All",
-                                              ),
+                                              child: _customSubHeading(text: "My Products List", buttonText: "See All"),
                                             ),
                                             SizedBox(height: 8.r),
                                             Visibility(
                                               child: SizedBox(
-                                                height: 223.r,
+                                                height: 225.r,
                                                 child: ListView.builder(
                                                   scrollDirection: Axis.horizontal,
-                                                  itemCount:
-                                                      controller
-                                                          .homeItems
-                                                          ?.data
-                                                          ?.allInventories
-                                                          ?.length,
+                                                  itemCount: controller.homeItems?.data?.allInventories?.length,
                                                   itemBuilder: (context, index) {
                                                     return Padding(
-                                                      padding: EdgeInsets.symmetric(
-                                                        horizontal: 3.r,
-                                                      ),
+                                                      padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: verticalProduct(
                                                         onChanged: (value) {
-                                                          if (controller
-                                                                  .homeItems
-                                                                  ?.data
-                                                                  ?.allInventories?[index]
-                                                                  .isMeasBox ==
-                                                              0) {
+                                                          print("product id :: ${controller.homeItems?.data?.allInventories?[index].id ?? 0}");
+                                                          if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
                                                             controller.onChaged(
-                                                              controller
-                                                                  .homeItems
-                                                                  ?.data
-                                                                  ?.allInventories?[index]
-                                                                  .controller2,
+                                                              controller.homeItems?.data?.allInventories?[index].controller2,
                                                               index,
                                                             );
                                                           } else {
                                                             controller.onChaged(
-                                                              controller
-                                                                  .homeItems
-                                                                  ?.data
-                                                                  ?.allInventories?[index]
-                                                                  .controller1,
+                                                              controller.homeItems?.data?.allInventories?[index].controller1,
                                                               index,
                                                             );
                                                             controller.onChaged(
-                                                              controller
-                                                                  .homeItems
-                                                                  ?.data
-                                                                  ?.allInventories?[index]
-                                                                  .controller2,
+                                                              controller.homeItems?.data?.allInventories?[index].controller2,
                                                               index,
                                                             );
                                                           }
                                                         },
                                                         controller1:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .controller1 ??
-                                                            TextEditingController(),
+                                                            controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),
                                                         controller2:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .controller2 ??
-                                                            TextEditingController(),
-                                                        isShowImage:
-                                                            int.tryParse(
-                                                              controller.homeItems?.showImage ??
-                                                                  "0",
-                                                            ) ??
-                                                            0,
-                                                        hint:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .uom ??
-                                                            "",
-                                                        url:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .image ??
-                                                            "",
-                                                        price:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .itemPrice ??
-                                                            "",
-                                                        name:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .itemName ??
-                                                            "",
-                                                        isMeasBox:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .isMeasBox ??
-                                                            0,
-                                                        originQty:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .originQty ??
-                                                            "",
-                                                        measureQty:
-                                                            controller
-                                                                .homeItems
-                                                                ?.data
-                                                                ?.allInventories?[index]
-                                                                .measureQty ??
-                                                            "",
+                                                            controller.homeItems?.data?.allInventories?[index].controller2 ?? TextEditingController(),
+                                                        isShowImage: int.tryParse(controller.homeItems?.showImage ?? "0") ?? 0,
+                                                        hint: controller.homeItems?.data?.allInventories?[index].uom ?? "",
+                                                        url: controller.homeItems?.data?.allInventories?[index].image ?? "",
+                                                        price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "",
+                                                        name: controller.homeItems?.data?.allInventories?[index].itemName ?? "",
+                                                        isMeasBox: controller.homeItems?.data?.allInventories?[index].isMeasBox ?? 0,
+                                                        originQty: controller.homeItems?.data?.allInventories?[index].originQty ?? "",
+                                                        measureQty: controller.homeItems?.data?.allInventories?[index].measureQty ?? "",
                                                       ),
                                                     );
                                                   },
@@ -345,26 +206,16 @@ class _HomeViewState extends State<HomeView> {
                                         child: _customSubHeading(text: "Featured", buttonText: ""),
                                       ),
                                       SizedBox(height: Dimensions.padding10),
-                                      Image.asset(
-                                        Images.featuredGradient,
-                                        width: Get.width,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      Image.asset(Images.featuredGradient, width: Get.width, fit: BoxFit.cover),
                                       SizedBox(height: Dimensions.padding10),
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                        child: HtmlWidget(
-                                          controller.homeItems?.data?.featuredItemImage?.content ??
-                                              "",
-                                        ),
+                                        child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? ""),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Visibility(
-                                  visible: controller.toggleOutlet,
-                                  child: _outlets(controller),
-                                ),
+                                Visibility(visible: controller.toggleOutlet, child: _outlets(controller)),
                               ],
                             ),
                           ),
@@ -382,14 +233,8 @@ class _HomeViewState extends State<HomeView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          text,
-          style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans),
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Text(buttonText, style: TextStyle(color: Colors.grey, fontSize: 10.r)),
-        ),
+        Text(text, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans)),
+        GestureDetector(onTap: () {}, child: Text(buttonText, style: TextStyle(color: Colors.grey, fontSize: 10.r))),
       ],
     );
   }
@@ -399,16 +244,9 @@ class _HomeViewState extends State<HomeView> {
       padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 0.r),
       child: Container(
         width: Get.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(4.r),
-        ),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Dimensions.padding6,
-            vertical: Dimensions.padding6,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,11 +255,7 @@ class _HomeViewState extends State<HomeView> {
                 padding: EdgeInsets.only(bottom: Dimensions.padding8),
                 child: Text(
                   "Select the outlet to place an order",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: TypographyResources.openSans,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
                 ),
               ),
               for (int i = 0; i < controller.outlets.length; i++)
@@ -430,14 +264,8 @@ class _HomeViewState extends State<HomeView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        controller.outlets[i],
-                        style: TextStyle(fontFamily: TypographyResources.openSans),
-                      ),
-                      Visibility(
-                        visible: controller.selectedOutlet == i,
-                        child: Image.asset(Images.rightTale),
-                      ),
+                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
+                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
                     ],
                   ),
                 ),

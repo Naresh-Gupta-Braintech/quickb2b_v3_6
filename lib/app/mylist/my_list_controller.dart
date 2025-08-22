@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
+import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_data_service.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_repository.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
@@ -35,8 +36,7 @@ class MyListController extends GetxController implements GetxService {
   Future<void> updateUserInventoryMyList() async {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
-      if (item.isMeasBox == 0 &&
-          (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
         cartItem.id = item.id;
         cartItem.isMeasBox = item.isMeasBox;
@@ -77,6 +77,28 @@ class MyListController extends GetxController implements GetxService {
     print("payload.userCode 2 : ${payload.userCode}");
     payload.cartItems = updatedInventoryArray;
     payload.orderFlag = 1;
-    Get.find<HomeController>().updateUserInventoryForMyList(payload);
+    Get.find<HomeController>().updateUserInventoryForHome(payload);
+  }
+
+  void makeMyListFromLocalData() {
+    print("calling makeMyListFromLocaldata");
+    int length = dataWithCategory?.length ?? 0;
+    for (int i = 0; i < length; i++) {
+      int dataLength = dataWithCategory?[i].data?.length ?? 0;
+      for (int j = 0; j < dataLength; j++) {
+        compareAndUpdateMyList(data: dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
+      }
+    }
+    update();
+  }
+
+  void compareAndUpdateMyList({Datum? data, required int outerIndex, required int innerIndex}) async {
+    CartData? localCart = await LocalStorage.getCartDetails();
+    localCart?.data?.allInventories?.forEach((cartItem) {
+      if (cartItem.id == data?.id) {
+        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController1.text = cartItem.originQty ?? "";
+        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController2.text = cartItem.measureQty ?? "";
+      }
+    });
   }
 }

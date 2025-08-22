@@ -23,6 +23,8 @@ extension MyListDataService on MyListController {
           loading = false;
           myList = response;
           dataWithCategory = response?.dataWithCategory ?? [];
+          print("Data with category :: $dataWithCategory");
+          makeMyListFromLocalData();
           update();
           break;
         case Result.onFailed:
