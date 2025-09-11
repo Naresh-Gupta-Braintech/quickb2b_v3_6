@@ -99,8 +99,8 @@ class HomeController extends GetxController implements GetxService {
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
-      print("remove items from my card $index");
       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+      homeItems?.data?.allInventories?[index].controller2?.text = "";
     } else if (value.isQuantityValid()) {
       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
     } else {
@@ -139,7 +139,8 @@ class HomeController extends GetxController implements GetxService {
     CartData? cart = await LocalStorage.getCartDetails();
     cart?.data?.allInventories?.forEach((item) {
       print("item code :: ${item.id}");
-      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+      if (item.isMeasBox == 0 &&
+          (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
         cartItem.id = item.id;
         cartItem.isMeasBox = item.isMeasBox;
@@ -168,21 +169,21 @@ class HomeController extends GetxController implements GetxService {
     updateUserInventoryForHome(payload);
   }
 
-  void updateUserInventory(String previouRoutes) {
-    print("updateUserInventory called with route: $previouRoutes");
-    if (previouRoutes == "/mylist") {
-      print("previouRoutes $previouRoutes");
-      Get.find<MyListController>().updateUserInventoryMyList();
-      return;
-    } else {
-      print("previouRoutes $previouRoutes");
-      // if (modifyingValOfX == 0) {
-      updateUserInventoryHome();
-      // modifyingValOfX++;
-      // }
-      return;
-    }
-  }
+  // void updateUserInventory(String previouRoutes) {
+  //   print("updateUserInventory called with route: $previouRoutes");
+  //   if (previouRoutes == "/mylist") {
+  //     print("previouRoutes $previouRoutes");
+  //     Get.find<MyListController>().updateUserInventoryMyList();
+  //     return;
+  //   } else {
+  //     print("previouRoutes $previouRoutes");
+  //     // if (modifyingValOfX == 0) {
+  //     updateUserInventoryHome();
+  //     // modifyingValOfX++;
+  //     // }
+  //     return;
+  //   }
+  // }
 
   // make home list quantity
   void makeHomeDataFromLocalCart() async {
@@ -199,7 +200,9 @@ class HomeController extends GetxController implements GetxService {
 
     print("local Cart item");
     localCart?.data?.allInventories?.forEach((localInventory) {
-      print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
+      print(
+        "measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}",
+      );
     });
     print("api cart. daya after update item");
 

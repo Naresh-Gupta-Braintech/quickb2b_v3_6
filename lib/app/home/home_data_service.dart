@@ -24,14 +24,7 @@ extension HomeDataService on HomeController {
           homeItems = response;
           String previousRoute = Get.previousRoute;
           initializeController();
-
           update();
-          // if (previousRoute == RoutesHelper.myList) {
-          //   await Get.find<MyListController>().updateUserInventoryMyList();
-          // } else {
-          //   await updateUserInventoryHome();
-          // }
-
           break;
         case Result.onFailed:
           loading = false;
@@ -171,7 +164,10 @@ extension HomeDataService on HomeController {
     });
   }
 
-  Future<void> updateUserInventoryForHome(UpdateInventoryHome payload, {bool routeToHome = false}) async {
+  Future<void> updateUserInventoryForHome(
+    UpdateInventoryHome payload, {
+    bool routeToHome = false,
+  }) async {
     loading = true;
     update();
     print("update inventory for home");
@@ -181,12 +177,12 @@ extension HomeDataService on HomeController {
           loading = false;
           // LocalStorage.saveCustomerDeatils(customerDetails);
           // LocalStorage.setUserCode(customerDetails?.data?.userCode ?? "");
-          final customerData = LocalStorage.getCustomerDetails();
+          // final customerData = LocalStorage.getCustomerDetails();
 
-          currentRoutes();
-          if (customerData != null && routeToHome == true) {
-            Get.offAllNamed(RoutesHelper.home);
-          }
+          // currentRoutes();
+          // if (customerData != null && routeToHome == true) {
+          //   Get.offAllNamed(RoutesHelper.home);
+          // }
           update();
           break;
         case Result.onFailed:
