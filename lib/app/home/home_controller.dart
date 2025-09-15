@@ -43,7 +43,6 @@ class HomeController extends GetxController implements GetxService {
   CustomerDetailsModel? customerDetails;
   CompanyDetailsData? companyDetails;
   int selectedOutled = 0;
-  List<CartItem> cartItems = [];
   bool isUpdateInventory = false;
   int modifyingValOfX = 0;
 
@@ -137,8 +136,13 @@ class HomeController extends GetxController implements GetxService {
 
   Future<void> updateUserInventoryHome() async {
     CartData? cart = await LocalStorage.getCartDetails();
+    List<CartItem> cartItems = [];
+
+    print(
+      "before deletion length in update user inventory home :: ${cart?.data?.allInventories?.length ?? 0}",
+    );
+    int val = 1;
     cart?.data?.allInventories?.forEach((item) {
-      print("item code :: ${item.id}");
       if (item.isMeasBox == 0 &&
           (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
@@ -151,7 +155,12 @@ class HomeController extends GetxController implements GetxService {
         cartItem.quantity = item.quantity;
         cartItems.add(cartItem);
       }
+      print("hello ${val++} ");
     });
+
+    print(
+      "before deletion length in update user inventory home newly created lists :: ${cartItems.length ?? 0}",
+    );
 
     UpdateInventoryHome payload = UpdateInventoryHome();
     payload.clientCode = GlobalConstants.clientCode;
@@ -168,23 +177,6 @@ class HomeController extends GetxController implements GetxService {
   Future<void> updateUserInventoryForMyList(UpdateInventoryHome payload) async {
     updateUserInventoryForHome(payload);
   }
-
-  // void updateUserInventory(String previouRoutes) {
-  //   print("updateUserInventory called with route: $previouRoutes");
-  //   if (previouRoutes == "/mylist") {
-  //     print("previouRoutes $previouRoutes");
-  //     Get.find<MyListController>().updateUserInventoryMyList();
-  //     return;
-  //   } else {
-  //     print("previouRoutes $previouRoutes");
-  //     // if (modifyingValOfX == 0) {
-  //     updateUserInventoryHome();
-  //     // modifyingValOfX++;
-  //     // }
-  //     return;
-  //   }
-  // }
-
   // make home list quantity
   void makeHomeDataFromLocalCart() async {
     CartData? localCart = await LocalStorage.getCartDetails();

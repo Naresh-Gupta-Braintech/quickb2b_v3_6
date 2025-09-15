@@ -25,12 +25,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    String previousRoute = Get.previousRoute;
     Get.find<HomeController>().gethomeItems();
-    // if (previousRoute == "/splash") {
-    // } else {
-    //   // Get.find<HomeController>().updateUserInventory(previousRoute);
-    // }
   }
 
   @override

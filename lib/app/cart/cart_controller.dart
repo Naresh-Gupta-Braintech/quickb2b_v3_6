@@ -53,7 +53,8 @@ class CartController extends GetxController implements GetxService {
   void addItemToCartLocally({String? itemCode}) async {
     CartData? cart = await LocalStorage.getCartDetails();
     HomeItemsData? home = Get.find<HomeController>().homeItems;
-    int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
+    int index =
+        home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
     if (index == -1) {
       return;
     }
@@ -71,7 +72,8 @@ class CartController extends GetxController implements GetxService {
     home?.data?.allInventories?[index].measureQty = measureQty.toString();
     home?.data?.allInventories?[index].quantity = qty.toString();
 
-    int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
+    int productAtIndexInCart =
+        cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
     print("productAtIndexInCart :: ${productAtIndexInCart}");
     AllInventory inventory = home?.data?.allInventories?[index] ?? AllInventory();
     if (productAtIndexInCart == -1) {
@@ -93,10 +95,12 @@ class CartController extends GetxController implements GetxService {
 
   void removeItemFromCardLocally({String? itemCode}) async {
     CartData? cart = await LocalStorage.getCartDetails();
+    print(" before deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == itemCode);
-    print("item code :: $itemCode");
-    print("length :: ${cart?.data?.allInventories?.length ?? 0}");
+    print("after deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
     LocalStorage.saveCartDetails(cart);
+    CartData? updateCart = await LocalStorage.getCartDetails();
+    print("updated deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
     cartData = cart;
     calculateCartPrice();
     update();
