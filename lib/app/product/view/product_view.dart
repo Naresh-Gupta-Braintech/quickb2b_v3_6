@@ -34,14 +34,12 @@ class _ProductViewState extends State<ProductView> {
         }
       }
     });
-    // String previousRoute = Get.previousRoute;
-    // Get.find<HomeController>().updateUserInventory(previousRoute);
+    Get.find<ProductController>().getAllCategories();
   }
 
   @override
   void dispose() {
     super.dispose();
-    print("dispose");
     Get.find<HomeController>().modifyingValOfX = 0;
     _productScrollController.dispose();
   }
@@ -109,7 +107,6 @@ class _ProductViewState extends State<ProductView> {
                                                         measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                         onTap: () {},
                                                         onTapIcon: () {
-                                                          print("hello");
                                                           productController.addUserItemToMyList(
                                                             productController.productsInventry[index]?.itemCode ?? "",
                                                           );
@@ -127,24 +124,24 @@ class _ProductViewState extends State<ProductView> {
                                                             productController.productsInventry[index]?.textEditingController2 ??
                                                             TextEditingController(),
                                                         onChanged: (value) {
-                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                          } else {
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController1 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                          }
+                                                          // if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController2 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          // } else {
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController1 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController2 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          // }
                                                         },
                                                       ),
                                                     );
@@ -180,24 +177,24 @@ class _ProductViewState extends State<ProductView> {
                                                             productController.productsInventry[index]?.textEditingController2 ??
                                                             TextEditingController(),
                                                         onChanged: (value) {
-                                                          if (productController.productsInventry[index]?.isMeasBox == 0) {
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                          } else {
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController1 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                            controller.onChaged(
-                                                              productController.productsInventry[index]?.textEditingController2 ??
-                                                                  TextEditingController(),
-                                                              index,
-                                                            );
-                                                          }
+                                                          // if (productController.productsInventry[index]?.isMeasBox == 0) {
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController2 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          // } else {
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController1 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          //   controller.onChaged(
+                                                          //     productController.productsInventry[index]?.textEditingController2 ??
+                                                          //         TextEditingController(),
+                                                          //     index,
+                                                          //   );
+                                                          // }
                                                         },
                                                       );
                                                     },

@@ -124,7 +124,7 @@ class LocalStorage {
     final prefs = await SharedPreferences.getInstance();
     final jsonData = cart!.toJson();
     String data = jsonEncode(jsonData);
-    print("save Cart Details $data");
+
     await prefs.setString(Keys.cart, data);
   }
 

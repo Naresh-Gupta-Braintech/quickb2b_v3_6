@@ -155,7 +155,7 @@ Widget customTextFieldWithSuffix({
 
 Widget customTextFieldWithWidthConstraint({
   required TextEditingController controller,
-  required String textFieldLabel,
+  required String hintText,
   TextInputType? keyboardType,
   Color? borderColor,
   double? borderWidth,
@@ -169,7 +169,7 @@ Widget customTextFieldWithWidthConstraint({
     cursorHeight: 12.r,
     decoration: InputDecoration(
       constraints: BoxConstraints(maxHeight: 25.r, maxWidth: 60.r),
-      hintText: textFieldLabel,
+      hintText: hintText,
       hintStyle: TextStyle(fontSize: Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w400, color: Colors.grey),
       contentPadding: EdgeInsets.only(top: 8.r),
 

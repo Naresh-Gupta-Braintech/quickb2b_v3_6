@@ -44,21 +44,27 @@ class CartController extends GetxController implements GetxService {
     getCart();
   }
 
-  void removedItem(index) {
-    // templist.add(cartData?.data?.allInventories?[index]);
+  void removedItem(index) async {
     cartData?.data?.allInventories?.removeAt(index);
+
+    CartData? localcartData = await LocalStorage.getCartDetails();
+    AllInventory? inventory = localcartData?.data?.allInventories?[index];
+    inventory?.quantity = 0.toString();
+    inventory?.originQty = 0.toString();
+    localcartData?.data?.allInventories?.removeAt(index);
+    await LocalStorage.saveCartDetails(localcartData);
+    Get.find<HomeController>().removedItemFromCartForCartView(inventory);
+
     update();
   }
 
   void addItemToCartLocally({String? itemCode}) async {
     CartData? cart = await LocalStorage.getCartDetails();
     HomeItemsData? home = Get.find<HomeController>().homeItems;
-    int index =
-        home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
+    int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
     if (index == -1) {
       return;
     }
-    print("item find");
 
     final orginQty = home?.data?.allInventories?[index].controller2?.text ?? "";
     final measureQty = 1;
@@ -72,12 +78,11 @@ class CartController extends GetxController implements GetxService {
     home?.data?.allInventories?[index].measureQty = measureQty.toString();
     home?.data?.allInventories?[index].quantity = qty.toString();
 
-    int productAtIndexInCart =
-        cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
-    print("productAtIndexInCart :: ${productAtIndexInCart}");
+    int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
+
     AllInventory inventory = home?.data?.allInventories?[index] ?? AllInventory();
+    inventory.uom = inventory.controller2?.text ?? "";
     if (productAtIndexInCart == -1) {
-      print("value not find");
       cart?.data?.allInventories?.add(inventory);
     } else {
       cart?.data?.allInventories?[productAtIndexInCart].originQty = orginQty;
@@ -85,9 +90,42 @@ class CartController extends GetxController implements GetxService {
       cart?.data?.allInventories?[productAtIndexInCart].quantity = qty.toString();
     }
 
-    LocalStorage.saveCartDetails(cart);
+    await LocalStorage.saveCartDetails(cart);
     cartData = cart;
-    print("saved items");
+    CartData? tempcart = await LocalStorage.getCartDetails();
+    calculateCartPrice();
+
+    update();
+  }
+
+  void addItemToCartLocall({required AllInventory product}) async {
+    CartData? cart = await LocalStorage.getCartDetails();
+
+    final orginQty = product.controller2?.text ?? "";
+    final measureQty = 1;
+    double qty = double.tryParse(orginQty) ?? 0;
+    qty = qty * measureQty;
+    if (qty == 0) {
+      return;
+    }
+
+    product.originQty = orginQty;
+    product.measureQty = measureQty.toString();
+    product.quantity = qty.toString();
+
+    int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == product.itemCode) ?? -1;
+
+    AllInventory inventory = product;
+    if (productAtIndexInCart == -1) {
+      cart?.data?.allInventories?.add(inventory);
+    } else {
+      cart?.data?.allInventories?[productAtIndexInCart].originQty = orginQty;
+      cart?.data?.allInventories?[productAtIndexInCart].measureQty = measureQty.toString();
+      cart?.data?.allInventories?[productAtIndexInCart].quantity = qty.toString();
+    }
+
+    await LocalStorage.saveCartDetails(cart);
+    cartData = cart;
     calculateCartPrice();
 
     update();
@@ -95,19 +133,39 @@ class CartController extends GetxController implements GetxService {
 
   void removeItemFromCardLocally({String? itemCode}) async {
     CartData? cart = await LocalStorage.getCartDetails();
-    print(" before deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == itemCode);
-    print("after deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
+    HomeItemsData? home = Get.find<HomeController>().homeItems;
+    int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
+    if (index == -1) {
+      return;
+    }
+    home?.data?.allInventories?[index].originQty = "";
+    // home?.data?.allInventories?[index].uom = home.data?.allInventories?[index].controller2?.text ?? "";
+
     LocalStorage.saveCartDetails(cart);
-    CartData? updateCart = await LocalStorage.getCartDetails();
-    print("updated deletion length :: ${cart?.data?.allInventories?.length ?? 0}");
+    CartData? tempcart = await LocalStorage.getCartDetails();
+    cartData = cart;
+    calculateCartPrice();
+    update();
+  }
+
+  void removeItemFromCardLocall({required AllInventory product}) async {
+    CartData? cart = await LocalStorage.getCartDetails();
+    cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == product.itemCode);
+    HomeItemsData? home = Get.find<HomeController>().homeItems;
+    int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == product.itemCode) ?? -1;
+    if (index == -1) {
+      return;
+    }
+    product.originQty = "";
+    LocalStorage.saveCartDetails(cart);
+    CartData? tempcart = await LocalStorage.getCartDetails();
     cartData = cart;
     calculateCartPrice();
     update();
   }
 
   void calculateCartPrice() {
-    print("start calculating price $cartPrice");
     double totalPrice = 0;
     cartData?.data?.allInventories?.forEach((item) {
       double itemPrice = double.tryParse(item.itemPrice ?? "0") ?? 0;
@@ -117,6 +175,5 @@ class CartController extends GetxController implements GetxService {
     });
     double rounded = double.parse(totalPrice.toStringAsFixed(2));
     cartPrice = rounded;
-    print("completed calculating price $cartPrice");
   }
 }

@@ -17,13 +17,16 @@ extension MyListDataService on MyListController {
     print("LocalStorage.getUserCode() ${await LocalStorage.getUserCode()}");
     payload.userCode = await LocalStorage.getUserCode();
     payload.reset = reset;
-    await repository.getUserItems(payload, (result, response, message) {
+    await repository.getUserItems(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
           loading = false;
           myList = response;
           dataWithCategory = response?.dataWithCategory ?? [];
-          print("Data with category :: $dataWithCategory");
+          var cart = await LocalStorage.getCartDetails();
+          cart?.data?.allInventories?.forEach((element) {
+            print("in my list dataservive cart item code :: ${element.itemCode} qty :: ${element.quantity}");
+          });
           makeMyListFromLocalData();
           update();
           break;

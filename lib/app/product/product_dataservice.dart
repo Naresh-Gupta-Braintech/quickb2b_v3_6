@@ -21,11 +21,11 @@ extension ProductDataservice on ProductController {
         case Result.onSuccess:
           loading = false;
           categories = response;
-          update();
-          getAllProductByCategory(categories?.categories?[0].id ?? "");
-          if (categories != null && categories?.categories?.length != 0) {
+          // getAllProductByCategory(categories?.categories?[0].id ?? "");
+          if (categories != null && categories?.categories?.isNotEmpty == true) {
             // getAllProductByCategory(categories?.categories?[0].id ?? "");
           }
+          update();
 
           break;
         case Result.onFailed:
@@ -67,16 +67,18 @@ extension ProductDataservice on ProductController {
         case Result.onFailed:
           loading = false;
           Get.snackbar('Error', message?.tr ?? "error");
+          update();
           break;
         case Result.onException:
           loading = false;
           if (message != "cancelled") Get.snackbar('Error', message?.tr ?? "error");
+          update();
           break;
       }
     });
   }
 
-Future<void> addItemsToMYList(String itemCode) async {
+  Future<void> addItemsToMYList(String itemCode) async {
     loading = true;
     UserItemAddPayload payload = UserItemAddPayload();
     payload.userCode = sharedPreferences.getString(Keys.userCode);
@@ -105,5 +107,4 @@ Future<void> addItemsToMYList(String itemCode) async {
       }
     });
   }
-  
 }

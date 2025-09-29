@@ -61,27 +61,15 @@ class _CartViewState extends State<CartView> {
                       child: Column(
                         children: [
                           SizedBox(height: Dimensions.padding10),
-                          headerWithSearch(
-                            appName: controller.homeItems?.appName ?? "",
-                            isSearchBarFull: true,
-                            showOutlet: false,
-                          ),
+                          headerWithSearch(appName: controller.homeItems?.appName ?? "", isSearchBarFull: true, showOutlet: false),
                           SingleChildScrollView(
                             child: Column(
                               children: [
                                 Visibility(
-                                  visible:
-                                      (controller.homeItems?.showAppBanner == 1 &&
-                                              bannersList.isNotEmpty)
-                                          ? true
-                                          : false,
+                                  visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
                                   child: Padding(
                                     padding: EdgeInsets.only(top: 5.r),
-                                    child: customCarousel(
-                                      width: Get.width,
-                                      height: 130.r,
-                                      images: controller.homeItems?.data?.bannerLists ?? [],
-                                    ),
+                                    child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
                                   ),
                                 ),
                                 SizedBox(height: 8.r),
@@ -94,14 +82,7 @@ class _CartViewState extends State<CartView> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Flexible(
-                                        child: Row(
-                                          children: [
-                                            Visibility(visible: false, child: Icon(Icons.ac_unit)),
-                                            Text("Item"),
-                                          ],
-                                        ),
-                                      ),
+                                      Flexible(child: Row(children: [Visibility(visible: false, child: Icon(Icons.ac_unit)), Text("Item")])),
                                       Flexible(
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,21 +111,10 @@ class _CartViewState extends State<CartView> {
                                                       onTap: () {
                                                         cartController.removedItem(index);
                                                       },
-                                                      child: Image.asset(
-                                                        Images.redCross,
-                                                        height: 30.r,
-                                                      ),
+                                                      child: Image.asset(Images.redCross, height: 30.r),
                                                     )
-                                                    : cachedImageNetwork(
-                                                      url: orders[index].image ?? "",
-                                                      height: 30.r,
-                                                    ),
-                                                Flexible(
-                                                  child: Text(
-                                                    orders[index].itemName ?? "",
-                                                    maxLines: 1,
-                                                  ),
-                                                ),
+                                                    : cachedImageNetwork(url: orders[index].image ?? "", height: 30.r),
+                                                Flexible(child: Text(orders[index].itemName ?? "", maxLines: 1)),
                                               ],
                                             ),
                                           ),
@@ -156,13 +126,9 @@ class _CartViewState extends State<CartView> {
                                                 cartController.isEdit
                                                     ? customTextFieldWithWidthConstraint(
                                                       controller:
-                                                          cartController
-                                                              .cartData
-                                                              ?.data
-                                                              ?.allInventories?[index]
-                                                              .controller2 ??
+                                                          cartController.cartData?.data?.allInventories?[index].controller2 ??
                                                           TextEditingController(),
-                                                      textFieldLabel: "",
+                                                      hintText: cartController.cartData?.data?.allInventories?[index].uom ?? "",
                                                       borderColor: Colors.grey,
                                                     )
                                                     : Text(orders[index].quantity ?? ""),
@@ -171,13 +137,9 @@ class _CartViewState extends State<CartView> {
                                                 cartController.isEdit
                                                     ? customTextFieldWithWidthConstraint(
                                                       controller:
-                                                          cartController
-                                                              .cartData
-                                                              ?.data
-                                                              ?.allInventories?[index]
-                                                              .controller1 ??
+                                                          cartController.cartData?.data?.allInventories?[index].controller1 ??
                                                           TextEditingController(),
-                                                      textFieldLabel: "",
+                                                      hintText: cartController.cartData?.data?.allInventories?[index].uom ?? "",
                                                       borderColor: Colors.grey,
                                                     )
                                                     : Text(orders[index].measureQty ?? "-"),
@@ -227,7 +189,7 @@ class _CartViewState extends State<CartView> {
                                     ? customButton2(
                                       textLabel: "Save Changes",
                                       width: 140.r,
-                                      color: Colors.grey,
+                                      color: Colors.black,
                                       height: 40,
                                       fontSize: Dimensions.font14,
                                       onPressed: () {
@@ -274,14 +236,8 @@ class _CartViewState extends State<CartView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          text,
-          style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans),
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Text(buttonText, style: TextStyle(color: Colors.grey, fontSize: 10.r)),
-        ),
+        Text(text, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans)),
+        GestureDetector(onTap: () {}, child: Text(buttonText, style: TextStyle(color: Colors.grey, fontSize: 10.r))),
       ],
     );
   }

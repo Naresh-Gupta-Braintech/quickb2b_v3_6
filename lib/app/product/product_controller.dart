@@ -10,7 +10,7 @@ class ProductController extends GetxController implements GetxService {
   SharedPreferences sharedPreferences;
   ProductRepository repository;
   ProductController({required this.sharedPreferences, required this.repository});
-  bool loading = true;
+  bool loading = false;
   CategoriesModel? categories;
   ProductModel? productdata;
   List<ProductsInventoriesList?> productsInventry = [];

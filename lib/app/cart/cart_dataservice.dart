@@ -17,15 +17,20 @@ extension CartDataservice on CartController {
     payload.userCode = sharedPreferences.getString(Keys.userCode);
     payload.clientCode = GlobalConstants.clientCode;
     payload.deviceId = await GlobalConstants.getDeviceId();
-    await repository.getCartList(payload, (result, response, message) {
+    await repository.getCartList(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
           loading = false;
           isCartFetchedSuccess = true;
           cartData = response;
-          LocalStorage.saveCartDetails(cartData);
+          await LocalStorage.saveCartDetails(cartData);
           calculateCartPrice();
-          print("Naresh home controller :: ${cartData?.status}");
+          var savedCart = await LocalStorage.getCartDetails();
+          int index = 0;
+          savedCart?.data?.allInventories?.forEach((element) {
+            print("saved cart item code :: ${element.itemCode} qty :: ${element.quantity} index :: ${index++}");
+          });
+
           update();
           break;
         case Result.onFailed:

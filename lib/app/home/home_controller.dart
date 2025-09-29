@@ -37,7 +37,7 @@ class HomeController extends GetxController implements GetxService {
   bool toggleOutlet = false;
   CustomersData? customers;
   OutletData? outlet;
-  List<List<TextEditingController?>> myListControllers = [];
+  List<List<TextEditingController?>> myListControllers = []; // only for special items for testing
   int productCount = 0;
   HashMap<String, dynamic> productItemsMap = HashMap();
   CustomerDetailsModel? customerDetails;
@@ -93,21 +93,20 @@ class HomeController extends GetxController implements GetxService {
     getCompanyDetails();
   }
 
-  void onChaged(TextEditingController? controller, int index) {
+  void onChagedHomeProduct(TextEditingController? controller, int index) {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
-      homeItems?.data?.allInventories?[index].controller2?.text = "";
     } else if (value.isQuantityValid()) {
       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
     } else {
-      if (value.isNotEmpty) {
+      if ((!value.isQuantityValid()) && value.isNotEmpty) {
         controller?.text = value.substring(0, value.length - 1);
       }
-      update();
     }
+    update();
   }
 
   void getOutletinfo() {
@@ -138,13 +137,9 @@ class HomeController extends GetxController implements GetxService {
     CartData? cart = await LocalStorage.getCartDetails();
     List<CartItem> cartItems = [];
 
-    print(
-      "before deletion length in update user inventory home :: ${cart?.data?.allInventories?.length ?? 0}",
-    );
     int val = 1;
     cart?.data?.allInventories?.forEach((item) {
-      if (item.isMeasBox == 0 &&
-          (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
+      if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
         cartItem.id = item.id;
         cartItem.isMeasBox = item.isMeasBox;
@@ -158,11 +153,8 @@ class HomeController extends GetxController implements GetxService {
       print("hello ${val++} ");
     });
 
-    print(
-      "before deletion length in update user inventory home newly created lists :: ${cartItems.length ?? 0}",
-    );
-
     UpdateInventoryHome payload = UpdateInventoryHome();
+    payload.deviceType = 'I';
     payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
     payload.type = "Dual";
@@ -177,6 +169,7 @@ class HomeController extends GetxController implements GetxService {
   Future<void> updateUserInventoryForMyList(UpdateInventoryHome payload) async {
     updateUserInventoryForHome(payload);
   }
+
   // make home list quantity
   void makeHomeDataFromLocalCart() async {
     CartData? localCart = await LocalStorage.getCartDetails();
@@ -192,9 +185,7 @@ class HomeController extends GetxController implements GetxService {
 
     print("local Cart item");
     localCart?.data?.allInventories?.forEach((localInventory) {
-      print(
-        "measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}",
-      );
+      print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
     });
     print("api cart. daya after update item");
 
@@ -214,25 +205,28 @@ class HomeController extends GetxController implements GetxService {
     });
   }
 
-  void currentRoutes() {
-    String currentRoute = Get.currentRoute;
-    print("current route $currentRoute");
-    switch (currentRoute) {
-      case '/':
-        Get.find<HomeController>().gethomeItems();
-        break;
-      case "/mylist":
-        print(" mylist ::");
-        Get.find<MyListController>().getUserData(0);
-        break;
-      case "/products":
-        Get.find<ProductController>().getAllCategories();
-        break;
-      case "/my_order":
-        Get.find<CartController>().getCartData();
-        break;
-      default:
-        break;
-    }
+  void removedItemFromCartForCartView(AllInventory? allInventory) async {
+    List<CartItem> cartItems = [];
+    CartItem cart = CartItem();
+    cart.id = allInventory?.id;
+    cart.isMeasBox = allInventory?.isMeasBox;
+    cart.itemCode = allInventory?.itemCode;
+    cart.measureQty = allInventory?.measureQty;
+    cart.originQty = allInventory?.originQty;
+    cart.priority = allInventory?.priority;
+    cart.quantity = allInventory?.quantity;
+    cartItems.add(cart);
+
+    UpdateInventoryHome payload = UpdateInventoryHome();
+    // payload.deviceType = 'I';
+    payload.clientCode = GlobalConstants.clientCode;
+    payload.appType = "Dual";
+    payload.type = "Dual";
+    payload.deviceId = await GlobalConstants.getDeviceId();
+    payload.acmCode = "";
+    payload.userCode = sharedPreferences.getString(Keys.userCode); //raja
+    payload.cartItems = cartItems;
+    payload.orderFlag = 0;
+    updateUserInventoryForHome(payload);
   }
 }
