@@ -16,7 +16,11 @@ class ProductRepository extends GetxController implements GetxService {
 
   Future<void> getAllCategories(CategoryPayload payload, Function(Result result, CategoriesModel? response, String? message) completion) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.getCategories, method: HTTPMethod.post, payload: NetworkPayload.categoryPayload(payload: payload));
+      final networkResponse = await network.loadHTTP(
+        endpoint: Endpoints.getCategories,
+        method: HTTPMethod.post,
+        payload: NetworkPayload.categoryPayload(payload: payload),
+      );
       try {
         final response = CategoriesModel.fromJson(networkResponse);
         print("Product Repository :: ${response.status}");
@@ -33,7 +37,11 @@ class ProductRepository extends GetxController implements GetxService {
 
   Future<void> searchProductByCategory(ProductPayload payload, Function(Result result, ProductModel? response, String? message) completion) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.searchProductByCategory, method: HTTPMethod.post, payload: NetworkPayload.productPayload(payload: payload));
+      final networkResponse = await network.loadHTTP(
+        endpoint: Endpoints.searchProductByCategory,
+        method: HTTPMethod.post,
+        payload: NetworkPayload.productPayload(payload: payload),
+      );
       try {
         final response = ProductModel.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");
@@ -43,6 +51,7 @@ class ProductRepository extends GetxController implements GetxService {
         throw FetchNetworkException(exceptionRawValues[Exceptions.handShakeError]);
       }
     } catch (exception) {
+      print("Naresh :: ${exception.toString()}");
       completion(Result.onException, null, exception.toString());
       rethrow;
     }
@@ -50,7 +59,11 @@ class ProductRepository extends GetxController implements GetxService {
 
   Future<void> addToMyList(UserItemAddPayload payload, Function(Result result, UserItemModel? response, String? message) completion) async {
     try {
-      final networkResponse = await network.loadHTTP(endpoint: Endpoints.userItemAdd, method: HTTPMethod.post, payload: NetworkPayload.userItemPayload(payload: payload));
+      final networkResponse = await network.loadHTTP(
+        endpoint: Endpoints.userItemAdd,
+        method: HTTPMethod.post,
+        payload: NetworkPayload.userItemPayload(payload: payload),
+      );
       try {
         final response = UserItemModel.fromJson(networkResponse);
         print("Home Repository :: ${response.status}");

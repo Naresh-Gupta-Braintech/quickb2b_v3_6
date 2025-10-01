@@ -21,12 +21,10 @@ extension ProductDataservice on ProductController {
         case Result.onSuccess:
           loading = false;
           categories = response;
-          // getAllProductByCategory(categories?.categories?[0].id ?? "");
           if (categories != null && categories?.categories?.isNotEmpty == true) {
-            // getAllProductByCategory(categories?.categories?[0].id ?? "");
+            getAllProductByCategory(categories?.categories?[0].id ?? "");
           }
           update();
-
           break;
         case Result.onFailed:
           loading = false;
@@ -71,6 +69,7 @@ extension ProductDataservice on ProductController {
           break;
         case Result.onException:
           loading = false;
+          print("exception. aa gyi");
           if (message != "cancelled") Get.snackbar('Error', message?.tr ?? "error");
           update();
           break;

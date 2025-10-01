@@ -52,6 +52,12 @@ class HomeController extends GetxController implements GetxService {
     getHomeDetails();
   }
 
+  void updateToggleOutlet() {
+    print("toggle outlets");
+    toggleOutlet = !toggleOutlet;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -167,6 +173,10 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> updateUserInventoryForMyList(UpdateInventoryHome payload) async {
+    updateUserInventoryForHome(payload);
+  }
+
+  Future<void> updateInventoryFromProductView(UpdateInventoryHome payload) async {
     updateUserInventoryForHome(payload);
   }
 

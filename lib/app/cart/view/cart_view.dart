@@ -25,7 +25,7 @@ class _CartViewState extends State<CartView> {
   @override
   void initState() {
     super.initState();
-    Get.find<CartController>().getCartData();
+    Get.find<CartController>().getCartDataLocally();
   }
 
   @override

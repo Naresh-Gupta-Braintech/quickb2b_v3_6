@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,8 +42,8 @@ class _ProductViewState extends State<ProductView> {
   @override
   void dispose() {
     super.dispose();
-    Get.find<HomeController>().modifyingValOfX = 0;
     _productScrollController.dispose();
+    unawaited(Get.find<ProductController>().updateUserInventory());
   }
 
   @override
@@ -124,6 +126,7 @@ class _ProductViewState extends State<ProductView> {
                                                             productController.productsInventry[index]?.textEditingController2 ??
                                                             TextEditingController(),
                                                         onChanged: (value) {
+                                                          productController.onChangeProduct(index);
                                                           // if (productController.productsInventry[index]?.isMeasBox == 0) {
                                                           //   controller.onChaged(
                                                           //     productController.productsInventry[index]?.textEditingController2 ??

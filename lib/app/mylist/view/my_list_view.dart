@@ -88,6 +88,7 @@ class _MyListState extends State<MyListView> {
                                               height: Get.height,
                                               child: ReorderableListView.builder(
                                                 onReorder: (oldIndex, newIndex) {
+                                                  if (mylistController.dataWithCategory?.isEmpty ?? true) return;
                                                   final list = mylistController.dataWithCategory?[mylistController.topNavigationIndex].data;
                                                   if (list == null) return;
                                                   if (newIndex > oldIndex) newIndex -= 1;

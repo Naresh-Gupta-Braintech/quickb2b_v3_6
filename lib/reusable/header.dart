@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
+import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart' show Images;
@@ -93,10 +94,15 @@ Widget headerWithSearch({
                 visible: showOutlet,
                 child: InkWell(
                   onTap: onTap,
-                  child: Container(
-                    padding: EdgeInsets.all(7.r),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)),
-                    child: Image.asset(Images.outlet, height: 19.r),
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.find<HomeController>().updateToggleOutlet();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(7.r),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)),
+                      child: Image.asset(Images.outlet, height: 19.r),
+                    ),
                   ),
                 ),
               ),
