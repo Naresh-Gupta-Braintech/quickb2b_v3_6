@@ -162,21 +162,7 @@ class _HomeViewState extends State<HomeView> {
                                                       padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: verticalProduct(
                                                         onChanged: (value) {
-                                                          if (controller.homeItems?.data?.allInventories?[index].isMeasBox == 0) {
-                                                            controller.onChagedHomeProduct(
-                                                              controller.homeItems?.data?.allInventories?[index].controller2,
-                                                              index,
-                                                            );
-                                                          } else {
-                                                            controller.onChagedHomeProduct(
-                                                              controller.homeItems?.data?.allInventories?[index].controller1,
-                                                              index,
-                                                            );
-                                                            controller.onChagedHomeProduct(
-                                                              controller.homeItems?.data?.allInventories?[index].controller2,
-                                                              index,
-                                                            );
-                                                          }
+                                                          controller.onChagedHomeProduct(index);
                                                         },
                                                         controller1:
                                                             controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),

@@ -99,19 +99,25 @@ class HomeController extends GetxController implements GetxService {
     getCompanyDetails();
   }
 
-  void onChagedHomeProduct(TextEditingController? controller, int index) {
+  void onChagedHomeProduct(int index) {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
-    String value = controller?.text.trim() ?? "";
-    if (value == '.') value = '0$value';
-    if (value.isEmpty) {
-      Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
-    } else if (value.isQuantityValid()) {
-      Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
-    } else {
-      if ((!value.isQuantityValid()) && value.isNotEmpty) {
-        controller?.text = value.substring(0, value.length - 1);
+
+    if (productItem?.isMeasBox == 0) {
+    String value = productItem?.controller2?.text.trim() ?? "";
+      if (value == '.') value = '0$value';
+      if (value.isEmpty) {
+        Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+      } else if (value.isQuantityValid()) {
+        Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
+      } else {
+        if ((!value.isQuantityValid()) && value.isNotEmpty) {
+          productItem?.controller2?.text = value.substring(0, value.length - 1);
+        }
       }
+    }else if(productItem?.isMeasBox == 1){
+      
     }
+
     update();
   }
 
