@@ -82,6 +82,31 @@ class HomeController extends GetxController implements GetxService {
     }
   }
 
+  void onTapPlusIconforMultiItem(int index) async {
+    AllInventory? productItem = homeItems?.data?.allInventories?[index];
+    print("clicked plus icon for multi item :: ${productItem?.priority}");
+    // Get the local cart and find the item in cart
+    CartData? cart = await LocalStorage.getCartDetails();
+    int productAtIndexInCart =
+        cart?.data?.allInventories?.indexWhere(
+          (inventory) =>
+              inventory.itemCode == productItem?.itemCode && inventory.measureQty == productItem?.measureQty && inventory.originQty == productItem?.originQty && inventory.priority == 1,
+        ) ??
+        -1;
+
+    print("productAtIndexInCart :: $productAtIndexInCart");
+    if (productAtIndexInCart == -1) {
+      return;
+    }
+
+    cart?.data?.allInventories?[productAtIndexInCart].priority = 0;
+    await LocalStorage.saveCartDetails(cart);
+    // set priority to 0 in array that shows in home screen and find the item
+    homeItems?.data?.allInventories?[index].priority = 1;
+    homeItems?.data?.allInventories?[index].controller1?.text = "";
+    homeItems?.data?.allInventories?[index].controller2?.text = "";
+  }
+
   void setToogleOutlet() {
     toggleOutlet = !toggleOutlet;
     update();
@@ -99,11 +124,50 @@ class HomeController extends GetxController implements GetxService {
     getCompanyDetails();
   }
 
+  // void onChagedHomeProduct(int index) {
+  //   AllInventory? productItem = homeItems?.data?.allInventories?[index];
+
+  //   if (productItem?.isMeasBox == 0) {
+  //     String value = productItem?.controller2?.text.trim() ?? "";
+  //     if (value == '.') value = '0$value';
+  //     if (value.isEmpty) {
+  //       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+  //     } else if (value.isQuantityValid()) {
+  //       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
+  //     } else {
+  //       if ((!value.isQuantityValid()) && value.isNotEmpty) {
+  //         productItem?.controller2?.text = value.substring(0, value.length - 1);
+  //       }
+  //     }
+  //   } else if (productItem?.isMeasBox == 1) {
+  //     String value1 = productItem?.controller1?.text.trim() ?? "";
+  //     String value2 = productItem?.controller2?.text.trim() ?? "";
+  //     if (value1 == '.') value1 = '0$value1';
+  //     if (value2 == '.') value2 = '0$value2';
+  //     // check if any one is  empty
+  //     if (value1.isEmpty || value2.isEmpty) {
+  //       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+  //     } else if (value1.isQuantityValid() && value2.isQuantityValid()) {
+  //       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
+  //     } else {
+  //       if ((!value1.isQuantityValid()) && value1.isNotEmpty) {
+  //         productItem?.controller1?.text = value1.substring(0, value1.length - 1);
+  //       }
+  //       if ((!value2.isQuantityValid()) && value2.isNotEmpty) {
+  //         productItem?.controller2?.text = value2.substring(0, value2.length - 1);
+  //       }
+  //     }
+  //   }
+
+  //   update();
+  // }
+
   void onChagedHomeProduct(int index) {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
-
+    print("product item isMeasBox :: ${productItem?.isMeasBox}. itemCode :: ${productItem?.itemCode}");
     if (productItem?.isMeasBox == 0) {
-    String value = productItem?.controller2?.text.trim() ?? "";
+      String value = productItem?.controller2?.text.trim() ?? "";
+
       if (value == '.') value = '0$value';
       if (value.isEmpty) {
         Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
@@ -114,11 +178,28 @@ class HomeController extends GetxController implements GetxService {
           productItem?.controller2?.text = value.substring(0, value.length - 1);
         }
       }
-    }else if(productItem?.isMeasBox == 1){
-      
+    } else if (productItem?.isMeasBox == 1) {
+      String value1 = productItem?.controller1?.text.trim() ?? "";
+      String value2 = productItem?.controller2?.text.trim() ?? "";
+      print("value before processing :: $value1 value2 :: $value2");
+      if (value1 == '.') value1 = '0$value1';
+      if (value2 == '.') value2 = '0$value2';
+
+      if (value1.isEmpty || value2.isEmpty) {
+        Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+      } else if (value1.isQuantityValid() && value2.isQuantityValid()) {
+        Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
+      } else {
+        if ((!value1.isQuantityValid()) && value1.isNotEmpty) {
+          productItem?.controller1?.text = value1.substring(0, value1.length - 1);
+        }
+        if ((!value2.isQuantityValid()) && value2.isNotEmpty) {
+          productItem?.controller2?.text = value2.substring(0, value2.length - 1);
+        }
+      }
     }
 
-    update();
+    // update();
   }
 
   void getOutletinfo() {
@@ -161,8 +242,17 @@ class HomeController extends GetxController implements GetxService {
         cartItem.priority = item.priority;
         cartItem.quantity = item.quantity;
         cartItems.add(cartItem);
+      } else if (item.isMeasBox == 1 && (double.tryParse(item.originQty ?? "0") != 0 && double.tryParse(item.measureQty ?? "0") != 0 || item.orderBy != "")) {
+        CartItem cartItem = CartItem();
+        cartItem.id = item.id;
+        cartItem.isMeasBox = item.isMeasBox;
+        cartItem.itemCode = item.itemCode;
+        cartItem.measureQty = item.measureQty;
+        cartItem.originQty = item.originQty;
+        cartItem.priority = item.priority;
+        cartItem.quantity = item.quantity;
+        cartItems.add(cartItem);
       }
-      print("hello ${val++} ");
     });
 
     UpdateInventoryHome payload = UpdateInventoryHome();
@@ -187,39 +277,39 @@ class HomeController extends GetxController implements GetxService {
   }
 
   // make home list quantity
-  void makeHomeDataFromLocalCart() async {
-    CartData? localCart = await LocalStorage.getCartDetails();
-    int length = homeItems?.data?.allInventories?.length ?? 0;
-    print("api cart. daya beffore update item");
+  // void makeHomeDataFromLocalCart() async {
+  //   CartData? localCart = await LocalStorage.getCartDetails();
+  //   int length = homeItems?.data?.allInventories?.length ?? 0;
+  //   print("api cart. daya beffore update item");
 
-    homeItems?.data?.allInventories?.forEach((inventory) {
-      print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
-    });
-    for (int i = 0; i < length; i++) {
-      compareAndUpdateHomeData(inventory: homeItems?.data?.allInventories?[i], index: i);
-    }
+  //   homeItems?.data?.allInventories?.forEach((inventory) {
+  //     print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
+  //   });
+  //   for (int i = 0; i < length; i++) {
+  //     compareAndUpdateHomeData(inventory: homeItems?.data?.allInventories?[i], index: i);
+  //   }
 
-    print("local Cart item");
-    localCart?.data?.allInventories?.forEach((localInventory) {
-      print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
-    });
-    print("api cart. daya after update item");
+  //   print("local Cart item");
+  //   localCart?.data?.allInventories?.forEach((localInventory) {
+  //     print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
+  //   });
+  //   print("api cart. daya after update item");
 
-    homeItems?.data?.allInventories?.forEach((inventory) {
-      print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
-    });
-    update();
-  }
+  //   homeItems?.data?.allInventories?.forEach((inventory) {
+  //     print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
+  //   });
+  //   update();
+  // }
 
-  void compareAndUpdateHomeData({AllInventory? inventory, required int index}) async {
-    CartData? localCart = await LocalStorage.getCartDetails();
-    localCart?.data?.allInventories?.forEach((localInventory) {
-      if (localInventory.id == inventory?.id) {
-        homeItems?.data?.allInventories?[index].originQty = localInventory.originQty ?? "";
-        homeItems?.data?.allInventories?[index].measureQty = localInventory.measureQty ?? "";
-      }
-    });
-  }
+  // void compareAndUpdateHomeData({AllInventory? inventory, required int index}) async {
+  //   CartData? localCart = await LocalStorage.getCartDetails();
+  //   localCart?.data?.allInventories?.forEach((localInventory) {
+  //     if (localInventory.id == inventory?.id) {
+  //       homeItems?.data?.allInventories?[index].originQty = localInventory.originQty ?? "";
+  //       homeItems?.data?.allInventories?[index].measureQty = localInventory.measureQty ?? "";
+  //     }
+  //   });
+  // }
 
   void removedItemFromCartForCartView(AllInventory? allInventory) async {
     List<CartItem> cartItems = [];
@@ -234,7 +324,7 @@ class HomeController extends GetxController implements GetxService {
     cartItems.add(cart);
 
     UpdateInventoryHome payload = UpdateInventoryHome();
-    // payload.deviceType = 'I';
+    payload.deviceType = 'I';
     payload.clientCode = GlobalConstants.clientCode;
     payload.appType = "Dual";
     payload.type = "Dual";

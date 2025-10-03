@@ -65,11 +65,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
                                         child: Padding(
                                           padding: EdgeInsets.only(top: 5.r),
-                                          child: customCarousel(
-                                            width: Get.width,
-                                            height: 130.r,
-                                            images: controller.homeItems?.data?.bannerLists ?? [],
-                                          ),
+                                          child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
                                         ),
                                       ),
                                       SizedBox(height: Dimensions.padding16),
@@ -79,10 +75,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: (controller.homeItems?.data?.categoryExists == 1 && categoriesList.isNotEmpty),
                                         child: Column(
                                           children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                              child: _customSubHeading(text: "Search by Categories", buttonText: "See All"),
-                                            ),
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "Search by Categories", buttonText: "See All")),
                                             SizedBox(height: 8.r),
                                             SizedBox(
                                               height: 106.r,
@@ -125,11 +118,11 @@ class _HomeViewState extends State<HomeView> {
                                                       padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: specialProducts(
                                                         controller2: controller.myListControllers[index][1] ?? TextEditingController(),
-                                                        controller1: controller.myListControllers[index][0]!,
+                                                        controller1: controller.myListControllers[index][0] ?? TextEditingController(),
                                                         url: controller.homeItems?.data?.specialInventories?[index].image ?? "",
                                                         price: controller.homeItems?.data?.specialInventories?[index].itemPrice ?? "",
                                                         name: controller.homeItems?.data?.specialInventories?[index].itemName ?? "",
-                                                        isMeasBox: 1,
+                                                        isMeasBox: controller.homeItems?.data?.specialInventories?[index].isMeasBox ?? 0,
                                                         hint: "",
                                                       ),
                                                     );
@@ -146,10 +139,7 @@ class _HomeViewState extends State<HomeView> {
                                         visible: (controller.homeItems?.showMyProduct == 1 && allInventories.isNotEmpty),
                                         child: Column(
                                           children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                              child: _customSubHeading(text: "My Products List", buttonText: "See All"),
-                                            ),
+                                            Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "My Products List", buttonText: "See All")),
                                             SizedBox(height: 8.r),
                                             Visibility(
                                               child: SizedBox(
@@ -161,13 +151,14 @@ class _HomeViewState extends State<HomeView> {
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                       child: verticalProduct(
+                                                        OnTapPlusIcon: () {
+                                                          controller.onTapPlusIconforMultiItem(index);
+                                                        },
                                                         onChanged: (value) {
                                                           controller.onChagedHomeProduct(index);
                                                         },
-                                                        controller1:
-                                                            controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),
-                                                        controller2:
-                                                            controller.homeItems?.data?.allInventories?[index].controller2 ?? TextEditingController(),
+                                                        controller1: controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),
+                                                        controller2: controller.homeItems?.data?.allInventories?[index].controller2 ?? TextEditingController(),
                                                         isShowImage: int.tryParse(controller.homeItems?.showImage ?? "0") ?? 0,
                                                         hint: controller.homeItems?.data?.allInventories?[index].uom ?? "",
                                                         url: controller.homeItems?.data?.allInventories?[index].image ?? "",
@@ -187,17 +178,11 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       // Padding(padding: EdgeInsets.symmetric(horizontal: 8.r), child: productOfProductList(url: "https://develop.quickb2b.com/files/inventory/QuickB2B_Develop/1658124745no-image-available.png")),
                                       SizedBox(height: Dimensions.padding16),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                        child: _customSubHeading(text: "Featured", buttonText: ""),
-                                      ),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: _customSubHeading(text: "Featured", buttonText: "")),
                                       SizedBox(height: Dimensions.padding10),
                                       Image.asset(Images.featuredGradient, width: Get.width, fit: BoxFit.cover),
                                       SizedBox(height: Dimensions.padding10),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 3.r),
-                                        child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? ""),
-                                      ),
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 3.r), child: HtmlWidget(controller.homeItems?.data?.featuredItemImage?.content ?? "")),
                                     ],
                                   ),
                                 ),
@@ -239,10 +224,7 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Padding(
                 padding: EdgeInsets.only(bottom: Dimensions.padding8),
-                child: Text(
-                  "Select the outlet to place an order",
-                  style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
-                ),
+                child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600)),
               ),
               for (int i = 0; i < controller.outlets.length; i++)
                 Padding(

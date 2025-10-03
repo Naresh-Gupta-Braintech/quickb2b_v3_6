@@ -51,6 +51,7 @@ Widget verticalProduct({
   required TextEditingController controller2,
   required String originQty,
   required String measureQty,
+  VoidCallback? OnTapPlusIcon,
 }) {
   double orgQty = double.tryParse(originQty) ?? 0;
   if (orgQty == 0) {
@@ -124,7 +125,9 @@ Widget verticalProduct({
                 visible: isMeasBox == 1,
                 child: Row(
                   children: [
-                    Icon(Icons.add, color: Colors.black, size: 15.r),
+                    GestureDetector(
+                      onTap: OnTapPlusIcon,
+                      child: Icon(Icons.add, color: Colors.black, size: 15.r)),
                     SizedBox(width: 2.r),
                     _textField(hint: "Qty", controller: controller1, onChanged: onChanged, textFieldWidth: 55.r),
                     Padding(
