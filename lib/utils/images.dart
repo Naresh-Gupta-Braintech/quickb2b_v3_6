@@ -22,4 +22,6 @@ class Images {
   static final radioAdd = "$_basePath/radio_add.png";
   static final user = "$_basePath/user.png";
   static final redCross = "$_basePath/cross_red.png";
+  static final appLogo = "$_basePath/app_logo.png";
+  static final arrowRight = "$_basePath/arrow_right.png";
 }

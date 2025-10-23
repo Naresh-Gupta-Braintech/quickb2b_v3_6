@@ -32,6 +32,7 @@ dependencies:
   keyboard_actions: ^4.1.0
   network_info_plus: ^5.0.1
   connectivity_plus: ^5.0.1
+  fluttertoast: ^9.0.0
 
 
 dev_dependencies:

@@ -9,4 +9,5 @@ class Keys {
   static String appName = "app_name";
   static String outlet = "outlet";
   static String deviceData = "device_data";
+  static String selectedOutlet = "selected_outlet";
 }

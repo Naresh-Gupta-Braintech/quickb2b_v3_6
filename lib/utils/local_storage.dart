@@ -53,6 +53,20 @@ class LocalStorage {
     await prefs.setString(Keys.customerDetails, data);
   }
 
+  static Future<void> saveOutlets(OutletData? outlet) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = outlet?.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.outlet, data);
+  }
+
+  static Future<void> saveSelectedOutlet(Outlet? outlet) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonData = outlet?.toJson();
+    String data = jsonEncode(jsonData);
+    await prefs.setString(Keys.selectedOutlet, data);
+  }
+
   static Future<void> saveCompanyDetails(CompanyDetailsData? company) async {
     final prefs = await SharedPreferences.getInstance();
     final jsonData = company!.toJson();
@@ -76,6 +90,36 @@ class LocalStorage {
       }
       final jsonData = jsonDecode(data);
       return CustomerDetailsModel.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
+  }
+
+  static Future<OutletData?> getOutlets() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.outlet);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return OutletData.fromJson(jsonData);
+    } catch (e) {
+      print("Error retrieving login data: $e");
+      return null;
+    }
+  }
+
+  static Future<Outlet?> getSelectedOutlets() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final data = prefs.getString(Keys.selectedOutlet);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      final jsonData = jsonDecode(data);
+      return Outlet.fromJson(jsonData);
     } catch (e) {
       print("Error retrieving login data: $e");
       return null;

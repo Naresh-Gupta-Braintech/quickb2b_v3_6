@@ -114,6 +114,7 @@ extension HomeDataService on HomeController {
         case Result.onSuccess:
           loading = false;
           outlet = response;
+          LocalStorage.saveOutlets(outlet);
           update();
           break;
         case Result.onFailed:
@@ -163,10 +164,7 @@ extension HomeDataService on HomeController {
     });
   }
 
-  Future<void> updateUserInventoryForHome(
-    UpdateInventoryHome payload, {
-    bool routeToHome = false,
-  }) async {
+  Future<void> updateUserInventoryForHome(UpdateInventoryHome payload, {bool routeToHome = false}) async {
     loading = true;
     update();
     print("update inventory for home");

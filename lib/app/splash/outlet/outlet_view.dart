@@ -66,20 +66,15 @@ class _OutletViewState extends State<OutletView> {
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 8.r),
-                                decoration:
-                                    controller.selectedOutled == index ? BoxDecoration(color: Colors.grey) : BoxDecoration(color: Colors.grey[300]),
+                                decoration: controller.selectedOutled == index ? BoxDecoration(color: Colors.grey) : BoxDecoration(color: Colors.grey[300]),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       controller.outlet?.data?[index].name ?? "",
-                                      style: TextStyle(
-                                        fontSize: Dimensions.font15,
-                                        fontFamily: TypographyResources.openSans,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: TextStyle(fontSize: Dimensions.font15, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600),
                                     ),
-                                    Icon(Icons.arrow_back),
+                                    Image.asset(Images.arrowRight),
                                   ],
                                 ),
                               ),

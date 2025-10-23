@@ -71,8 +71,8 @@ class AuthController extends GetxController implements GetxService {
     userNameController = TextEditingController();
   }
 
-  void signin() {
-    login();
+  void signin(BuildContext context) {
+    login(context);
   }
 
   void loginRoutes() async {

@@ -17,14 +17,7 @@ Widget customButton({required String textLabel, required VoidCallback onPressed}
   );
 }
 
-Widget customButton2({
-  required String textLabel,
-  required double width,
-  required Color color,
-  required VoidCallback onPressed,
-  double? height,
-  double? fontSize,
-}) {
+Widget customButton2({required String textLabel, required double width, required Color color, required VoidCallback onPressed, double? height, double? fontSize}) {
   return Container(
     height: height ?? Dimensions.viewHeight30,
     width: width,
@@ -33,15 +26,7 @@ Widget customButton2({
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: color),
       onPressed: onPressed,
-      child: Text(
-        textLabel,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize ?? Dimensions.font12,
-          fontFamily: TypographyResources.acumin,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+      child: Text(textLabel, style: TextStyle(color: Colors.white, fontSize: fontSize ?? Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w700)),
     ),
   );
 }

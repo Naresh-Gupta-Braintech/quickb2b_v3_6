@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/helper/get_directory.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+
+// final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +23,7 @@ class QuickB2b extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
-        return GetMaterialApp(debugShowCheckedModeBanner: false, getPages: RoutesHelper.getRoutes(), initialRoute: RoutesHelper.splash);
+        return GetMaterialApp(debugShowCheckedModeBanner: false, getPages: RoutesHelper.getRoutes(), initialRoute: RoutesHelper.splash, builder: FToastBuilder());
       },
     );
   }

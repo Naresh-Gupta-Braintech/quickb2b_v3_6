@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -123,44 +124,6 @@ class HomeController extends GetxController implements GetxService {
   void getCompanyDetail() {
     getCompanyDetails();
   }
-
-  // void onChagedHomeProduct(int index) {
-  //   AllInventory? productItem = homeItems?.data?.allInventories?[index];
-
-  //   if (productItem?.isMeasBox == 0) {
-  //     String value = productItem?.controller2?.text.trim() ?? "";
-  //     if (value == '.') value = '0$value';
-  //     if (value.isEmpty) {
-  //       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
-  //     } else if (value.isQuantityValid()) {
-  //       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
-  //     } else {
-  //       if ((!value.isQuantityValid()) && value.isNotEmpty) {
-  //         productItem?.controller2?.text = value.substring(0, value.length - 1);
-  //       }
-  //     }
-  //   } else if (productItem?.isMeasBox == 1) {
-  //     String value1 = productItem?.controller1?.text.trim() ?? "";
-  //     String value2 = productItem?.controller2?.text.trim() ?? "";
-  //     if (value1 == '.') value1 = '0$value1';
-  //     if (value2 == '.') value2 = '0$value2';
-  //     // check if any one is  empty
-  //     if (value1.isEmpty || value2.isEmpty) {
-  //       Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
-  //     } else if (value1.isQuantityValid() && value2.isQuantityValid()) {
-  //       Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
-  //     } else {
-  //       if ((!value1.isQuantityValid()) && value1.isNotEmpty) {
-  //         productItem?.controller1?.text = value1.substring(0, value1.length - 1);
-  //       }
-  //       if ((!value2.isQuantityValid()) && value2.isNotEmpty) {
-  //         productItem?.controller2?.text = value2.substring(0, value2.length - 1);
-  //       }
-  //     }
-  //   }
-
-  //   update();
-  // }
 
   void onChagedHomeProduct(int index) {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
