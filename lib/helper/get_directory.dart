@@ -16,6 +16,7 @@ import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/network/network_manager.dart';
 import 'package:quickb2b_v3_6/reusable/carousel_banner_controller.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> init() async {
@@ -35,16 +36,12 @@ Future<void> init() async {
   // Controllers
   Get.lazyPut(() => AuthController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => HomeController(sharedPreferences: sharedPreferences, repository: Get.find()));
-  Get.lazyPut(
-    () => ProfileDashboardController(sharedPreferences: sharedPreferences, repository: Get.find()),
-    fenix: true,
-  );
+  Get.lazyPut(() => ProfileDashboardController(sharedPreferences: sharedPreferences, repository: Get.find()), fenix: true);
   Get.lazyPut(() => CarouselBannerController());
   Get.lazyPut(() => SplashController(sharedPreferences: sharedPreferences));
   Get.lazyPut(() => NavigationController(sharedPreferences: sharedPreferences), fenix: true);
   Get.lazyPut(() => CartController(sharedPreferences: sharedPreferences, repository: Get.find()));
-  Get.lazyPut(
-    () => ProductController(sharedPreferences: sharedPreferences, repository: Get.find()),
-  );
+  Get.lazyPut(() => ProductController(sharedPreferences: sharedPreferences, repository: Get.find()));
   Get.lazyPut(() => MyListController(sharedPreferences: sharedPreferences, repository: Get.find()));
+  Get.put(LocalStorage(prefs: sharedPreferences));
 }

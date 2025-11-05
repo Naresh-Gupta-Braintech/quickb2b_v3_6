@@ -20,6 +20,7 @@ extension HomeDataService on HomeController {
     await repository.getHomeItems(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
+          outletLoading = false;
           loading = false;
           homeItems = response;
           initializeController();
@@ -27,11 +28,13 @@ extension HomeDataService on HomeController {
           break;
         case Result.onFailed:
           loading = false;
+          outletLoading = false;
           update();
           Get.snackbar('Error', message?.tr ?? "error");
           break;
         case Result.onException:
           loading = false;
+          outletLoading = false;
           update();
           if (message != "cancelled") Get.snackbar('Error', message?.tr ?? "error");
           break;
@@ -109,13 +112,13 @@ extension HomeDataService on HomeController {
     payload.acmCode = loginData?.data?.acmCode ?? "";
     payload.type = "Dual";
     payload.userCode = sharedPreferences.getString(Keys.userCode);
-    await repository.getOutlets(payload, (result, response, message) {
+    await repository.getOutlets(payload, (result, response, message) async {
       switch (result) {
         case Result.onSuccess:
           loading = false;
           outlet = response;
-          LocalStorage.saveOutlets(outlet);
           update();
+          await Get.find<LocalStorage>().saveOutlets(outlet);
           break;
         case Result.onFailed:
           loading = false;

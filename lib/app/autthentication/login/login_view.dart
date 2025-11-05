@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
@@ -15,9 +16,12 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  FToast? fToast;
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast?.init(context);
   }
 
   @override
@@ -51,7 +55,7 @@ class _LoginViewState extends State<LoginView> {
                             child: customButton(
                               textLabel: "Login",
                               onPressed: () async {
-                                controller.signin(context);
+                                controller.signin(context, ftoast: fToast);
                               },
                             ),
                           ),

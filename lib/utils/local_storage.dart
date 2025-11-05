@@ -10,7 +10,9 @@ import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
-  SharedPreferences? pref;
+  SharedPreferences prefs;
+
+  LocalStorage({required this.prefs});
 
   static Future<String?>? getStringData({required String key}) async {
     final prefs = await SharedPreferences.getInstance();
@@ -53,15 +55,14 @@ class LocalStorage {
     await prefs.setString(Keys.customerDetails, data);
   }
 
-  static Future<void> saveOutlets(OutletData? outlet) async {
-    final prefs = await SharedPreferences.getInstance();
+  Future<void> saveOutlets(OutletData? outlet) async {
     final jsonData = outlet?.toJson();
     String data = jsonEncode(jsonData);
     await prefs.setString(Keys.outlet, data);
+    print(" Outlets saved");
   }
 
-  static Future<void> saveSelectedOutlet(Outlet? outlet) async {
-    final prefs = await SharedPreferences.getInstance();
+  Future<void> saveSelectedOutlet(Outlet? outlet) async {
     final jsonData = outlet?.toJson();
     String data = jsonEncode(jsonData);
     await prefs.setString(Keys.selectedOutlet, data);
@@ -96,9 +97,8 @@ class LocalStorage {
     }
   }
 
-  static Future<OutletData?> getOutlets() async {
+  OutletData? getOutlets() {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final data = prefs.getString(Keys.outlet);
       if (data == null || data.isEmpty) {
         return null;
@@ -111,9 +111,8 @@ class LocalStorage {
     }
   }
 
-  static Future<Outlet?> getSelectedOutlets() async {
+  Outlet? getSelectedOutlets() {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final data = prefs.getString(Keys.selectedOutlet);
       if (data == null || data.isEmpty) {
         return null;
@@ -194,7 +193,7 @@ class LocalStorage {
     }
   }
 
-  static Future<CartData?> getCartDetails() async {
+   Future<CartData?> getCartDetails() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final data = prefs.getString(Keys.cart);

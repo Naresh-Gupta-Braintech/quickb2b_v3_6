@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_repository.dart';
@@ -71,8 +72,8 @@ class AuthController extends GetxController implements GetxService {
     userNameController = TextEditingController();
   }
 
-  void signin(BuildContext context) {
-    login(context);
+  void signin(BuildContext context,{FToast? ftoast}) {
+    login(context,ftoast: ftoast);
   }
 
   void loginRoutes() async {

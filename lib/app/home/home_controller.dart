@@ -46,6 +46,7 @@ class HomeController extends GetxController implements GetxService {
   int selectedOutled = 0;
   bool isUpdateInventory = false;
   int modifyingValOfX = 0;
+  bool outletLoading = false;
 
   List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
 
@@ -87,7 +88,8 @@ class HomeController extends GetxController implements GetxService {
     AllInventory? productItem = homeItems?.data?.allInventories?[index];
     print("clicked plus icon for multi item :: ${productItem?.priority}");
     // Get the local cart and find the item in cart
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     int productAtIndexInCart =
         cart?.data?.allInventories?.indexWhere(
           (inventory) =>
@@ -172,6 +174,7 @@ class HomeController extends GetxController implements GetxService {
   void increaseCount(String productId) {}
 
   void handleOnTapOutlet(int index) async {
+    print("in Handle Outlet");
     Get.find<SplashController>().isCompanyDetailsFetchedSuccess = false;
     Get.find<CartController>().isCartFetchedSuccess = false;
     Get.find<AuthController>().isGetDeviceFetchCompleted = false;
@@ -179,6 +182,7 @@ class HomeController extends GetxController implements GetxService {
     sharedPreferences.setString(Keys.userCode, outlet?.data?[index].userCode ?? "TapOutlet");
 
     LocalStorage.setUserCode(outlet?.data?[index].userCode ?? "TapOutlet"); //setUserCode
+    await Get.find<LocalStorage>().saveSelectedOutlet(outlet?.data?[index]);
 
     await Get.find<AuthController>().getDevice();
     if (Get.find<AuthController>().isGetDeviceFetchCompleted) {
@@ -190,7 +194,8 @@ class HomeController extends GetxController implements GetxService {
   }
 
   Future<void> updateUserInventoryHome() async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     List<CartItem> cartItems = [];
 
     int val = 1;
@@ -297,5 +302,10 @@ class HomeController extends GetxController implements GetxService {
     payload.cartItems = cartItems;
     payload.orderFlag = 0;
     updateUserInventoryForHome(payload);
+  }
+
+  Future<void> updateOutlesForHome(Outlet outlet) async {
+    await Get.find<LocalStorage>().saveSelectedOutlet(outlet);
+    toggleOutlet = false;
   }
 }

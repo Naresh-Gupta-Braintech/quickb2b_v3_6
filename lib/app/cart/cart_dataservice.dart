@@ -25,7 +25,8 @@ extension CartDataservice on CartController {
           cartData = response;
           await LocalStorage.saveCartDetails(cartData);
           calculateCartPrice();
-          var savedCart = await LocalStorage.getCartDetails();
+          var savedCart = await Get.find<LocalStorage>().getCartDetails();
+
           int index = 0;
           savedCart?.data?.allInventories?.forEach((element) {
             print("saved cart item code :: ${element.itemCode} qty :: ${element.quantity} index :: ${index++}");

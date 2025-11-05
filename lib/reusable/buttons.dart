@@ -26,7 +26,11 @@ Widget customButton2({required String textLabel, required double width, required
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: color),
       onPressed: onPressed,
-      child: Text(textLabel, style: TextStyle(color: Colors.white, fontSize: fontSize ?? Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w700)),
+      child: Text(
+        textLabel,
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white, fontSize: fontSize ?? Dimensions.font12, fontFamily: TypographyResources.acumin, fontWeight: FontWeight.w700),
+      ),
     ),
   );
 }

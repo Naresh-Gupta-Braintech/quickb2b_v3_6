@@ -87,7 +87,8 @@ class ProductController extends GetxController implements GetxService {
   }
 
   Future<void> updateUserInventory() async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     List<CartItem> carts = [];
     cart?.data?.allInventories?.forEach((item) {
       if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {

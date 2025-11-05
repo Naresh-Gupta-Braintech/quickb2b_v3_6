@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
+import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/reusable/custom_toast.dart';
@@ -10,7 +12,7 @@ import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 extension AuthDataservice on AuthController {
-  Future<void> login(BuildContext context) async {
+  Future<void> login(BuildContext context, {FToast? ftoast}) async {
     // "a1ad67eaf5b9140f"
     loading = true;
     update();
@@ -50,8 +52,12 @@ extension AuthDataservice on AuthController {
     });
   }
 
-  Future<void> getDevice() async {
+  Future<void> getDevice({bool oultlectSelect = false}) async {
     loading = true;
+    if (oultlectSelect) {
+      Get.find<HomeController>().outletLoading = true;
+      update();
+    }
     Get.find<AuthController>().loading = true;
     GetDevicePayload payload = GetDevicePayload();
     payload.acmCode = "";

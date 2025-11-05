@@ -39,7 +39,8 @@ class MyListController extends GetxController implements GetxService {
   }
 
   Future<void> updateUserInventoryMyList() async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     cart?.data?.allInventories?.forEach((item) {
       if (item.isMeasBox == 0 && (double.tryParse(item.originQty ?? "0") != 0 || item.orderBy != "")) {
         CartItem cartItem = CartItem();
@@ -86,7 +87,8 @@ class MyListController extends GetxController implements GetxService {
   }
 
   void makeMyListFromLocalData() async {
-    var cart = await LocalStorage.getCartDetails();
+    var cart = await Get.find<LocalStorage>().getCartDetails();
+
     cart?.data?.allInventories?.forEach((element) {
       print("make my list From Local Data :: ${element.itemCode} qty :: ${element.quantity}");
     });
@@ -102,7 +104,8 @@ class MyListController extends GetxController implements GetxService {
   }
 
   void compareAndUpdateMyList({Item? data, required int outerIndex, required int innerIndex}) async {
-    CartData? localCart = await LocalStorage.getCartDetails();
+    CartData? localCart = await Get.find<LocalStorage>().getCartDetails();
+
     print("data :: ${data?.itemCode}  name :: ${data?.itemName} qty :: ${data?.quantity}");
 
     localCart?.data?.allInventories?.forEach((cartItem) {

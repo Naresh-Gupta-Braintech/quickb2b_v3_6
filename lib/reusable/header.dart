@@ -32,28 +32,24 @@ Widget headers({required String appname, required int showPrice, String? rightTe
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Visibility(
-                            visible: rightText == null || rightText.isEmpty,
-                            child: Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover),
-                          ),
+                          Visibility(visible: rightText == null || rightText.isEmpty, child: Image.asset(Images.cart, height: 35.r, fit: BoxFit.cover)),
                           Padding(
                             padding: EdgeInsets.only(left: 10.r, bottom: 4.r),
                             child: Text(
                               orders.length.toString(),
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontFamily: TypographyResources.openSans,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimensions.font12,
-                              ),
+                              style: TextStyle(color: Colors.red, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.bold, fontSize: Dimensions.font12),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(width: 6.r),
                     Visibility(
                       visible: showPrice == 1 ? true : false,
-                      child: Text("Total ${cartController.cartData?.currencySymbol ?? ""}${cartController.cartPrice}"),
+                      child: Text(
+                        "Total ${cartController.cartData?.currencySymbol ?? ""}${cartController.cartPrice}",
+                        style: TextStyle(fontSize: Dimensions.font16, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w800),
+                      ),
                     ),
                   ],
                 ),
@@ -69,7 +65,6 @@ Widget headers({required String appname, required int showPrice, String? rightTe
 
 Widget headerWithSearch({
   bool showOutlet = true,
-  VoidCallback? onTap,
   bool isSearchBarFull = false,
   int showPrice = 1,
   String? rightText,
@@ -92,17 +87,15 @@ Widget headerWithSearch({
               customSearchBar(textController: TextEditingController(), isFull: isSearchBarFull, textAlignment: textAlignment, hint: hint),
               Visibility(
                 visible: showOutlet,
-                child: InkWell(
-                  onTap: onTap,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.find<HomeController>().updateToggleOutlet();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(7.r),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)),
-                      child: Image.asset(Images.outlet, height: 19.r),
-                    ),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.find<HomeController>().updateToggleOutlet();
+                  },
+                  child: Container(
+                    height: 38.r,
+                    padding: EdgeInsets.all(7.r),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r), border: Border.all(color: Colors.black, width: 1)),
+                    child: Image.asset(Images.outlet, height: 19.r),
                   ),
                 ),
               ),

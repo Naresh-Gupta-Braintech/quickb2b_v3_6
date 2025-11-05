@@ -3,8 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart' show ToastGravity, FToast;
 import 'package:quickb2b_v3_6/utils/images.dart';
 
-showToast(BuildContext context) {
-  FToast fToast = FToast();
+showToast(BuildContext context, {FToast? ftoast}) {
   Widget toast = Container(
     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(25.0), color: Colors.grey.withAlpha(125)),
@@ -14,5 +13,5 @@ showToast(BuildContext context) {
     ),
   );
 
-  fToast.showToast(child: toast, gravity: ToastGravity.BOTTOM, toastDuration: Duration(seconds: 2));
+  ftoast?.showToast(child: toast, gravity: ToastGravity.BOTTOM, toastDuration: Duration(seconds: 2));
 }

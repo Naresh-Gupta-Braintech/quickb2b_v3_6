@@ -46,7 +46,8 @@ class CartController extends GetxController implements GetxService {
 
   void getCartDataLocally() async {
     loading = true;
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     cartData = cart;
     loading = false;
     update();
@@ -55,7 +56,8 @@ class CartController extends GetxController implements GetxService {
   void removedItem(index) async {
     cartData?.data?.allInventories?.removeAt(index);
 
-    CartData? localcartData = await LocalStorage.getCartDetails();
+    CartData? localcartData = await Get.find<LocalStorage>().getCartDetails();
+
     AllInventory? inventory = localcartData?.data?.allInventories?[index];
     inventory?.quantity = 0.toString();
     inventory?.originQty = 0.toString();
@@ -67,7 +69,8 @@ class CartController extends GetxController implements GetxService {
   }
 
   void addItemToCartLocally({String? itemCode}) async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     HomeItemsData? home = Get.find<HomeController>().homeItems;
     int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
     if (index == -1) {
@@ -77,7 +80,7 @@ class CartController extends GetxController implements GetxService {
     AllInventory? productItem = home?.data?.allInventories?[index];
     double measureQty = 1;
     double orginQty = 0;
-    
+
     if (productItem?.isMeasBox == 0) {
       orginQty = double.tryParse(productItem?.controller2?.text ?? "1") ?? 1;
     } else if (productItem?.isMeasBox == 1) {
@@ -110,7 +113,7 @@ class CartController extends GetxController implements GetxService {
   }
 
   void addItemToCartLocall({required AllInventory product}) async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
 
     final orginQty = product.controller2?.text ?? "";
     final measureQty = 1;
@@ -143,7 +146,8 @@ class CartController extends GetxController implements GetxService {
   }
 
   void removeItemFromCardLocally({String? itemCode}) async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == itemCode);
     HomeItemsData? home = Get.find<HomeController>().homeItems;
     int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
@@ -159,7 +163,8 @@ class CartController extends GetxController implements GetxService {
   }
 
   void removeItemFromCardLocall({required AllInventory product}) async {
-    CartData? cart = await LocalStorage.getCartDetails();
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == product.itemCode);
     HomeItemsData? home = Get.find<HomeController>().homeItems;
     int index = home?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == product.itemCode) ?? -1;

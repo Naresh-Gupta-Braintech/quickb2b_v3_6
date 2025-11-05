@@ -23,7 +23,8 @@ extension MyListDataService on MyListController {
           loading = false;
           myList = response;
           dataWithCategory = response?.dataWithCategory ?? [];
-          var cart = await LocalStorage.getCartDetails();
+          var cart = await Get.find<LocalStorage>().getCartDetails();
+
           cart?.data?.allInventories?.forEach((element) {
             print("in my list dataservive cart item code :: ${element.itemCode} qty :: ${element.quantity}");
           });

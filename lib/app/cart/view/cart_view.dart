@@ -57,12 +57,12 @@ class _CartViewState extends State<CartView> {
                   bottom: false,
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 0.r),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(height: Dimensions.padding10),
-                          headerWithSearch(appName: controller.homeItems?.appName ?? "", isSearchBarFull: true, showOutlet: false),
-                          SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: Dimensions.padding10),
+                        headerWithSearch(appName: controller.homeItems?.appName ?? "", isSearchBarFull: true, showOutlet: false),
+                        Expanded(
+                          child: SingleChildScrollView(
                             child: Column(
                               children: [
                                 Visibility(
@@ -74,21 +74,13 @@ class _CartViewState extends State<CartView> {
                                 ),
                                 SizedBox(height: 8.r),
                                 Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey, width: 0.5),
-                                    borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                                  ),
+                                  decoration: BoxDecoration(border: Border.all(color: Colors.grey, width: 0.5), borderRadius: BorderRadius.all(Radius.circular(4.r))),
                                   padding: EdgeInsets.all(5),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(child: Row(children: [Visibility(visible: false, child: Icon(Icons.ac_unit)), Text("Item")])),
-                                      Flexible(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [Text("Qty"), Text("Measure"), Text("Price")],
-                                        ),
-                                      ),
+                                      Flexible(child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text("Qty"), Text("Measure"), Text("Price")])),
                                     ],
                                   ),
                                 ),
@@ -125,9 +117,7 @@ class _CartViewState extends State<CartView> {
                                                 // if (orders[index].isMeasBox == 0)
                                                 cartController.isEdit
                                                     ? customTextFieldWithWidthConstraint(
-                                                      controller:
-                                                          cartController.cartData?.data?.allInventories?[index].controller2 ??
-                                                          TextEditingController(),
+                                                      controller: cartController.cartData?.data?.allInventories?[index].controller2 ?? TextEditingController(),
                                                       hintText: cartController.cartData?.data?.allInventories?[index].uom ?? "",
                                                       borderColor: Colors.grey,
                                                     )
@@ -136,9 +126,7 @@ class _CartViewState extends State<CartView> {
                                                 // if (orders[index].isMeasBox == 1)
                                                 cartController.isEdit
                                                     ? customTextFieldWithWidthConstraint(
-                                                      controller:
-                                                          cartController.cartData?.data?.allInventories?[index].controller1 ??
-                                                          TextEditingController(),
+                                                      controller: cartController.cartData?.data?.allInventories?[index].controller1 ?? TextEditingController(),
                                                       hintText: cartController.cartData?.data?.allInventories?[index].uom ?? "",
                                                       borderColor: Colors.grey,
                                                     )
@@ -156,22 +144,12 @@ class _CartViewState extends State<CartView> {
                                 Divider(color: Colors.grey, thickness: 0.5),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                  child: customTextFieldWithSuffix(
-                                    textFieldLabel: "Delivery:",
-                                    controller: TextEditingController(),
-                                    icon: Icons.calendar_month,
-                                  ),
+                                  child: customTextFieldWithSuffix(textFieldLabel: "Delivery:", controller: TextEditingController(), icon: Icons.calendar_month),
                                 ),
                                 SizedBox(height: 8.r),
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8.r),
-                                  child: customTextField2(
-                                    height: 40.r,
-                                    controller: TextEditingController(),
-                                    textFieldLabel: "PO Number:",
-                                    borderColor: Colors.grey,
-                                    borderWidth: 0.5.r,
-                                  ),
+                                  child: customTextField2(height: 40.r, controller: TextEditingController(), textFieldLabel: "PO Number:", borderColor: Colors.grey, borderWidth: 0.5.r),
                                 ),
                                 SizedBox(height: 8.r),
                                 Padding(
@@ -192,6 +170,7 @@ class _CartViewState extends State<CartView> {
                                       color: Colors.black,
                                       height: 40,
                                       fontSize: Dimensions.font14,
+                                    
                                       onPressed: () {
                                         cartController.saveEditable();
                                       },
@@ -207,20 +186,13 @@ class _CartViewState extends State<CartView> {
                                       },
                                     ),
                                 SizedBox(height: 8.r),
-                                customButton2(
-                                  textLabel: "Submit Order",
-                                  width: 140.r,
-                                  color: Colors.black,
-                                  height: 40,
-                                  fontSize: Dimensions.font14,
-                                  onPressed: () {},
-                                ),
+                                customButton2(textLabel: "Submit Order", width: 140.r, color: Colors.black, height: 40, fontSize: Dimensions.font14, onPressed: () {}),
                               ],
                             ),
                           ),
-                          SizedBox(height: 16.r),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 16.r),
+                      ],
                     ),
                   ),
                 ),
