@@ -13,6 +13,7 @@ import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_data_service.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
@@ -22,6 +23,7 @@ import 'package:quickb2b_v3_6/reusable/products.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -103,7 +105,11 @@ class _MyListState extends State<MyListView> {
                                                 itemCount: mylistController.dataWithCategory?[mylistController.topNavigationIndex].data?.length ?? 0,
                                                 itemBuilder: (context, index) {
                                                   String showImage = mylistController.myList?.showImage ?? "";
-                                                  final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
+                                                  int length = mylistController.dataWithCategory?.length ?? 0;
+                                                  DataWithCategory? products;
+                                                  if (length > 0) {
+                                                    products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
+                                                  }
                                                   return Container(
                                                     key: ValueKey(index),
                                                     padding: EdgeInsets.symmetric(vertical: 4.r),
@@ -184,6 +190,7 @@ class _MyListState extends State<MyListView> {
                                                     String showImage = productController.productdata?.showImage ?? "";
                                                     final products = mylistController.dataWithCategory?[mylistController.topNavigationIndex];
                                                     return verticalProduct(
+                                                      inMyList: productController.productsInventry[index]?.inMyList ?? 0,
                                                       itemCode: productController.productsInventry[index]?.itemCode ?? "",
                                                       context: context,
                                                       originQty: productController.productsInventry[index]?.originQty ?? "",
@@ -254,12 +261,12 @@ class _MyListState extends State<MyListView> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
+                    await controller.sharedPreferences.setString(Keys.userCode, outletsData?.data?[i].userCode ?? "");
                     await Get.find<LocalStorage>().saveSelectedOutlet(outletsData?.data?[i]);
                     controller.toggleOutlet = false;
                     await Get.find<AuthController>().getDevice();
                     await Get.find<CartController>().getCart();
                     await mylistController.getUserItems(0);
-                    print("saved Outlet");
                     setState(() {});
                   },
                   child: Container(

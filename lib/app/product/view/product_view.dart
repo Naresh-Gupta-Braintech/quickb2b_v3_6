@@ -4,16 +4,25 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
+import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
+import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_controller.dart';
+import 'package:quickb2b_v3_6/app/product/product_dataservice.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
+import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/loader.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
 import 'package:quickb2b_v3_6/reusable/products.dart';
+import 'package:quickb2b_v3_6/utils/colors_resources.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
+import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
 class ProductView extends StatefulWidget {
@@ -155,6 +164,7 @@ class _ProductViewState extends State<ProductView> {
                                                       String showImage = productController.productdata?.showImage ?? "";
 
                                                       return verticalProduct(
+                                                        inMyList: productController.productsInventry[index]?.inMyList ?? 0,
                                                         itemCode: productController.productsInventry[index]?.itemCode ?? "",
                                                         context: context,
                                                         originQty: productController.productsInventry[index]?.originQty ?? "",
@@ -213,30 +223,58 @@ class _ProductViewState extends State<ProductView> {
   }
 
   Widget _outlets(HomeController controller) {
+    OutletData? outletsData = Get.find<LocalStorage>().getOutlets();
+    var selectedOutlet = Get.find<LocalStorage>().getSelectedOutlets();
+    var length = outletsData?.data?.length ?? 0;
+    print("selected Outlet ::${selectedOutlet?.name}");
+    print("outletsData :: ${outletsData?.data?.length}");
     return Padding(
-      padding: EdgeInsets.only(left: 6.r, right: 6.r, top: 0.r),
+      padding: EdgeInsets.only(left: 4.r, right: 4.r),
       child: Container(
         width: Get.width,
         decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(4.r)),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.padding6, vertical: Dimensions.padding6),
+          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 9.r),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: Dimensions.padding8),
+                padding: EdgeInsets.only(bottom: Dimensions.padding6, left: Dimensions.padding6, right: Dimensions.padding6, top: Dimensions.padding6),
                 child: Text("Select the outlet to place an order", style: TextStyle(color: Colors.grey, fontFamily: TypographyResources.openSans, fontWeight: FontWeight.w600)),
               ),
-              for (int i = 0; i < controller.outlets.length; i++)
-                Padding(
-                  padding: EdgeInsets.only(bottom: Dimensions.padding8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(controller.outlets[i], style: TextStyle(fontFamily: TypographyResources.openSans)),
-                      Visibility(visible: controller.selectedOutlet == i, child: Image.asset(Images.rightTale)),
-                    ],
+              for (int i = 0; i < length; i++)
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    await controller.sharedPreferences.setString(Keys.userCode, outletsData?.data?[i].userCode ?? "");
+                    await Get.find<LocalStorage>().saveSelectedOutlet(outletsData?.data?[i]);
+                    controller.toggleOutlet = false;
+                    await Get.find<AuthController>().getDevice();
+                    await Get.find<CartController>().getCart();
+                    await Get.find<ProductController>().getCategories();
+                    setState(() {});
+                  },
+                  child: Container(
+                    color: selectedOutlet?.name == outletsData?.data?[i].name ? ColorsResources.grey : Colors.grey.shade300,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: Dimensions.padding10, horizontal: Dimensions.padding6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            outletsData?.data?[i].name ?? "",
+                            style: TextStyle(
+                              fontSize: 15.r,
+                              fontWeight: FontWeight.w100,
+                              fontFamily: TypographyResources.openSans,
+                              color: selectedOutlet?.name == outletsData?.data?[i].name ? ColorsResources.activeOutlet : Colors.black,
+                            ),
+                          ),
+                          Visibility(visible: selectedOutlet?.name == outletsData?.data?[i].name, child: Image.asset(Images.rightTale)),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
             ],

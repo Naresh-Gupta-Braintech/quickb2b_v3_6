@@ -8,6 +8,7 @@ import 'package:quickb2b_v3_6/utils/local_storage.dart';
 
 void itemsCountPopup(BuildContext context, {required String itemCode}) async {
   CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+  // cart?.data
   showDialog(
     context: context,
     barrierDismissible: false,

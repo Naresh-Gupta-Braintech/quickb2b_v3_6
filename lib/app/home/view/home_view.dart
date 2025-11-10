@@ -19,6 +19,7 @@ import 'package:quickb2b_v3_6/reusable/products.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
+import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:quickb2b_v3_6/utils/typofraphy_resources.dart';
 
@@ -180,6 +181,7 @@ class _HomeViewState extends State<HomeView> {
                                                             originQty: controller.homeItems?.data?.allInventories?[index].originQty ?? "",
                                                             measureQty: controller.homeItems?.data?.allInventories?[index].measureQty ?? "",
                                                             itemCode: controller.homeItems?.data?.allInventories?[index].itemCode ?? "",
+                                                            inMyList: controller.homeItems?.data?.allInventories?[index].inMyList ?? 0,
                                                           ),
                                                         );
                                                       },
@@ -225,6 +227,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  // outlets
   Widget _outlets(HomeController controller) {
     OutletData? outletsData = Get.find<LocalStorage>().getOutlets();
     var selectedOutlet = Get.find<LocalStorage>().getSelectedOutlets();
@@ -250,12 +253,12 @@ class _HomeViewState extends State<HomeView> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
+                    await controller.sharedPreferences.setString(Keys.userCode, outletsData?.data?[i].userCode ?? "");
                     await Get.find<LocalStorage>().saveSelectedOutlet(outletsData?.data?[i]);
                     controller.toggleOutlet = false;
                     await Get.find<AuthController>().getDevice();
                     await Get.find<CartController>().getCart();
                     controller.gethomeItems();
-                    print("saved Outlet");
                     setState(() {});
                   },
                   child: Container(

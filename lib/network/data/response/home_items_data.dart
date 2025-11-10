@@ -108,15 +108,7 @@ class Data {
   List<AllInventory>? multiItems;
   FeaturedItemImage? featuredItemImage;
 
-  Data({
-    this.bannerLists,
-    this.categoryExists,
-    this.allCategories,
-    this.specialInventories,
-    this.allInventories,
-    this.multiItems,
-    this.featuredItemImage,
-  });
+  Data({this.bannerLists, this.categoryExists, this.allCategories, this.specialInventories, this.allInventories, this.multiItems, this.featuredItemImage});
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 

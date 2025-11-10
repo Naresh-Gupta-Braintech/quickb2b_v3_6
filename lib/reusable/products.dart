@@ -51,6 +51,7 @@ Widget verticalProduct({
   VoidCallback? OnTapPlusIcon,
   required BuildContext context,
   required String itemCode,
+  required int inMyList,
 }) {
   double orgQty = double.tryParse(originQty) ?? 0;
   if (orgQty == 0) {
@@ -62,6 +63,7 @@ Widget verticalProduct({
     controller1.text = measureQty;
     controller2.text = originQty;
   }
+
   return Container(
     width: 165.r,
     height: 230.r,
@@ -76,13 +78,13 @@ Widget verticalProduct({
             Visibility(
               visible: isMeasBox == 1,
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   itemsCountPopup(context, itemCode: itemCode);
                 },
                 child: Text("2", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
               ),
             ),
-            Image.asset(Images.hyphenInsideCircle),
+            Visibility(visible: inMyList == 1, child: Image.asset(Images.hyphenInsideCircle)),
           ],
         ),
         SizedBox(height: Dimensions.padding10),
@@ -356,11 +358,11 @@ Widget horizontalProduct({
                   ],
                 ),
                 SizedBox(height: Dimensions.padding8),
+
                 SizedBox(
                   width: Get.width * 0.6,
                   child: Text(name, maxLines: 2, textAlign: TextAlign.end, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans, fontSize: 10.r)),
                 ),
-
                 SizedBox(height: Dimensions.padding8),
                 Row(
                   children: [
