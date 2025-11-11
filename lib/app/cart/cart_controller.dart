@@ -2,9 +2,10 @@ import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_repository.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,14 +17,14 @@ class CartController extends GetxController implements GetxService {
   CartData? cartData;
   double? cartPrice = 0.00;
   bool isEdit = false;
-  List<AllInventory?> templist = [];
+  List<Product?> templist = [];
   bool isCartFetchedSuccess = false;
 
   void makeEditable() {
     cartData?.data?.allInventories?.forEach((order) {
       order.controller2?.text = order.quantity ?? "";
       order.controller1?.text = order.measureQty ?? "";
-      print("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
+      debugConsole("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
     });
     isEdit = true;
     update();
@@ -34,7 +35,7 @@ class CartController extends GetxController implements GetxService {
       order.quantity = order.controller2?.text;
       order.measureQty = order.controller1?.text;
       calculateCartPrice();
-      print("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
+      debugConsole("controller1 :: ${order.controller1?.text} controller2 :: ${order.controller2?.text}");
     });
     isEdit = false;
     update();
@@ -58,7 +59,7 @@ class CartController extends GetxController implements GetxService {
 
     CartData? localcartData = await Get.find<LocalStorage>().getCartDetails();
 
-    AllInventory? inventory = localcartData?.data?.allInventories?[index];
+    Product? inventory = localcartData?.data?.allInventories?[index];
     inventory?.quantity = 0.toString();
     inventory?.originQty = 0.toString();
     localcartData?.data?.allInventories?.removeAt(index);
@@ -77,7 +78,7 @@ class CartController extends GetxController implements GetxService {
       return;
     }
 
-    AllInventory? productItem = home?.data?.allInventories?[index];
+    Product? productItem = home?.data?.allInventories?[index];
     double measureQty = 1;
     double orginQty = 0;
 
@@ -97,7 +98,7 @@ class CartController extends GetxController implements GetxService {
     home?.data?.allInventories?[index].quantity = qty.toString();
 
     int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == itemCode) ?? -1;
-    AllInventory inventory = home?.data?.allInventories?[index] ?? AllInventory();
+    Product inventory = home?.data?.allInventories?[index] ?? Product();
     if (productAtIndexInCart == -1) {
       cart?.data?.allInventories?.add(inventory);
     } else {
@@ -112,7 +113,7 @@ class CartController extends GetxController implements GetxService {
     update();
   }
 
-  void addItemToCartLocall({required AllInventory product}) async {
+  void addItemToCartLocall({required Product product}) async {
     CartData? cart = await Get.find<LocalStorage>().getCartDetails();
 
     final orginQty = product.controller2?.text ?? "";
@@ -129,7 +130,7 @@ class CartController extends GetxController implements GetxService {
 
     int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == product.itemCode) ?? -1;
 
-    AllInventory inventory = product;
+    Product inventory = product;
     if (productAtIndexInCart == -1) {
       cart?.data?.allInventories?.add(inventory);
     } else {
@@ -162,7 +163,7 @@ class CartController extends GetxController implements GetxService {
     update();
   }
 
-  void removeItemFromCardLocall({required AllInventory product}) async {
+  void removeItemFromCardLocall({required Product product}) async {
     CartData? cart = await Get.find<LocalStorage>().getCartDetails();
 
     cart?.data?.allInventories?.removeWhere((inventory) => inventory.itemCode == product.itemCode);

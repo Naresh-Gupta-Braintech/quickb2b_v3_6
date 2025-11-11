@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/banner_list.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 
 class HomeItemsData {
   String? message;
@@ -103,9 +102,9 @@ class Data {
   List<BannerList>? bannerLists;
   int? categoryExists;
   List<AllCategory>? allCategories;
-  List<dynamic>? specialInventories;
-  List<AllInventory>? allInventories;
-  List<AllInventory>? multiItems;
+  List<Product>? specialInventories;
+  List<Product>? allInventories;
+  List<Product>? multiItems;
   FeaturedItemImage? featuredItemImage;
 
   Data({this.bannerLists, this.categoryExists, this.allCategories, this.specialInventories, this.allInventories, this.multiItems, this.featuredItemImage});
@@ -118,9 +117,9 @@ class Data {
     bannerLists: json["bannerLists"] == null ? [] : List<BannerList>.from(json["bannerLists"]!.map((x) => BannerList.fromJson(x))),
     categoryExists: json["category_exists"],
     allCategories: json["all_categories"] == null ? [] : List<AllCategory>.from(json["all_categories"]!.map((x) => AllCategory.fromJson(x))),
-    specialInventories: json["special_inventories"] == null ? [] : List<dynamic>.from(json["special_inventories"]!.map((x) => x)),
-    allInventories: json["all_inventories"] == null ? [] : List<AllInventory>.from(json["all_inventories"]!.map((x) => AllInventory.fromJson(x))),
-    multiItems: json["multi_items"] == null ? [] : List<AllInventory>.from(json["multi_items"]!.map((x) => AllInventory.fromJson(x))),
+    specialInventories: json["special_inventories"] == null ? [] : List<Product>.from(json["special_inventories"]!.map((x) => x)),
+    allInventories: json["all_inventories"] == null ? [] : List<Product>.from(json["all_inventories"]!.map((x) => Product.fromJson(x))),
+    multiItems: json["multi_items"] == null ? [] : List<Product>.from(json["multi_items"]!.map((x) => Product.fromJson(x))),
     featuredItemImage: json["featured_item_image"] == null ? null : FeaturedItemImage.fromJson(json["featured_item_image"]),
   );
 

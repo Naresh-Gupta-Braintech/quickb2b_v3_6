@@ -46,9 +46,6 @@ class _CartViewState extends State<CartView> {
             builder: (controller) {
               var bannersList = cartController.cartData?.data?.bannerLists ?? [];
               var orders = cartController.cartData?.data?.allInventories ?? [];
-              var multiItemOrder = cartController.cartData?.data?.multiItems ?? [];
-              bool isShowPrice = false;
-              bool isShowMeasureQty = false;
 
               return Scaffold(
                 backgroundColor: Colors.white,
@@ -60,17 +57,14 @@ class _CartViewState extends State<CartView> {
                     child: Column(
                       children: [
                         SizedBox(height: Dimensions.padding10),
-                        headerWithSearch(appName: controller.homeItems?.appName ?? "", isSearchBarFull: true, showOutlet: false),
+                        headerWithSearch(appName: cartController.cartData?.appName ?? "", isSearchBarFull: true, showOutlet: false),
                         Expanded(
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
                                 Visibility(
-                                  visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(top: 5.r),
-                                    child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
-                                  ),
+                                  visible: (cartController.cartData?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                  child: Padding(padding: EdgeInsets.only(top: 5.r), child: customCarousel(width: Get.width, height: 130.r, images: bannersList)),
                                 ),
                                 SizedBox(height: 8.r),
                                 Container(
@@ -124,13 +118,15 @@ class _CartViewState extends State<CartView> {
                                                     : Text(orders[index].quantity ?? ""),
 
                                                 // if (orders[index].isMeasBox == 1)
-                                                cartController.isEdit
+                                                cartController.isEdit && orders[index].isMeasBox == 1
                                                     ? customTextFieldWithWidthConstraint(
                                                       controller: cartController.cartData?.data?.allInventories?[index].controller1 ?? TextEditingController(),
                                                       hintText: cartController.cartData?.data?.allInventories?[index].uom ?? "",
                                                       borderColor: Colors.grey,
                                                     )
-                                                    : Text(orders[index].measureQty ?? "-"),
+                                                    : orders[index].isMeasBox == 1
+                                                    ? Text(orders[index].measureQty ?? "-")
+                                                    : Text("-"),
                                                 Text("\$ ${orders[index].itemPrice}"),
                                               ],
                                             ),
@@ -170,7 +166,7 @@ class _CartViewState extends State<CartView> {
                                       color: Colors.black,
                                       height: 40,
                                       fontSize: Dimensions.font14,
-                                    
+
                                       onPressed: () {
                                         cartController.saveEditable();
                                       },

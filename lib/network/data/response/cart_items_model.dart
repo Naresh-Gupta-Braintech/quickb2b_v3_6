@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/banner_list.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 
 CartData cartDataFromJson(String str) => CartData.fromJson(json.decode(str));
 
@@ -77,15 +77,15 @@ class CartData {
 
 class Data {
   List<BannerList>? bannerLists;
-  List<AllInventory>? allInventories;
-  List<dynamic>? multiItems;
+  List<Product>? allInventories;
+  List<Product>? multiItems;
 
   Data({this.bannerLists, this.allInventories, this.multiItems});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     bannerLists: json["bannerLists"] == null ? [] : List<BannerList>.from(json["bannerLists"]!.map((x) => BannerList.fromJson(x))),
-    allInventories: json["all_inventories"] == null ? [] : List<AllInventory>.from(json["all_inventories"]!.map((x) => AllInventory.fromJson(x))),
-    multiItems: json["multi_items"] == null ? [] : List<dynamic>.from(json["multi_items"]!.map((x) => x)),
+    allInventories: json["all_inventories"] == null ? [] : List<Product>.from(json["all_inventories"]!.map((x) => Product.fromJson(x))),
+    multiItems: json["multi_items"] == null ? [] : List<Product>.from(json["multi_items"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -94,4 +94,3 @@ class Data {
     "multi_items": multiItems == null ? [] : List<dynamic>.from(multiItems!.map((x) => x)),
   };
 }
-

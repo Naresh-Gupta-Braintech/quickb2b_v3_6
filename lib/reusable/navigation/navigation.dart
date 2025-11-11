@@ -8,6 +8,7 @@ import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
 import 'package:quickb2b_v3_6/reusable/dialog.dart';
+import 'package:quickb2b_v3_6/reusable/navigation/custom_text.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation_controller.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
 import 'package:quickb2b_v3_6/utils/local_text.dart';
@@ -219,7 +220,7 @@ Widget menueList({required List<String> list}) {
                     }
                     controller.setSelectedTopNavigation(index);
                   },
-                  child: _customText(text: list[index], isSelected: index == controller.topNavigationSelectedIndex),
+                  child: selectedMenueText(text: list[index], isSelected: index == controller.topNavigationSelectedIndex),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],
@@ -248,7 +249,7 @@ Widget categoryListMenu({required List<Category> list}) {
                     Get.find<ProductController>().page = 0;
                     Get.find<ProductController>().searchProductByCategoryId(list[index].id ?? "");
                   },
-                  child: _customText(text: list[index].name ?? "", isSelected: index == controller.topNavigationSelectedIndex),
+                  child: selectedMenueText(text: list[index].name ?? "", isSelected: index == controller.topNavigationSelectedIndex),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],
@@ -273,10 +274,11 @@ Widget myListMenue({required List<DataWithCategory> list}) {
               children: [
                 GestureDetector(
                   onTap: () {
-                    controller.setSelectedTopNavigation(index);
+                    // controller.setSelectedTopNavigation(index);
                     Get.find<ProductController>().page = 0;
                   },
-                  child: _customText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationIndex),
+                  // child: selectedMenueText(text: list[index].categoryTitle ?? "", isSelected: index == controller.topNavigationIndex),
+                  child: selectedMenueText(text: list[index].categoryTitle ?? "", isSelected: true),
                 ),
                 Visibility(visible: list.length - 1 != index, child: Text("|")),
               ],
@@ -285,23 +287,5 @@ Widget myListMenue({required List<DataWithCategory> list}) {
         ),
       );
     },
-  );
-}
-
-Widget _customText({required String text, required bool isSelected}) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 4.r),
-    child: Center(
-      child: Text(
-        text,
-        style: TextStyle(
-          decorationColor: Colors.teal,
-          decoration: isSelected ? TextDecoration.underline : TextDecoration.none,
-          fontFamily: TypographyResources.openSans,
-          fontWeight: FontWeight.w600,
-          color: isSelected ? Colors.teal : Colors.black,
-        ),
-      ),
-    ),
   );
 }

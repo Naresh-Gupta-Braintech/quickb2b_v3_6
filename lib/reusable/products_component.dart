@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/reusable/item_count_popup.dart';
 import 'package:quickb2b_v3_6/reusable/network_image.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
@@ -38,30 +39,21 @@ Widget categoryWidget({required String url, required String text}) {
 
 Widget verticalProduct({
   Function(String value)? onChanged,
-  required String url,
-  required String price,
-  required String name,
-  required int isMeasBox,
-  required String hint,
   required int isShowImage,
-  required TextEditingController controller1,
-  required TextEditingController controller2,
-  required String originQty,
-  required String measureQty,
-  VoidCallback? OnTapPlusIcon,
+  VoidCallback? onTapPlusIcon,
   required BuildContext context,
-  required String itemCode,
-  required int inMyList,
+  required Product product,
+  VoidCallback? onTapHyphen,
 }) {
-  double orgQty = double.tryParse(originQty) ?? 0;
+  double orgQty = double.tryParse(product.originQty ?? "0") ?? 0;
   if (orgQty == 0) {
-    originQty = "";
+    product.originQty = "";
   }
-  if (isMeasBox == 0) {
-    controller2.text = originQty;
+  if (product.isMeasBox == 0) {
+    product.controller2?.text = product.originQty ?? "";
   } else {
-    controller1.text = measureQty;
-    controller2.text = originQty;
+    product.controller1?.text = product.measureQty ?? "";
+    product.controller2?.text = product.originQty ?? "";
   }
 
   return Container(
@@ -76,20 +68,20 @@ Widget verticalProduct({
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Visibility(
-              visible: isMeasBox == 1,
+              visible: product.isMeasBox == 1,
               child: GestureDetector(
                 onTap: () async {
-                  itemsCountPopup(context, itemCode: itemCode);
+                  itemsCountPopup(context, itemCode: product.itemCode ?? "");
                 },
                 child: Text("2", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
               ),
             ),
-            Visibility(visible: inMyList == 1, child: Image.asset(Images.hyphenInsideCircle)),
+            Visibility(visible: product.inMyList == 1, child: GestureDetector(onTap: onTapHyphen, child: Image.asset(Images.hyphenInsideCircle))),
           ],
         ),
         SizedBox(height: Dimensions.padding10),
         Visibility(
-          visible: url.isNotEmpty || isShowImage == 1,
+          visible: product.image?.isNotEmpty ?? false || isShowImage == 1,
           child: SizedBox(
             width: 100.r,
             child: AspectRatio(
@@ -97,7 +89,7 @@ Widget verticalProduct({
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4.r),
                 child: cachedImageNetwork(
-                  url: url,
+                  url: product.image ?? "",
                   fit: BoxFit.cover, // Crop and fill inside 4:3 box
                 ),
               ),
@@ -107,7 +99,12 @@ Widget verticalProduct({
         SizedBox(height: Dimensions.padding10),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12),
-          child: Text(name, maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r)),
+          child: Text(
+            product.itemName ?? "",
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r),
+          ),
         ),
 
         // Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12), child: Text("Alfalfa Punnet 125g - order by Each", maxLines: 2, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: 12.r))),
@@ -115,29 +112,29 @@ Widget verticalProduct({
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.padding12),
-          child: Text(price, style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12)),
+          child: Text(product.itemPrice ?? "", style: TextStyle(fontWeight: FontWeight.w800, fontFamily: TypographyResources.openSans, fontSize: Dimensions.font12)),
         ),
         SizedBox(height: Dimensions.padding10),
 
         Visibility(
           visible: true,
-          replacement: _textField(hint: "", controller: controller1, textFieldWidth: 43.r),
+          replacement: _textField(hint: "", controller: product.controller1, textFieldWidth: 43.r),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Visibility(
-                visible: isMeasBox == 1,
+                visible: product.isMeasBox == 1,
                 child: Row(
                   children: [
-                    GestureDetector(onTap: OnTapPlusIcon, child: Icon(Icons.add, color: Colors.black, size: 15.r)),
+                    GestureDetector(onTap: onTapPlusIcon, child: Icon(Icons.add, color: Colors.black, size: 15.r)),
                     SizedBox(width: 2.r),
-                    _textField(hint: "Qty", controller: controller1, onChanged: onChanged, textFieldWidth: 55.r),
+                    _textField(hint: "Qty", controller: product.controller1, onChanged: onChanged, textFieldWidth: 55.r),
                     Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
                   ],
                 ),
               ),
-              _textField(hint: hint, controller: controller2, textFieldWidth: 43.r, onChanged: onChanged),
-              Visibility(visible: isMeasBox == 1, child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, size: 15.r)])),
+              _textField(hint: product.uom ?? "", controller: product.controller2, textFieldWidth: 43.r, onChanged: onChanged),
+              Visibility(visible: product.isMeasBox == 1, child: Row(children: [SizedBox(width: 2.r), Icon(Icons.add, color: Colors.transparent, size: 15.r)])),
             ],
           ),
         ),
@@ -147,7 +144,7 @@ Widget verticalProduct({
   );
 }
 
-Widget _textField({required String hint, required TextEditingController controller, Function(String value)? onChanged, required double textFieldWidth}) {
+Widget _textField({required String hint, TextEditingController? controller, Function(String value)? onChanged, required double textFieldWidth}) {
   return SizedBox(
     width: textFieldWidth,
     child: TextFormField(
@@ -286,31 +283,23 @@ Widget specialProducts({
 
 Widget horizontalProduct({
   Function(String value)? onChanged,
-  required String url,
-  required String price,
-  required String name,
-  required int isMeasBox,
-  required String hint,
+  required Product product,
   required int isShowImage,
-  required TextEditingController controller1,
-  required TextEditingController controller2,
   required VoidCallback onTap,
-  required String originQty,
-  required String measureQty,
-  required VoidCallback onTapIcon,
+  required VoidCallback onTapHyphen,
   required String icon,
   int inMyList = 0,
 }) {
-  double orgQty = double.tryParse(originQty) ?? 0;
-  if (orgQty == 0) {
-    originQty = "";
-  }
-  if (isMeasBox == 0) {
-    controller2.text = originQty;
-  } else {
-    controller1.text = measureQty;
-    controller2.text = originQty;
-  }
+  // double orgQty = double.tryParse(product.originQty ?? "0") ?? 0;
+  // if (orgQty == 0) {
+  //   product.originQty = "";
+  // }
+  // if (product.isMeasBox == 0) {
+  //   product.controller2?.text = product.originQty ?? "";
+  // } else {
+  //   product.controller1?.text = product.measureQty ?? "";
+  //   product.controller2?.text = product.originQty ?? "";
+  // }
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 2.r),
 
@@ -325,33 +314,33 @@ Widget horizontalProduct({
           children: [
             SizedBox(
               width: 100.r,
-              child: AspectRatio(aspectRatio: 4 / 3, child: ClipRRect(borderRadius: BorderRadius.circular(4.r), child: cachedImageNetwork(url: url, fit: BoxFit.cover))),
+              child: AspectRatio(aspectRatio: 4 / 3, child: ClipRRect(borderRadius: BorderRadius.circular(4.r), child: cachedImageNetwork(url: product.image ?? "", fit: BoxFit.cover))),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
                   children: [
-                    Text("\$$price", style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans, fontSize: 11.r)),
+                    Text("\$${product.itemPrice ?? 0}", style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans, fontSize: 11.r)),
                     SizedBox(width: Dimensions.padding8),
 
                     Visibility(
                       visible: true,
-                      replacement: _textField(hint: "", controller: controller2, textFieldWidth: 55.r, onChanged: onChanged),
+                      replacement: _textField(hint: "", controller: product.controller2, textFieldWidth: 55.r, onChanged: onChanged),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Visibility(
-                            visible: isMeasBox == 1,
+                            visible: product.isMeasBox == 1,
                             child: Row(
                               children: [
                                 SizedBox(width: 2.r),
-                                _textField(hint: "Qty", controller: controller1, textFieldWidth: 55.r, onChanged: onChanged),
+                                _textField(hint: "Qty", controller: product.controller1, textFieldWidth: 55.r, onChanged: onChanged),
                                 Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.padding4), child: Icon(CupertinoIcons.multiply, color: Colors.grey, size: 15.r)),
                               ],
                             ),
                           ),
-                          _textField(hint: hint, controller: controller2, textFieldWidth: 55.r, onChanged: onChanged),
+                          _textField(hint: product.uom ?? "", controller: product.controller2, textFieldWidth: 55.r, onChanged: onChanged),
                         ],
                       ),
                     ),
@@ -361,13 +350,18 @@ Widget horizontalProduct({
 
                 SizedBox(
                   width: Get.width * 0.6,
-                  child: Text(name, maxLines: 2, textAlign: TextAlign.end, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans, fontSize: 10.r)),
+                  child: Text(
+                    product.itemName ?? "",
+                    maxLines: 2,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(fontWeight: FontWeight.w600, fontFamily: TypographyResources.openSans, fontSize: 10.r),
+                  ),
                 ),
                 SizedBox(height: Dimensions.padding8),
                 Row(
                   children: [
-                    Visibility(visible: isMeasBox == 1, child: Icon(Icons.add, color: Colors.black, size: 20.r)),
-                    inMyList == 1 ? SizedBox(height: 30.r) : GestureDetector(onTap: onTapIcon, behavior: HitTestBehavior.opaque, child: Image.asset(icon, height: 30.r)),
+                    Visibility(visible: product.isMeasBox == 1, child: Icon(Icons.add, color: Colors.black, size: 20.r)),
+                    inMyList == 1 ? SizedBox(height: 30.r) : GestureDetector(onTap: onTapHyphen, behavior: HitTestBehavior.opaque, child: Image.asset(icon, height: 30.r)),
                   ],
                 ),
                 SizedBox(height: Dimensions.padding4),

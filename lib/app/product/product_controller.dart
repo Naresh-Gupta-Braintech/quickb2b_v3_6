@@ -5,9 +5,9 @@ import 'package:quickb2b_v3_6/app/home/home_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_dataservice.dart';
 import 'package:quickb2b_v3_6/app/product/product_repository.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/categories_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/network/data/response/product_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/user_item_model.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
@@ -23,7 +23,7 @@ class ProductController extends GetxController implements GetxService {
   bool loading = false;
   CategoriesModel? categories;
   ProductModel? productdata;
-  List<ProductsInventories?> productsInventry = [];
+  List<Product?> productsInventry = [];
   String previousCategory = "";
   UserItemModel? userItems;
 
@@ -42,19 +42,19 @@ class ProductController extends GetxController implements GetxService {
   }
 
   void onChangeProduct(int index) {
-    ProductsInventories? item = productdata?.data?.inventoriesList?[index];
-    TextEditingController? controller = item?.textEditingController2;
+    Product? item = productdata?.data?.inventoriesList?[index];
+    TextEditingController? controller = item?.controller2;
     item?.originQty = controller?.text;
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
       Get.find<CartController>().removeItemFromCardLocally(itemCode: item?.itemCode);
     } else if (value.isQuantityValid()) {
-      AllInventory inventory = AllInventory();
+      Product inventory = Product();
       inventory.categoryId = item?.categoryId;
       inventory.comment = item?.comment;
-      inventory.controller1 = item?.textEditingController1;
-      inventory.controller2 = item?.textEditingController2;
+      inventory.controller1 = item?.controller1;
+      inventory.controller2 = item?.controller2;
       inventory.id = item?.id;
       inventory.image = item?.image;
       inventory.imageDescription = item?.imageDescription;

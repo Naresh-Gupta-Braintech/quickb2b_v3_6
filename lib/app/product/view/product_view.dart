@@ -13,11 +13,12 @@ import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/product/product_dataservice.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/loader.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
-import 'package:quickb2b_v3_6/reusable/products.dart';
+import 'package:quickb2b_v3_6/reusable/products_component.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
@@ -64,9 +65,9 @@ class _ProductViewState extends State<ProductView> {
       },
       child: GetBuilder<HomeController>(
         builder: (controller) {
-          var bannersList = controller.homeItems?.data?.bannerLists ?? [];
           return GetBuilder<ProductController>(
             builder: (productController) {
+          var bannersList = productController.productdata?.data?.bannerLists ?? [];
               return Scaffold(
                 backgroundColor: Colors.white,
                 bottomNavigationBar: bottomNavigationMenu(context),
@@ -85,10 +86,10 @@ class _ProductViewState extends State<ProductView> {
                                       child: Column(
                                         children: [
                                           Visibility(
-                                            visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
+                                            visible: (productController.productdata?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
                                             child: Padding(
                                               padding: EdgeInsets.only(top: 5.r),
-                                              child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
+                                              child: customCarousel(width: Get.width, height: 130.r, images: bannersList),
                                             ),
                                           ),
                                           SizedBox(height: 6.r),
@@ -108,22 +109,14 @@ class _ProductViewState extends State<ProductView> {
                                                     return Padding(
                                                       padding: EdgeInsets.symmetric(vertical: 4.r),
                                                       child: horizontalProduct(
+                                                        product: productController.productsInventry[index] ?? Product(),
                                                         inMyList: productController.productsInventry[index]?.inMyList ?? 0,
                                                         icon: Images.radioAdd,
-                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
                                                         onTap: () {},
-                                                        onTapIcon: () {
+                                                        onTapHyphen: () {
                                                           productController.addUserItemToMyList(productController.productsInventry[index]?.itemCode ?? "");
                                                         },
-                                                        url: productController.productsInventry[index]?.image ?? "",
-                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                        name: productController.productsInventry[index]?.itemName ?? "",
-                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                        hint: productController.productsInventry[index]?.uom ?? "",
                                                         isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                        controller1: productController.productsInventry[index]?.textEditingController1 ?? TextEditingController(),
-                                                        controller2: productController.productsInventry[index]?.textEditingController2 ?? TextEditingController(),
                                                         onChanged: (value) {
                                                           productController.onChangeProduct(index);
                                                           // if (productController.productsInventry[index]?.isMeasBox == 0) {
@@ -164,19 +157,9 @@ class _ProductViewState extends State<ProductView> {
                                                       String showImage = productController.productdata?.showImage ?? "";
 
                                                       return verticalProduct(
-                                                        inMyList: productController.productsInventry[index]?.inMyList ?? 0,
-                                                        itemCode: productController.productsInventry[index]?.itemCode ?? "",
+                                                        product: productController.productsInventry[index] ?? Product(),
                                                         context: context,
-                                                        originQty: productController.productsInventry[index]?.originQty ?? "",
-                                                        measureQty: productController.productsInventry[index]?.measureQty ?? "",
-                                                        url: productController.productsInventry[index]?.image ?? "",
-                                                        price: productController.productsInventry[index]?.itemPrice ?? "",
-                                                        name: productController.productsInventry[index]?.itemName ?? "",
-                                                        isMeasBox: productController.productsInventry[index]?.isMeasBox ?? 0,
-                                                        hint: productController.productsInventry[index]?.uom ?? "",
                                                         isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
-                                                        controller1: productController.productsInventry[index]?.textEditingController1 ?? TextEditingController(),
-                                                        controller2: productController.productsInventry[index]?.textEditingController2 ?? TextEditingController(),
                                                         onChanged: (value) {
                                                           // if (productController.productsInventry[index]?.isMeasBox == 0) {
                                                           //   controller.onChaged(

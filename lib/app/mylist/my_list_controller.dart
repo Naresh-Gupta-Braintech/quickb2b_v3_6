@@ -6,11 +6,9 @@ import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_data_service.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_repository.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
-import 'package:quickb2b_v3_6/network/data/response/item.dart';
-
 import 'package:quickb2b_v3_6/network/data/response/my_list_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/network/data/response/user_item_model.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
@@ -24,8 +22,8 @@ class MyListController extends GetxController implements GetxService {
   MyListRepository repository;
   bool loading = false;
   MyListModel? myList;
-  List<DataWithCategory>? dataWithCategory;
-  int topNavigationIndex = 0;
+  // List<DataWithCategory>? dataWithCategory;
+  // int topNavigationIndex = 0;
   UserItemModel? item;
   List<CartItem> updatedInventoryArray = [];
 
@@ -33,10 +31,14 @@ class MyListController extends GetxController implements GetxService {
     getUserItems(reset);
   }
 
-  void setSelectedTopNavigation(int index) {
-    topNavigationIndex = index;
-    update();
+  void removeFromList(String itemCode) {
+    removeFromMyList(itemCode);
   }
+
+  // void setSelectedTopNavigation(int index) {
+  //   topNavigationIndex = index;
+  //   update();
+  // }
 
   Future<void> updateUserInventoryMyList() async {
     CartData? cart = await Get.find<LocalStorage>().getCartDetails();
@@ -54,10 +56,10 @@ class MyListController extends GetxController implements GetxService {
         updatedInventoryArray.add(cartItem);
       }
     });
-    int length = dataWithCategory?.length ?? 0;
+    int length = myList?.dataWithCategory?.length ?? 0;
     for (int i = 0; i < length; i++) {
-      if (dataWithCategory?[i].categoryTitle == "All Products") {
-        dataWithCategory?[i].data?.forEach((item) {
+      if (myList?.dataWithCategory?[i].categoryTitle == "All Products") {
+        myList?.dataWithCategory?[i].data?.forEach((item) {
           CartItem cartItem = CartItem();
           cartItem.id = item.id;
           cartItem.isMeasBox = item.isMeasBox;
@@ -91,68 +93,43 @@ class MyListController extends GetxController implements GetxService {
 
     cart?.data?.allInventories?.forEach((element) {
       print("make my list From Local Data :: ${element.itemCode} qty :: ${element.quantity}");
-    });
-    print("calling makeMyListFromLocaldata");
-    int length = dataWithCategory?.length ?? 0;
-    for (int i = 0; i < length; i++) {
-      int dataLength = dataWithCategory?[i].data?.length ?? 0;
+       int length = myList?.dataWithCategory?.length ?? 0;
+       
+       for (int i = 0; i < length; i++) {
+      int dataLength = myList?.dataWithCategory?[i].data?.length ?? 0;
       for (int j = 0; j < dataLength; j++) {
-        compareAndUpdateMyList(data: dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
+
+        // compareAndUpdateMyList(data: myList?.dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
+      }
+    }
+    });
+  
+    int length = myList?.dataWithCategory?.length ?? 0;
+    for (int i = 0; i < length; i++) {
+      int dataLength = myList?.dataWithCategory?[i].data?.length ?? 0;
+      for (int j = 0; j < dataLength; j++) {
+        // compareAndUpdateMyList(data: myList?.dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
       }
     }
     update();
   }
 
-  void compareAndUpdateMyList({Item? data, required int outerIndex, required int innerIndex}) async {
-    CartData? localCart = await Get.find<LocalStorage>().getCartDetails();
-
-    print("data :: ${data?.itemCode}  name :: ${data?.itemName} qty :: ${data?.quantity}");
-
-    localCart?.data?.allInventories?.forEach((cartItem) {
-      if (cartItem.itemCode == data?.itemCode) {
-        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController1?.text = cartItem.originQty ?? "";
-        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController2?.text = cartItem.measureQty ?? "";
-      } else {
-        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController1?.text = "";
-        dataWithCategory?[outerIndex].data?[innerIndex].textEditingController2?.text = "";
-      }
-    });
-  }
-
-  void onChagedMylistProduct(TextEditingController? controller, int index) {
-    print(index);
-    // AllInventory? productItem = Get.find<HomeController>().homeItems?.data?.allInventories?[index];
-    // print("on changed called ${controller?.text} for item code :: ${productItem?.itemCode}");
-
-    // String value = controller?.text.trim() ?? "";
-    // if (value == '.') value = '0$value';
-    // if (value.isEmpty) {
-    //   Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
-    // } else if (value.isQuantityValid()) {
-    //   Get.find<CartController>().addItemToCartLocally(itemCode: productItem?.itemCode);
-    // } else {
-    //   if ((!value.isQuantityValid()) && value.isNotEmpty) {
-    //     print("delete last char");
-    //     controller?.text = value.substring(0, value.length - 1);
-    //   }
-    // }
-    update();
-  }
+  
 
   void onChangeMyList(int outerIndex, int innerIndex) {
-    Item? item = dataWithCategory?[outerIndex].data?[innerIndex];
-    TextEditingController? controller = item?.textEditingController2;
+    Product? item = myList?.dataWithCategory?[outerIndex].data?[innerIndex];
+    TextEditingController? controller = item?.controller1;
     item?.originQty = controller?.text;
     String value = controller?.text.trim() ?? "";
     if (value == '.') value = '0$value';
     if (value.isEmpty) {
       Get.find<CartController>().removeItemFromCardLocally(itemCode: item?.itemCode);
     } else if (value.isQuantityValid()) {
-      AllInventory inventory = AllInventory();
+      Product inventory = Product();
       inventory.categoryId = item?.categoryId;
       inventory.comment = item?.comment;
-      inventory.controller1 = item?.textEditingController1;
-      inventory.controller2 = item?.textEditingController2;
+      inventory.controller1 = item?.controller1;
+      inventory.controller2 = item?.controller2;
       inventory.id = item?.id;
       inventory.image = item?.image;
       inventory.imageDescription = item?.imageDescription;

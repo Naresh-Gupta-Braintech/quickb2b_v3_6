@@ -57,6 +57,7 @@ class NetworkManager extends gt.GetxService {
 
     final endpointPath = endpointRawValues[endpoint]!;
     final url = slashedQuery != null ? endpointPath + slashedQuery : endpointPath;
+    debugConsole("complete url :: $url");
 
     if (payload != null) {
       final payloadTree = const JsonEncoder.withIndent('  ').convert(payload);
@@ -103,12 +104,7 @@ class NetworkManager extends gt.GetxService {
     }
   }
 
-  Future<dio.Response> httpMultipart({
-    required String url,
-    required HTTPMethod method,
-    Map<String, String>? payload,
-    List<MultipartFiles>? files,
-  }) async {
+  Future<dio.Response> httpMultipart({required String url, required HTTPMethod method, Map<String, String>? payload, List<MultipartFiles>? files}) async {
     final formData = dio.FormData();
 
     if (payload != null) {
@@ -124,11 +120,7 @@ class NetworkManager extends gt.GetxService {
       }
     }
 
-    return await _dio.request(
-      url,
-      data: formData,
-      options: dio.Options(method: method == HTTPMethod.multipartPUT ? 'PUT' : 'POST', contentType: 'multipart/form-data'),
-    );
+    return await _dio.request(url, data: formData, options: dio.Options(method: method == HTTPMethod.multipartPUT ? 'PUT' : 'POST', contentType: 'multipart/form-data'));
   }
 
   dynamic decodeHTTPResponseBody({required dio.Response httpResponse, required String endpoint}) {

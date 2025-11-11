@@ -3,19 +3,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_controller.dart';
 import 'package:quickb2b_v3_6/app/autthentication/auth_dataservice.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_controller.dart';
+import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/reusable/carousel.dart';
 import 'package:quickb2b_v3_6/reusable/header.dart';
 import 'package:quickb2b_v3_6/reusable/loader.dart';
 import 'package:quickb2b_v3_6/reusable/navigation/navigation.dart';
-import 'package:quickb2b_v3_6/reusable/products.dart';
+import 'package:quickb2b_v3_6/reusable/products_component.dart';
 import 'package:quickb2b_v3_6/utils/colors_resources.dart';
 import 'package:quickb2b_v3_6/utils/dimensions.dart';
 import 'package:quickb2b_v3_6/utils/images.dart';
@@ -75,10 +76,7 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           Visibility(
                                             visible: (controller.homeItems?.showAppBanner == 1 && bannersList.isNotEmpty) ? true : false,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(top: 5.r),
-                                              child: customCarousel(width: Get.width, height: 130.r, images: controller.homeItems?.data?.bannerLists ?? []),
-                                            ),
+                                            child: Padding(padding: EdgeInsets.only(top: 5.r), child: customCarousel(width: Get.width, height: 130.r, images: bannersList)),
                                           ),
                                           SizedBox(height: Dimensions.padding16),
 
@@ -163,25 +161,18 @@ class _HomeViewState extends State<HomeView> {
                                                         return Padding(
                                                           padding: EdgeInsets.symmetric(horizontal: 3.r),
                                                           child: verticalProduct(
+                                                            onTapHyphen: () {
+                                                              Get.find<MyListController>().removeFromList(controller.homeItems?.data?.allInventories?[index].itemCode ?? "");
+                                                            },
                                                             context: context,
-                                                            OnTapPlusIcon: () {
+                                                            product: controller.homeItems?.data?.allInventories?[index] ?? Product(),
+                                                            onTapPlusIcon: () {
                                                               controller.onTapPlusIconforMultiItem(index);
                                                             },
                                                             onChanged: (value) {
                                                               controller.onChagedHomeProduct(index);
                                                             },
-                                                            controller1: controller.homeItems?.data?.allInventories?[index].controller1 ?? TextEditingController(),
-                                                            controller2: controller.homeItems?.data?.allInventories?[index].controller2 ?? TextEditingController(),
                                                             isShowImage: int.tryParse(controller.homeItems?.showImage ?? "0") ?? 0,
-                                                            hint: controller.homeItems?.data?.allInventories?[index].uom ?? "",
-                                                            url: controller.homeItems?.data?.allInventories?[index].image ?? "",
-                                                            price: controller.homeItems?.data?.allInventories?[index].itemPrice ?? "",
-                                                            name: controller.homeItems?.data?.allInventories?[index].itemName ?? "",
-                                                            isMeasBox: controller.homeItems?.data?.allInventories?[index].isMeasBox ?? 0,
-                                                            originQty: controller.homeItems?.data?.allInventories?[index].originQty ?? "",
-                                                            measureQty: controller.homeItems?.data?.allInventories?[index].measureQty ?? "",
-                                                            itemCode: controller.homeItems?.data?.allInventories?[index].itemCode ?? "",
-                                                            inMyList: controller.homeItems?.data?.allInventories?[index].inMyList ?? 0,
                                                           ),
                                                         );
                                                       },
@@ -233,7 +224,7 @@ class _HomeViewState extends State<HomeView> {
     var selectedOutlet = Get.find<LocalStorage>().getSelectedOutlets();
     var length = outletsData?.data?.length ?? 0;
     print("selected Outlet ::${selectedOutlet?.name}");
-    print("outletsData :: ${outletsData?.data?.length}");
+
     return Padding(
       padding: EdgeInsets.only(left: 4.r, right: 4.r),
       child: Container(

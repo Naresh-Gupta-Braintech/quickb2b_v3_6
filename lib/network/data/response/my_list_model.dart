@@ -1,11 +1,6 @@
-// To parse this JSON data, do
-//
-//     final myListModel = myListModelFromJson(jsonString);
-
 import 'dart:convert';
-
-import 'package:quickb2b_v3_6/network/data/response/item.dart';
-import 'package:quickb2b_v3_6/network/data/response/product_model.dart';
+import 'package:quickb2b_v3_6/network/data/response/banner_list.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 
 MyListModel myListModelFromJson(String str) => MyListModel.fromJson(json.decode(str));
 
@@ -43,7 +38,7 @@ class MyListModel {
   int? categoryExists;
   dynamic data;
   List<DataWithCategory>? dataWithCategory;
-  List<dynamic>? multiItems;
+  List<Product>? multiItems;
 
   MyListModel({
     this.message,
@@ -100,8 +95,7 @@ class MyListModel {
     fuelLevyEnable: json["fuel_levy_enable"],
     fuelLevyAmount: json["fuel_levy_amount"],
     deliveryAvailable: json["delivery_available"] == null ? null : DeliveryAvailable.fromJson(json["delivery_available"]),
-    deliveryAvailableDates:
-        json["delivery_available_dates"] == null ? [] : List<DateTime>.from(json["delivery_available_dates"]!.map((x) => DateTime.parse(x))),
+    deliveryAvailableDates: json["delivery_available_dates"] == null ? [] : List<DateTime>.from(json["delivery_available_dates"]!.map((x) => DateTime.parse(x))),
     routeAssigned: json["route_assigned"],
     showImage: json["show_image"],
     featuredItemImage: json["featured_item_image"],
@@ -112,9 +106,8 @@ class MyListModel {
     displayAllItemsInApp: json["display_all_items_in_app"],
     categoryExists: json["category_exists"],
     data: json["data"],
-    dataWithCategory:
-        json["data_with_category"] == null ? [] : List<DataWithCategory>.from(json["data_with_category"]!.map((x) => DataWithCategory.fromJson(x))),
-    multiItems: json["multi_items"] == null ? [] : List<dynamic>.from(json["multi_items"]!.map((x) => x)),
+    dataWithCategory: json["data_with_category"] == null ? [] : List<DataWithCategory>.from(json["data_with_category"]!.map((x) => DataWithCategory.fromJson(x))),
+    multiItems: json["multi_items"] == null ? [] : List<Product>.from(json["multi_items"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -140,11 +133,7 @@ class MyListModel {
     "delivery_available_dates":
         deliveryAvailableDates == null
             ? []
-            : List<dynamic>.from(
-              deliveryAvailableDates!.map(
-                (x) => "${x.year.toString().padLeft(4, '0')}-${x.month.toString().padLeft(2, '0')}-${x.day.toString().padLeft(2, '0')}",
-              ),
-            ),
+            : List<dynamic>.from(deliveryAvailableDates!.map((x) => "${x.year.toString().padLeft(4, '0')}-${x.month.toString().padLeft(2, '0')}-${x.day.toString().padLeft(2, '0')}")),
     "route_assigned": routeAssigned,
     "show_image": showImage,
     "featured_item_image": featuredItemImage,
@@ -160,18 +149,16 @@ class MyListModel {
   };
 }
 
-
-
 class DataWithCategory {
   String? categoryTitle;
-  List<Item>? data;
+  List<Product>? data;
   List<String>? itemCodes;
 
   DataWithCategory({this.categoryTitle, this.data, this.itemCodes});
 
   factory DataWithCategory.fromJson(Map<String, dynamic> json) => DataWithCategory(
     categoryTitle: json["category_title"],
-    data: json["data"] == null ? [] : List<Item>.from(json["data"]!.map((x) => Item.fromJson(x))),
+    data: json["data"] == null ? [] : List<Product>.from(json["data"]!.map((x) => Product.fromJson(x))),
     itemCodes: json["item_codes"] == null ? [] : List<String>.from(json["item_codes"]!.map((x) => x)),
   );
 

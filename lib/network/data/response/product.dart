@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 
-class AllInventory {
+class Product {
   String? itemCode;
   String? itemName;
   String? itemPrice;
@@ -27,10 +27,12 @@ class AllInventory {
   int? isMeasBox;
   int? id;
   int? priority;
+  String? priceType;
+  String? priceTypeMessage;
   TextEditingController? controller1 = TextEditingController();
   TextEditingController? controller2 = TextEditingController();
 
-  AllInventory({
+  Product({
     this.itemCode,
     this.itemName,
     this.itemPrice,
@@ -55,13 +57,15 @@ class AllInventory {
     this.isMeasBox,
     this.id,
     this.priority,
+    this.priceType,
+    this.priceTypeMessage,
   });
 
-  factory AllInventory.fromRawJson(String str) => AllInventory.fromJson(json.decode(str));
+  factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AllInventory.fromJson(Map<String, dynamic> json) => AllInventory(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
     itemCode: json["item_code"],
     itemName: json["item_name"],
     itemPrice: json["item_price"],
@@ -86,6 +90,8 @@ class AllInventory {
     isMeasBox: json["is_meas_box"],
     id: json["id"],
     priority: json["priority"],
+    priceType: json['price_type'],
+    priceTypeMessage: json['price_type_message'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -113,5 +119,7 @@ class AllInventory {
     "is_meas_box": isMeasBox,
     "id": id,
     "priority": priority,
+    'price_type': priceType,
+    'price_type_message': priceTypeMessage,
   };
 }

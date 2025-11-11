@@ -9,9 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 class GlobalConstants {
   static const String baseUrl = "https://develop.quickb2b.com/v3";
   static const String clientCode = "TK3757";
+  // static const String clientCode = "JZ9683";
   static const String appType = "Dual";
   static const String type = "Dual";
-
 
   static Future<String?> getDeviceId() async {
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

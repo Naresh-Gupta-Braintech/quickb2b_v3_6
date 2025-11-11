@@ -10,18 +10,16 @@ import 'package:quickb2b_v3_6/app/cart/cart_controller.dart';
 import 'package:quickb2b_v3_6/app/cart/cart_dataservice.dart';
 import 'package:quickb2b_v3_6/app/home/home_data_service.dart';
 import 'package:quickb2b_v3_6/app/home/home_repository.dart';
-import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
-import 'package:quickb2b_v3_6/app/product/product_controller.dart';
 import 'package:quickb2b_v3_6/app/splash/splash_controller.dart';
 import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
 import 'package:quickb2b_v3_6/network/data/response/cart_items_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/company_details_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_details_model.dart';
 import 'package:quickb2b_v3_6/network/data/response/customer_list.dart';
 import 'package:quickb2b_v3_6/network/data/response/home_items_data.dart';
 import 'package:quickb2b_v3_6/network/data/response/outlet_data.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
 import 'package:quickb2b_v3_6/utils/local_keys.dart';
 import 'package:quickb2b_v3_6/utils/local_storage.dart';
@@ -48,28 +46,13 @@ class HomeController extends GetxController implements GetxService {
   int modifyingValOfX = 0;
   bool outletLoading = false;
 
-  List<String> outlets = ["Flaming Grill Airport", "Flaming Grill City"];
-
   void gethomeItems() {
     getHomeDetails();
   }
 
   void updateToggleOutlet() {
-    print("toggle outlets");
     toggleOutlet = !toggleOutlet;
     update();
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    print("initilized Home controller");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print("disposed Home controller");
   }
 
   void initializeController() {
@@ -85,7 +68,7 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void onTapPlusIconforMultiItem(int index) async {
-    AllInventory? productItem = homeItems?.data?.allInventories?[index];
+    Product? productItem = homeItems?.data?.allInventories?[index];
     print("clicked plus icon for multi item :: ${productItem?.priority}");
     // Get the local cart and find the item in cart
     CartData? cart = await Get.find<LocalStorage>().getCartDetails();
@@ -128,7 +111,7 @@ class HomeController extends GetxController implements GetxService {
   }
 
   void onChagedHomeProduct(int index) {
-    AllInventory? productItem = homeItems?.data?.allInventories?[index];
+    Product? productItem = homeItems?.data?.allInventories?[index];
     print("product item isMeasBox :: ${productItem?.isMeasBox}. itemCode :: ${productItem?.itemCode}");
     if (productItem?.isMeasBox == 0) {
       String value = productItem?.controller2?.text.trim() ?? "";
@@ -244,42 +227,7 @@ class HomeController extends GetxController implements GetxService {
     updateUserInventoryForHome(payload);
   }
 
-  // make home list quantity
-  // void makeHomeDataFromLocalCart() async {
-  //   CartData? localCart = await LocalStorage.getCartDetails();
-  //   int length = homeItems?.data?.allInventories?.length ?? 0;
-  //   print("api cart. daya beffore update item");
-
-  //   homeItems?.data?.allInventories?.forEach((inventory) {
-  //     print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
-  //   });
-  //   for (int i = 0; i < length; i++) {
-  //     compareAndUpdateHomeData(inventory: homeItems?.data?.allInventories?[i], index: i);
-  //   }
-
-  //   print("local Cart item");
-  //   localCart?.data?.allInventories?.forEach((localInventory) {
-  //     print("measure qty :: ${localInventory.measureQty}. origin Qty :: ${localInventory.originQty}");
-  //   });
-  //   print("api cart. daya after update item");
-
-  //   homeItems?.data?.allInventories?.forEach((inventory) {
-  //     print("measure qty :: ${inventory.measureQty}. origin Qty :: ${inventory.originQty}");
-  //   });
-  //   update();
-  // }
-
-  // void compareAndUpdateHomeData({AllInventory? inventory, required int index}) async {
-  //   CartData? localCart = await LocalStorage.getCartDetails();
-  //   localCart?.data?.allInventories?.forEach((localInventory) {
-  //     if (localInventory.id == inventory?.id) {
-  //       homeItems?.data?.allInventories?[index].originQty = localInventory.originQty ?? "";
-  //       homeItems?.data?.allInventories?[index].measureQty = localInventory.measureQty ?? "";
-  //     }
-  //   });
-  // }
-
-  void removedItemFromCartForCartView(AllInventory? allInventory) async {
+  void removedItemFromCartForCartView(Product? allInventory) async {
     List<CartItem> cartItems = [];
     CartItem cart = CartItem();
     cart.id = allInventory?.id;

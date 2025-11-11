@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quickb2b_v3_6/app/mylist/my_list_controller.dart';
+import 'package:quickb2b_v3_6/helper/routes_helper.dart';
 import 'package:quickb2b_v3_6/network/custom_enums.dart';
 import 'package:quickb2b_v3_6/network/data/request/network_request_body.dart';
 import 'package:quickb2b_v3_6/utils/global_constant.dart';
@@ -21,14 +22,26 @@ extension MyListDataService on MyListController {
       switch (result) {
         case Result.onSuccess:
           loading = false;
-          myList = response;
-          dataWithCategory = response?.dataWithCategory ?? [];
-          var cart = await Get.find<LocalStorage>().getCartDetails();
 
+          //update response textController value with local cart
+          var cart = await Get.find<LocalStorage>().getCartDetails();
           cart?.data?.allInventories?.forEach((element) {
-            print("in my list dataservive cart item code :: ${element.itemCode} qty :: ${element.quantity}");
+            debugConsole("in my list dataservive cart item code :: ${element.itemCode} qty :: ${element.quantity} measure:: ${element.measureQty} origin::${element.originQty}");
+            int length = response?.dataWithCategory?.length ?? 0;
+
+            for (int outer = 0; outer < length; outer++) {
+              int dataLength = response?.dataWithCategory?[outer].data?.length ?? 0;
+              for (int inner = 0; inner < dataLength; inner++) {
+                if (myList?.dataWithCategory?[outer].data?[inner].itemCode == element.itemCode) {
+                  response?.dataWithCategory?[outer].data?[inner].controller1?.text = element.measureQty ?? "";
+                  response?.dataWithCategory?[outer].data?[inner].controller2?.text = element.originQty ?? "";
+                  debugConsole("mil gaya ${response?.dataWithCategory?[outer].data?[inner].controller2?.text}");
+                }
+              }
+            }
           });
-          makeMyListFromLocalData();
+
+          myList = response;
           update();
           break;
         case Result.onFailed:
@@ -60,7 +73,7 @@ extension MyListDataService on MyListController {
         case Result.onSuccess:
           loading = false;
           item = response;
-          dataWithCategory?.forEach((category) {
+          myList?.dataWithCategory?.forEach((category) {
             category.data?.removeWhere((product) => product.itemCode == itemCode);
           });
           update();

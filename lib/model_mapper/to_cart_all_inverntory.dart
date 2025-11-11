@@ -1,10 +1,10 @@
 import 'package:quickb2b_v3_6/model/product_item_model.dart';
 import 'package:quickb2b_v3_6/model_mapper/mapper.dart';
-import 'package:quickb2b_v3_6/network/data/response/all_inventory.dart';
+import 'package:quickb2b_v3_6/network/data/response/product.dart';
 
-class ToCartAllInverntory implements Mapper<ProductItemModel, AllInventory> {
-  AllInventory call(ProductItemModel object) {
-    return AllInventory(
+class ToCartAllInverntory implements Mapper<ProductItemModel, Product> {
+  Product call(ProductItemModel object) {
+    return Product(
       itemCode: object.itemCode,
       itemName: object.itemName,
       itemPrice: object.itemPrice,
