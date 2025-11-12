@@ -123,38 +123,6 @@ class _MyListState extends State<MyListView> {
                                                       onChanged: (value) {
                                                         String? productId = mylistController.myList?.dataWithCategory?[topNavigationIndex].data?[index].itemCode;
                                                         mylistController.onChangeMyList(topNavigationIndex, index);
-                                                        // mylistController.onChagedMylistProduct(
-                                                        //   mylistController
-                                                        //       .dataWithCategory?[mylistController.topNavigationIndex]
-                                                        //       .data?[index]
-                                                        //       .textEditingController1,
-                                                        //   index,
-                                                        // );
-                                                        // Get.find<MyListController>().onChagedMylistProduct(null, index);
-                                                        // if (products?.data?[index].isMeasBox == 0) {
-                                                        //   Get.find<MyListController>().onChagedMylistProduct(
-                                                        //     mylistController
-                                                        //         .dataWithCategory?[mylistController.topNavigationIndex]
-                                                        //         .data?[index]
-                                                        //         .textEditingController2,
-                                                        //     index,
-                                                        //   );
-                                                        // } else {
-                                                        //   Get.find<MyListController>().onChagedMylistProduct(
-                                                        //     mylistController
-                                                        //         .dataWithCategory?[mylistController.topNavigationIndex]
-                                                        //         .data?[index]
-                                                        //         .textEditingController1,
-                                                        //     index,
-                                                        //   );
-                                                        //   Get.find<MyListController>().onChagedMylistProduct(
-                                                        //     mylistController
-                                                        //         .dataWithCategory?[mylistController.topNavigationIndex]
-                                                        //         .data?[index]
-                                                        //         .textEditingController2,
-                                                        //     index,
-                                                        //   );
-                                                        // }
                                                       },
                                                       isShowImage: showImage.trim().isNotEmpty ? int.tryParse(showImage) ?? 0 : 0,
                                                     ),

@@ -182,6 +182,7 @@ class CartController extends GetxController implements GetxService {
   void calculateCartPrice() {
     double totalPrice = 0;
     cartData?.data?.allInventories?.forEach((item) {
+      print("calculate item Name :: ${item.itemName} item Code :: ${item.itemCode} item qty :: ${item.quantity}");
       double itemPrice = double.tryParse(item.itemPrice ?? "0") ?? 0;
       double qty = double.tryParse(item.quantity ?? "0") ?? 0;
       double price = itemPrice * qty;

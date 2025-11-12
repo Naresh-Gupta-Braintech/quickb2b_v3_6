@@ -22,8 +22,6 @@ class MyListController extends GetxController implements GetxService {
   MyListRepository repository;
   bool loading = false;
   MyListModel? myList;
-  // List<DataWithCategory>? dataWithCategory;
-  // int topNavigationIndex = 0;
   UserItemModel? item;
   List<CartItem> updatedInventoryArray = [];
 
@@ -34,11 +32,6 @@ class MyListController extends GetxController implements GetxService {
   void removeFromList(String itemCode) {
     removeFromMyList(itemCode);
   }
-
-  // void setSelectedTopNavigation(int index) {
-  //   topNavigationIndex = index;
-  //   update();
-  // }
 
   Future<void> updateUserInventoryMyList() async {
     CartData? cart = await Get.find<LocalStorage>().getCartDetails();
@@ -93,17 +86,16 @@ class MyListController extends GetxController implements GetxService {
 
     cart?.data?.allInventories?.forEach((element) {
       print("make my list From Local Data :: ${element.itemCode} qty :: ${element.quantity}");
-       int length = myList?.dataWithCategory?.length ?? 0;
-       
-       for (int i = 0; i < length; i++) {
-      int dataLength = myList?.dataWithCategory?[i].data?.length ?? 0;
-      for (int j = 0; j < dataLength; j++) {
+      int length = myList?.dataWithCategory?.length ?? 0;
 
-        // compareAndUpdateMyList(data: myList?.dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
+      for (int i = 0; i < length; i++) {
+        int dataLength = myList?.dataWithCategory?[i].data?.length ?? 0;
+        for (int j = 0; j < dataLength; j++) {
+          // compareAndUpdateMyList(data: myList?.dataWithCategory?[i].data?[j], outerIndex: i, innerIndex: j);
+        }
       }
-    }
     });
-  
+
     int length = myList?.dataWithCategory?.length ?? 0;
     for (int i = 0; i < length; i++) {
       int dataLength = myList?.dataWithCategory?[i].data?.length ?? 0;
@@ -114,50 +106,87 @@ class MyListController extends GetxController implements GetxService {
     update();
   }
 
-  
-
   void onChangeMyList(int outerIndex, int innerIndex) {
-    Product? item = myList?.dataWithCategory?[outerIndex].data?[innerIndex];
-    TextEditingController? controller = item?.controller1;
-    item?.originQty = controller?.text;
-    String value = controller?.text.trim() ?? "";
-    if (value == '.') value = '0$value';
-    if (value.isEmpty) {
-      Get.find<CartController>().removeItemFromCardLocally(itemCode: item?.itemCode);
-    } else if (value.isQuantityValid()) {
-      Product inventory = Product();
-      inventory.categoryId = item?.categoryId;
-      inventory.comment = item?.comment;
-      inventory.controller1 = item?.controller1;
-      inventory.controller2 = item?.controller2;
-      inventory.id = item?.id;
-      inventory.image = item?.image;
-      inventory.imageDescription = item?.imageDescription;
-      inventory.inMyList = item?.inMyList;
-      inventory.isDelete = item?.isDelete;
-      inventory.isMeasBox = item?.isMeasBox;
-      inventory.itemCode = item?.itemCode;
-      inventory.itemName = item?.itemName;
-      inventory.itemPrice = item?.itemPrice;
-      inventory.measureQty = item?.measureQty;
-      inventory.categoryId = item?.categoryId;
-      inventory.orderBy = item?.orderBy;
-      inventory.orderByCat = item?.orderByCat;
-      inventory.originQty = item?.originQty;
-      inventory.portion = item?.portion;
-      inventory.priority = item?.priority;
-      inventory.quantity = item?.quantity;
-      inventory.retailCategoryId = item?.retailCategoryId;
-      inventory.specialItemId = item?.specialItemId;
-      inventory.specialTitle = item?.specialTitle;
-      inventory.status = item?.status;
-      inventory.thumbImage = item?.thumbImage;
-      inventory.uom = item?.uom;
-      Get.find<CartController>().addItemToCartLocall(product: inventory);
-    } else {
-      if ((!value.isQuantityValid()) && value.isNotEmpty) {
-        controller?.text = value.substring(0, value.length - 1);
+    Product? productItem = myList?.dataWithCategory?[outerIndex].data?[innerIndex];
+
+    if (productItem?.isMeasBox == 0) {
+      String value = productItem?.controller2?.text.trim() ?? "";
+
+      if (value == '.') value = '0$value';
+      if (value.isEmpty) {
+        Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+      } else if (value.isQuantityValid()) {
+        addItemToCartLocally(product: productItem);
+      } else {
+        if ((!value.isQuantityValid()) && value.isNotEmpty) {
+          productItem?.controller2?.text = value.substring(0, value.length - 1);
+        }
+      }
+    } else if (productItem?.isMeasBox == 1) {
+      String value1 = productItem?.controller1?.text.trim() ?? "";
+      String value2 = productItem?.controller2?.text.trim() ?? "";
+      print("value before processing :: $value1 value2 :: $value2");
+      if (value1 == '.') value1 = '0$value1';
+      if (value2 == '.') value2 = '0$value2';
+
+      if (value1.isEmpty || value2.isEmpty) {
+        Get.find<CartController>().removeItemFromCardLocally(itemCode: productItem?.itemCode);
+      } else if (value1.isQuantityValid() && value2.isQuantityValid()) {
+        addItemToCartLocally(product: productItem);
+      } else {
+        if ((!value1.isQuantityValid()) && value1.isNotEmpty) {
+          productItem?.controller1?.text = value1.substring(0, value1.length - 1);
+        }
+        if ((!value2.isQuantityValid()) && value2.isNotEmpty) {
+          productItem?.controller2?.text = value2.substring(0, value2.length - 1);
+        }
       }
     }
+  }
+
+  void addItemToCartLocally({Product? product}) async {
+    CartData? cart = await Get.find<LocalStorage>().getCartDetails();
+
+    int outerLength = myList?.dataWithCategory?.length ?? 0;
+    for (int outer = 0; outer < outerLength; outer++) {
+      var element = myList?.dataWithCategory?[outer];
+
+      int length = element?.data?.length ?? 0;
+      for (int inner = 0; inner < length; inner++) {
+        Product? productItem = element?.data?[inner];
+        double measureQty = 1;
+        double orginQty = 0;
+
+        if (productItem?.isMeasBox == 0) {
+          orginQty = double.tryParse(product?.controller2?.text ?? "1") ?? 1;
+        } else if (productItem?.isMeasBox == 1) {
+          measureQty = double.tryParse(product?.controller1?.text ?? "1") ?? 1;
+          orginQty = double.tryParse(product?.controller2?.text ?? "1") ?? 1;
+        }
+        double qty = orginQty * measureQty;
+        print("calculate :: ${orginQty}");
+        if (qty == 0) {
+          return;
+        }
+
+        myList?.dataWithCategory?[outer].data?[inner].originQty = orginQty.toString();
+        myList?.dataWithCategory?[outer].data?[inner].measureQty = measureQty.toString();
+        myList?.dataWithCategory?[outer].data?[inner].quantity = qty.toString();
+
+        int productAtIndexInCart = cart?.data?.allInventories?.indexWhere((inventory) => inventory.itemCode == product?.itemCode) ?? -1;
+        Product inventory = myList?.dataWithCategory?[outer].data?[inner] ?? Product();
+        if (productAtIndexInCart == -1) {
+          cart?.data?.allInventories?.add(inventory);
+        } else {
+          cart?.data?.allInventories?[productAtIndexInCart].originQty = orginQty.toString();
+          cart?.data?.allInventories?[productAtIndexInCart].measureQty = measureQty.toString();
+          cart?.data?.allInventories?[productAtIndexInCart].quantity = qty.toString();
+        }
+      }
+    }
+    await LocalStorage.saveCartDetails(cart);
+    Get.find<CartController>().cartData = cart;
+    Get.find<CartController>().calculateCartPrice();
+    update();
   }
 }
